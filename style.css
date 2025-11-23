@@ -1,4 +1,4 @@
-/* style.css 完整代码 - 修复 3D 翻转 CSS 效果 (最终版) */
+/* style.css 完整代码 - 包含 GPU 强制渲染修复 (最终版) */
 
 /* 通用重置和基础样式 */
 body {
@@ -29,7 +29,7 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
-    backface-visibility: hidden; /* 关键：隐藏元素的背面，确保动画可见 */
+    backface-visibility: hidden; /* 关键：隐藏元素的背面 */
     transition: transform 0.6s ease-in-out; /* 翻转动画速度 */
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -55,7 +55,7 @@ body {
     transform: rotateY(0deg); /* 背面旋转回 0 度显示 */
 }
 
-/* --- 正面样式 (保持不变) --- */
+/* --- 正面样式 (略) --- */
 .profile-content { padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #eee; }
 .profile-logo-ring { display: inline-block; padding: 5px; border: 3px solid #6c5ce7; border-radius: 50%; margin-bottom: 15px; }
 .profile-img { width: 80px; height: 80px; border-radius: 50%; display: block; }
@@ -64,8 +64,6 @@ h2 { margin: 10px 0 5px; color: #333; }
 .description { color: #666; margin-bottom: 20px; }
 .btn-main { background-color: #00b894; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 20px; }
 .btn-main:hover { background-color: #00a082; }
-
-/* Q&A / 问答部分 */
 .qa-body { padding: 20px; flex-grow: 1; }
 .qa-body h3 { margin-top: 0; color: #333; text-align: center; }
 .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; justify-content: center; }
@@ -76,7 +74,6 @@ h2 { margin: 10px 0 5px; color: #333; }
 .content-block h4 { margin-top: 0; color: #6c5ce7; font-size: 14px; }
 .content-text, .content-block p { color: #444; font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
 .btn-expand { background: none; border: none; color: #6c5ce7; cursor: pointer; padding: 0; margin-top: 5px; font-weight: bold; }
-
 /* --- 背面样式 --- */
 .card-back video {
     width: 100%;
