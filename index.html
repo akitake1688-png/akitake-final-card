@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>秋武老师数字名片 - Final CDN Fix</title>
-    <link rel="stylesheet" href="./style.css"> 
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="card-container">
+    <div class="card-container" id="profileCard">
         <div class="card-front">
             <div class="profile-content">
                 <div class="profile-logo-ring">
-                    <img src="./profile.jpg" alt="秋武老师" class="profile-img"> 
+                    <img src="./profile.jpg" alt="秋武老师" class="profile-img">
                 </div>
                 <h2>秋武老师</h2>
                 <p class="tagline">专攻港澳台与日本</p>
@@ -20,36 +21,30 @@
             </div>
 
             <div class="qa-body">
-                <h3>钱骡问答内容内</h3>
-                <div class="qa-actions">
-                    <button class="btn-qa-action">发起提问</button>
-                    <button class="btn-qa-action star">获取心法</button>
-                    <button class="btn-qa-action">个人简介</button>
+                <h3>钱骡问答内容</h3>
+                <div class="btn-group">
+                    <button>发起提问</button>
+                    <button>获取心法</button>
+                    <button>个人简介</button>
+                    <button class="active">页去回复</button>
+                    <button>左衣深粮</button>
                 </div>
-
-                <button class="qa-action active">页主回复</button>
-                <button class="qa-action">左衣深粮</button>
-
-                <h3>丽季顶顶秋衣左衣深粮</h3>
-                <p class="qa-text answer">:的平果家广世部调管家你麻副</p>
-                <p class="qa-text answer">eeuyuiip</p>
-                <p class="qa-text answer">回复回式优获问答：主备</p>
-
-                <button class="btn-more">展开</button>
+                <div class="content-block">
+                    <h4>丽季顶顶秋衣左衣深粮</h4>
+                    <p class="content-text">的平果家广世部调管家你麻副</p>
+                    <p>eeuyuip</p>
+                    <p>回复回式优扶问答：主备</p>
+                    <button class="btn-expand">展开</button>
+                </div>
             </div>
         </div>
 
         <div class="card-back">
-            <div class="video-container">
-                <video id="cardVideo" controls loop preload="none" poster="./profile.jpg">
-                    <source src="./video_final.mp4" type="video/mp4">
-                    您的浏览器不支持 HTML5 视频。
-                </video>
-            </div>
-            <p class="tip-text">↑ 视频加载中，点击即可播放。点击卡片任意非视频处返回正面。</p>
+            <video id="cardVideo" controls loop preload="auto" poster="./video_poster.jpg">
+                <source src="video_final.mp4" type="video/mp4">
+                您的浏览器不支持视频播放。
+            </video>
         </div>
     </div>
-
-    <script src="./script.js"></script>
 </body>
 </html>
