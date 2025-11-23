@@ -1,4 +1,4 @@
-/* style.css 完整代码 - 修复卡片翻转 CSS 效果 */
+/* style.css 完整代码 - 修复 3D 翻转 CSS 效果 */
 
 /* 通用重置和基础样式 */
 body {
@@ -13,22 +13,25 @@ body {
     box-sizing: border-box;
 }
 
-/* 卡片容器和 3D 效果设置 */
+/* 核心 3D 舞台设置 */
 .card-container {
     width: 350px;
     height: 550px;
     perspective: 1000px; /* 启用 3D 透视效果 */
     cursor: pointer;
     position: relative;
+    /* 关键修复：确保子元素在 3D 空间中 */
+    transform-style: preserve-3d; 
 }
 
-/* 翻转的核心设置：过渡和样式 */
+/* 卡片正面/背面设置 */
 .card-front, .card-back {
     width: 100%;
     height: 100%;
     position: absolute;
-    backface-visibility: hidden; /* 隐藏背面 */
-    transition: transform 0.6s ease-in-out; /* 翻转动画 */
+    /* 关键修复：隐藏元素的背面，确保动画可见 */
+    backface-visibility: hidden; 
+    transition: transform 0.6s ease-in-out; /* 翻转动画速度 */
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     background-color: white;
@@ -40,7 +43,7 @@ body {
 /* 初始状态：背面旋转 180 度隐藏 */
 .card-back {
     transform: rotateY(180deg);
-    overflow: hidden;
+    overflow: hidden; 
     padding: 0;
 }
 
@@ -53,7 +56,7 @@ body {
     transform: rotateY(0deg); /* 背面旋转回 0 度显示 */
 }
 
-/* --- 正面样式 --- */
+/* --- 正面样式 (保持不变) --- */
 
 .profile-content {
     padding: 30px 20px 20px;
@@ -64,7 +67,7 @@ body {
 .profile-logo-ring {
     display: inline-block;
     padding: 5px;
-    border: 3px solid #6c5ce7; /* 品牌颜色 */
+    border: 3px solid #6c5ce7;
     border-radius: 50%;
     margin-bottom: 15px;
 }
@@ -93,7 +96,7 @@ h2 {
 }
 
 .btn-main {
-    background-color: #00b894; /* 强调颜色 */
+    background-color: #00b894;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -111,8 +114,8 @@ h2 {
 /* Q&A / 问答部分 */
 .qa-body {
     padding: 20px;
-    flex-grow: 1; /* 填充剩余空间 */
-    overflow-y: auto; /* 允许滚动 */
+    flex-grow: 1;
+    /* 移除可能影响 3D 的 overflow: hidden/scroll */
 }
 
 .qa-body h3 {
@@ -141,7 +144,7 @@ h2 {
 }
 
 .btn-group button.active {
-    background-color: #ffeaa7; /* 活跃按钮的颜色 */
+    background-color: #ffeaa7;
     border-color: #fdcb6e;
     font-weight: bold;
 }
@@ -185,7 +188,7 @@ h2 {
 .card-back video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 确保视频覆盖整个区域 */
+    object-fit: cover;
     display: block;
     border-radius: 12px;
 }
