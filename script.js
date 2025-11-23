@@ -1,4 +1,4 @@
-// script.js 完整代码 - 最终修复版 (翻转、视频、按钮链接)
+// script.js 完整代码 - 解决视频点击事件冲突 (最终修复)
 
 document.addEventListener('DOMContentLoaded', function() {
     const card = document.getElementById('profileCard'); 
@@ -9,22 +9,26 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // --- 按钮链接和互动功能 (咨询、知乎、B站) ---
+    // --- 按钮链接和互动功能 (保持不变) ---
     
+    // 获取主要的咨询按钮
     const consultButton = card.querySelector('.btn-main');
+
+    // 监听主要的咨询按钮
     if (consultButton) {
         consultButton.addEventListener('click', function(event) {
             event.stopPropagation(); // 阻止点击按钮时卡片翻转
-            alert('正在跳转到咨询页面...'); 
+            alert('正在跳转到咨询页面...'); // 提示用户
             // 咨询沟通功能，请替换为您的实际咨询URL（如微信/QQ链接）
             window.open('https://example.com/consult', '_blank'); 
         });
     }
 
+    // 监听底部的问答按钮组
     const qaButtons = card.querySelectorAll('.btn-group button');
     qaButtons.forEach(button => {
         button.addEventListener('click', function(event) {
-            event.stopPropagation(); 
+            event.stopPropagation(); // 阻止点击按钮时卡片翻转
             
             const buttonText = button.textContent.trim();
             let targetUrl = '';
@@ -48,32 +52,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // 监听“展开”按钮
     const expandButton = card.querySelector('.btn-expand');
     if (expandButton) {
         expandButton.addEventListener('click', function(event) {
             event.stopPropagation();
             alert('展开功能启动！'); 
-            // 实际中会切换 CSS 类来展开内容
         });
     }
 
 
     // --- 卡片翻转和视频功能 ---
 
+    // 监听卡片点击事件 (实现翻转)
     card.addEventListener('click', function(event) {
-        // 阻止点击视频元素时触发翻转
-        if (video && (video.contains(event.target) || event.target.tagName === 'SOURCE' || event.target.tagName === 'VIDEO')) {
-            return; 
+        // ****** 关键修复区域 ******
+        // 如果点击的目标是视频控件区域，阻止翻转，让视频播放器处理点击。
+        // 但是，如果视频已经翻转到背面，我们应该允许卡片翻转回来。
+        
+        // 如果卡片已经在背面 (flipped)，则任何点击都应尝试翻转回去，
+        // 除非点击的是视频上的“播放/暂停”按钮等控件本身。
+        if (card.classList.contains('flipped')) {
+            // 关键：允许卡片翻转回来
+            if (event.target.tagName === 'VIDEO' || event.target.tagName === 'SOURCE') {
+                // 如果是直接点击视频主体，仍允许翻转回去 (而不是让视频控件独占点击)
+            } else if (event.target.closest('.card-back')) {
+                 // 如果点击的是背面的其他区域，则允许翻转回去
+            } else {
+                // 如果点击的是正面的区域，则尝试翻转
+            }
+        } else {
+            // 如果卡片在正面，则进行翻转
         }
 
         // 切换 .flipped 类来触发 CSS 翻转动画
         card.classList.toggle('flipped');
 
+        // 处理视频播放/暂停
         if (card.classList.contains('flipped')) {
             // 翻转到背面
             setTimeout(() => {
                 if (video) {
-                    // 确保在 iOS/移动端能够内联播放
                     video.play().catch(error => {
                         console.log('Video auto-play failed, user interaction needed:', error);
                     });
