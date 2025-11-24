@@ -1,4 +1,4 @@
-/* style.css - 左右分栏 AI 咨询室风格 (最终修复版，包含头像裁剪) */
+/* style.css - 左右分栏 AI 咨询室风格 (最终修复版) */
 
 * {
     box-sizing: border-box;
@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    /* 背景色：参考截图的紫色渐变 */
+    /* 背景色：紫色渐变 */
     background: linear-gradient(135deg, #7c73e6 0%, #a29bfe 100%);
     height: 100vh;
     display: flex;
@@ -22,7 +22,7 @@ body {
     max-width: 1200px;
     height: 90vh;
     background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
     border-radius: 20px;
     display: flex;
     overflow: hidden;
@@ -33,7 +33,7 @@ body {
 /* --- 左侧面板 --- */
 .left-panel {
     width: 40%;
-    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    background: rgba(255, 255, 255, 0.1);
     padding: 40px;
     color: white;
     display: flex;
@@ -64,7 +64,6 @@ body {
 .avatar {
     width: 100%;
     height: 100%;
-    /* 关键修复：确保图片完整填充父容器，并被父容器的 overflow: hidden 裁剪 */
     object-fit: cover; 
 }
 
@@ -239,7 +238,6 @@ body {
     border-radius: 50%;
     border: 2px solid white;
     margin-right: 12px;
-    /* 确保聊天窗口的头像也正确裁剪 */
     object-fit: cover; 
 }
 
