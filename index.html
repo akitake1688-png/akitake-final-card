@@ -3,48 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武老师数字名片 - 最终修复版</title>
+    <title>秋武 AI 咨询室 - 东大日本求学</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="card-container" id="profileCard">
-        <div class="card-front">
-            <div class="profile-content">
-                <div class="profile-logo-ring">
-                    <img src="./profile.jpg" alt="秋武老师" class="profile-img">
+    <div class="main-container">
+        
+        <div class="left-panel" id="leftPanel">
+            
+            <div class="profile-cover" id="profileCover">
+                <div class="avatar-ring">
+                    <img src="./profile.jpg" alt="秋武老师" class="avatar">
                 </div>
-                <h2>秋武老师</h2>
-                <p class="tagline">专攻港澳台与日本</p>
-                <p class="description">一问一答式，深度定制辅导</p>
-                <button class="btn-main">进入咨询 →</button>
+                <h1>東大日本秋武老师</h1>
+                <div class="subtitle">
+                    <p>跨越文理，点亮思路</p>
+                    <p>用“破绽”引导成功</p>
+                </div>
+                <button class="btn-expand" onclick="toggleMenu(true)">点击展开</button>
             </div>
 
-            <div class="qa-body">
-                <h3>钱骡问答内容</h3>
-                <div class="btn-group">
-                    <button>发起提问</button>
-                    <button>获取心法</button>
-                    <button>个人简介</button>
-                    <button class="active">页去回复</button>
-                    <button>左衣深粮</button>
+            <div class="menu-list hidden" id="menuList">
+                <button class="btn-back-home" onclick="toggleMenu(false)">← 返回首页</button>
+                <h2>请选择了解内容</h2>
+                
+                <div class="menu-item" onclick="showContent('strength')">
+                    <h3>核心优势</h3>
+                    <p>跨学科思维 / 东大背景 / 非语言沟通</p>
+                    <span class="arrow">→</span>
                 </div>
-                <div class="content-block">
-                    <h4>丽季顶顶秋衣左衣深粮</h4>
-                    <p class="content-text">的平果家广世部调管家你麻副</p>
-                    <p>eeuyuip</p>
-                    <p>回复回式优扶问答：主备</p>
-                    <button class="btn-expand">展开</button>
+
+                <div class="menu-item" onclick="showContent('model')">
+                    <h3>辅导模式</h3>
+                    <p>1:1 深度定制 / 免费辅导机制</p>
+                    <span class="arrow">→</span>
                 </div>
+
+                <div class="menu-item" onclick="showContent('cases')">
+                    <h3>成功案例 / 更多思考</h3>
+                    <p>知乎专栏 / Bilibili 视频</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+
+            <div class="content-detail hidden" id="contentDetail">
+                <button class="btn-back-menu" onclick="backToMenu()">← 返回菜单</button>
+                <div id="dynamicContent"></div>
+            </div>
+
+        </div>
+
+        <div class="right-panel">
+            <div class="chat-header">
+                <div class="header-avatar">
+                    <img src="./profile.jpg" alt="AI">
+                </div>
+                <div class="header-info">
+                    <span class="name">秋武 AI 咨询室</span>
+                    <span class="status">● 在线</span>
+                </div>
+            </div>
+
+            <div class="chat-body" id="chatBody">
+                <div class="message ai-message">
+                    <div class="bubble">
+                        你好！我是秋武老师的 AI 助理。关于日本考学、研究计划书或面试技巧，随时问我！
+                        <br><br>
+                        试试问我：
+                        <br>“电气自动化就业前景”
+                        <br>“辅导模式有什么区别”
+                        <br>“双非本科能申请东大吗”
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="输入你的问题... (例如: 面试技巧)" onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">发送</button>
             </div>
         </div>
 
-        <div class="card-back">
-            <video id="cardVideo" controls loop preload="auto" playsinline> 
-                <source src="video_final.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
-        </div>
     </div>
 </body>
 </html>
