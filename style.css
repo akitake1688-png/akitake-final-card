@@ -1,4 +1,4 @@
-/* style.css - 左右分栏 AI 咨询室风格 */
+/* style.css - 左右分栏 AI 咨询室风格 (最终修复版，包含头像裁剪) */
 
 * {
     box-sizing: border-box;
@@ -57,14 +57,15 @@ body {
     border-radius: 50%;
     border: 4px solid rgba(255,255,255,0.8);
     margin: 0 auto 20px;
-    overflow: hidden;
+    overflow: hidden; /* 裁剪圆形的关键 */
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .avatar {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* 关键修复：确保图片完整填充父容器，并被父容器的 overflow: hidden 裁剪 */
+    object-fit: cover; 
 }
 
 .profile-cover h1 {
@@ -238,6 +239,8 @@ body {
     border-radius: 50%;
     border: 2px solid white;
     margin-right: 12px;
+    /* 确保聊天窗口的头像也正确裁剪 */
+    object-fit: cover; 
 }
 
 .header-info {
