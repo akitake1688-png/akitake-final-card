@@ -1,84 +1,367 @@
-/* style.css 完整代码 - 包含 GPU 强制渲染修复 (最终版) */
+/* style.css - 左右分栏 AI 咨询室风格 */
 
-/* 通用重置和基础样式 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+* {
+    box-sizing: border-box;
     margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* 核心 3D 舞台设置 */
-.card-container {
-    width: 350px;
-    height: 550px;
-    perspective: 1000px; /* 启用 3D 透视效果 */
-    cursor: pointer;
-    position: relative;
-    transform-style: preserve-3d; /* 关键：确保子元素在 3D 空间中 */
-    transform: translate3d(0, 0, 0); /* 关键修复：强制 GPU 渲染，解决“冻住”问题 */
-}
-
-/* 卡片正面/背面设置 */
-.card-front, .card-back {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    backface-visibility: hidden; /* 关键：隐藏元素的背面 */
-    transition: transform 0.6s ease-in-out; /* 翻转动画速度 */
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-
-/* 初始状态：背面旋转 180 度隐藏 */
-.card-back {
-    transform: rotateY(180deg);
-    overflow: hidden; 
     padding: 0;
 }
 
-/* 翻转状态：卡片容器被点击时添加的类 */
-.card-container.flipped .card-front {
-    transform: rotateY(-180deg); /* 正面翻转 180 度隐藏 */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* 背景色：参考截图的紫色渐变 */
+    background: linear-gradient(135deg, #7c73e6 0%, #a29bfe 100%);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-.card-container.flipped .card-back {
-    transform: rotateY(0deg); /* 背面旋转回 0 度显示 */
+.main-container {
+    width: 95%;
+    max-width: 1200px;
+    height: 90vh;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* --- 正面样式 (略) --- */
-.profile-content { padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #eee; }
-.profile-logo-ring { display: inline-block; padding: 5px; border: 3px solid #6c5ce7; border-radius: 50%; margin-bottom: 15px; }
-.profile-img { width: 80px; height: 80px; border-radius: 50%; display: block; }
-h2 { margin: 10px 0 5px; color: #333; }
-.tagline { color: #6c5ce7; font-weight: bold; margin-bottom: 10px; }
-.description { color: #666; margin-bottom: 20px; }
-.btn-main { background-color: #00b894; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 20px; }
-.btn-main:hover { background-color: #00a082; }
-.qa-body { padding: 20px; flex-grow: 1; }
-.qa-body h3 { margin-top: 0; color: #333; text-align: center; }
-.btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; justify-content: center; }
-.btn-group button { background-color: #f0f0f0; color: #555; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; flex-shrink: 0; }
-.btn-group button.active { background-color: #ffeaa7; border-color: #fdcb6e; font-weight: bold; }
-.btn-group button:hover { background-color: #e0e0e0; }
-.content-block { border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-.content-block h4 { margin-top: 0; color: #6c5ce7; font-size: 14px; }
-.content-text, .content-block p { color: #444; font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
-.btn-expand { background: none; border: none; color: #6c5ce7; cursor: pointer; padding: 0; margin-top: 5px; font-weight: bold; }
-/* --- 背面样式 --- */
-.card-back video {
+/* --- 左侧面板 --- */
+.left-panel {
+    width: 40%;
+    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    padding: 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+/* 封面状态 */
+.profile-cover {
+    text-align: center;
+    width: 100%;
+}
+
+.avatar-ring {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.8);
+    margin: 0 auto 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+}
+
+.profile-cover h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.subtitle {
+    font-size: 16px;
+    line-height: 1.8;
+    opacity: 0.9;
+    margin-bottom: 40px;
+}
+
+.btn-expand, .btn-back-home, .btn-back-menu {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-expand:hover {
+    background: white;
+    color: #6c5ce7;
+}
+
+/* 菜单列表状态 */
+.menu-list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu-list h2 {
+    margin-bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.menu-item {
+    background: white;
+    color: #333;
+    padding: 20px;
     border-radius: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.menu-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.menu-item h3 {
+    color: #6c5ce7;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.menu-item p {
+    font-size: 13px;
+    color: #666;
+}
+
+.menu-item .arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+    font-weight: bold;
+}
+
+/* 详情内容状态 */
+.content-detail {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.btn-back-home, .btn-back-menu {
+    margin-bottom: 20px;
+    font-size: 14px;
+    padding: 8px 20px;
+}
+
+.detail-card {
+    background: white;
+    color: #333;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.detail-card h3 {
+    color: #6c5ce7;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.detail-card ul {
+    padding-left: 20px;
+}
+
+.detail-card li {
+    margin-bottom: 12px;
+}
+
+.detail-card strong {
+    color: #2d3436;
+}
+
+/* 链接按钮样式 */
+.link-btn {
+    display: block;
+    background: #f1f2f6;
+    color: #6c5ce7;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.link-btn:hover {
+    background: #dfe6e9;
+}
+
+/* 隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+
+/* --- 右侧面板 (聊天室) --- */
+.right-panel {
+    width: 60%;
+    background: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: #6c5ce7;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: 12px;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-info .name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.header-info .status {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.message {
+    display: flex;
+    max-width: 80%;
+}
+
+.ai-message {
+    align-self: flex-start;
+}
+
+.user-message {
+    align-self: flex-end;
+}
+
+.bubble {
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+}
+
+.ai-message .bubble {
+    background: white;
+    color: #333;
+    border-top-left-radius: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.user-message .bubble {
+    background: #6c5ce7;
+    color: white;
+    border-top-right-radius: 0;
+    box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
+}
+
+.chat-input-area {
+    background: white;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+#userInput {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+}
+
+#userInput:focus {
+    border-color: #6c5ce7;
+}
+
+.chat-input-area button {
+    background: #6c5ce7;
+    color: white;
+    border: none;
+    padding: 0 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.chat-input-area button:hover {
+    background: #5649c0;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        border-radius: 0;
+    }
+    .left-panel, .right-panel {
+        width: 100%;
+    }
+    .left-panel {
+        height: 40%;
+        padding: 20px;
+    }
+    .right-panel {
+        height: 60%;
+    }
+    .avatar-ring {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+    .profile-cover h1 {
+        font-size: 20px;
+    }
+    .subtitle {
+        display: none;
+    }
 }
