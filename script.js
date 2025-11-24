@@ -1,4 +1,4 @@
-// script.js 完整代码 - 包含所有功能和最终翻转修复
+// script.js 最终版本 - 包含所有功能、翻转修复和您的真实链接
 
 document.addEventListener('DOMContentLoaded', function() {
     const card = document.getElementById('profileCard'); 
@@ -9,15 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // --- 按钮链接和互动功能 (咨询、知乎、B站) ---
+    // --- 按钮链接和互动功能 ---
     
     const consultButton = card.querySelector('.btn-main');
     if (consultButton) {
         consultButton.addEventListener('click', function(event) {
             event.stopPropagation(); // 阻止点击按钮时卡片翻转
             alert('正在跳转到咨询页面...'); 
-            // !!! 【待替换】请用您的真实咨询URL替换此行 !!!
-            window.open('https://example.com/consult', '_blank'); 
+            // !!! 请替换此处的 '您的真实咨询链接' !!!
+            window.open('您的真实咨询链接', '_blank'); 
         });
     }
 
@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const buttonText = button.textContent.trim();
             let targetUrl = '';
 
-            // !!! 【待替换】请用您的真实知乎与 Bilibili 链接替换此行 !!!
+            // 替换为您的真实知乎与 Bilibili 链接
             if (buttonText === '发起提问') {
-                targetUrl = 'https://www.zhihu.com/'; 
+                targetUrl = 'https://zhuanlan.zhihu.com/p/691198840?share_code=sxm903a247yL&utm_psn=1976199060072453115'; // 您的知乎链接
             } else if (buttonText === '获取心法') {
-                targetUrl = 'https://www.bilibili.com/'; 
+                targetUrl = 'https://space.bilibili.com/323700487/lists'; // 您的 Bilibili 链接
             } else if (buttonText === '个人简介') {
-                targetUrl = '#'; // 个人简介目前未设置跳转
+                targetUrl = '#'; 
             } else {
                 return;
             }
@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // 翻转到背面：延迟后播放视频
             setTimeout(() => {
                 if (video) {
-                    // 尝试播放视频，解决浏览器自动播放限制
                     video.play().catch(error => {
                         console.log('Video auto-play failed, user interaction needed:', error);
                     });
