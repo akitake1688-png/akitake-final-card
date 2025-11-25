@@ -1,4 +1,4 @@
-/* style.css - 最终优化版 (移除闪烁光标) */
+/* style.css - 最终优化版 (新增呼吸光晕动画) */
 
 * {
     box-sizing: border-box;
@@ -68,15 +68,36 @@ body {
     width: 100%;
 }
 
+/* --- 核心改动：头像光环呼吸动画 --- */
 .avatar-ring {
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    /* 初始边框颜色，保证清晰度 */
     border: 4px solid rgba(255,255,255,0.8);
     margin: 0 auto 20px;
     overflow: hidden;
+    /* 初始阴影 */
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    
+    /* 添加动画效果 */
+    animation: pulse 2s infinite ease-in-out;
 }
+
+/* 定义呼吸动画 */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 15px 10px rgba(255, 255, 255, 0.3); /* 扩展光晕 */
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+}
+/* --- 动画结束 --- */
+
 
 .avatar {
     width: 100%;
@@ -318,7 +339,6 @@ body {
     font-size: 14px;
     line-height: 1.5;
     position: relative;
-    /* 确保 AI 消息内容有最小高度，避免打字机效果开始时跳动 */
     min-height: 20px; 
 }
 
@@ -335,25 +355,6 @@ body {
     border-top-right-radius: 0;
     box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
 }
-
-/* --- 移除打字机光标 CSS --- */
-/*
-.typing-cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1em;
-    background-color: #333;
-    margin-left: 2px;
-    animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-    from, to { visibility: visible; }
-    50% { visibility: hidden; }
-}
-*/
-/* --- 结束打字机光标 CSS --- */
-
 
 .chat-input-area {
     background: white;
