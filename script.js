@@ -1,4 +1,4 @@
-// script.js - 修复语法错误，确保功能运行
+// script.js - 最终完整版 (含 AI 聊天室和 AI 升学破局测试)
 
 // ==========================================
 // 第一部分：左侧面板逻辑 (菜单与详情切换)
@@ -7,19 +7,18 @@
 function toggleMenu(showMenu) {
     const profileCover = document.getElementById('profileCover');
     const menuList = document.getElementById('menuList');
-    const contentDetail = document.getElementById('contentDetail'); // 明确获取详情页元素
+    const contentDetail = document.getElementById('contentDetail');
     
+    // 确保退出故事卡模式，显示聊天输入区
+    returnToChat(); 
+
     if (showMenu) {
-        // 展开菜单
         if (profileCover) profileCover.classList.add('hidden');
         if (menuList) menuList.classList.remove('hidden');
-        // 隐藏详情页
         if (contentDetail) contentDetail.classList.add('hidden'); 
     } else {
-        // 返回封面
         if (profileCover) profileCover.classList.remove('hidden');
         if (menuList) menuList.classList.add('hidden');
-        // 注意：这里不需要处理 contentDetail，因为它应该已经在菜单或详情页状态了
     }
 }
 
@@ -31,7 +30,7 @@ function backToMenu() {
     if (menuList) menuList.classList.remove('hidden');
 }
 
-// 左侧菜单详情内容配置 (使用模板字符串和更清晰的结构)
+// 左侧菜单详情内容配置 
 const contentData = {
     'strength': `
         <div class="detail-card">
@@ -78,6 +77,9 @@ function showContent(type) {
     const contentDetail = document.getElementById('contentDetail');
     const dynamicContent = document.getElementById('dynamicContent');
 
+    // 确保退出故事卡模式
+    returnToChat();
+
     // 填充内容
     if (dynamicContent) dynamicContent.innerHTML = contentData[type] || '未找到内容。';
 
@@ -92,7 +94,6 @@ function showContent(type) {
 // ==========================================
 
 const qaDatabase = [
-    // --- 第一章：核心：费用与实力 (高情商优化) ---
     {
         keywords: ['费用', '钱', '收费', '价格', '贵吗'],
         answer: "关于费用，我的原则是<strong>【透明】与【价值对等】</strong>。<br><br>我不进行低效的价格博弈。您支付的不仅仅是时间，而是我作为东大博士的<strong>【核心认知】与【通关经验】</strong>。<br>目前仅开放两种通道：<br>1. 机构通道：适合需要全套基础流程服务的同学。<br>2. <strong>【私塾核心】免佣直通车</strong>：这是我最推荐的模式。剔除中间商溢价，您所有的预算都将转化为我的<strong>【有效辅导时长】</strong>。<br><br>如果您已准备好为结果负责，请联系微信 <strong>qiuwu999</strong> 获取详细方案。"
@@ -105,8 +106,6 @@ const qaDatabase = [
         keywords: ['免费', '盈利', '赚钱'],
         answer: "这是一个好问题。盈利模式非常透明：<br>我是渠道方，机构支付给我介绍费，这笔钱等于<strong>替您支付了我的咨询费</strong>。<br>这是一种“三方共赢”的成熟商业模式：您零成本获得高端辅导，机构获得优质生源，我获得合理的劳动回报。<strong>无任何隐形消费</strong>，我们签协议说话。"
     },
-
-    // --- 第二章：背景评估与自信建设 ---
     {
         keywords: ['双非', '二本', '三本', '普通', '出身'],
         answer: "<strong>双非本科完全能申请东大！</strong><br>请记住：教授录取的是“未来的研究者”，而不是“过去的考试机器”。<br>我们的策略是：用<strong>高质量的研究计划书 + 高分语言成绩</strong>来对冲学历背景。只要能通过计划书“秀肌肉”，展示出超越出身校的研究潜力，东大的大门就是敞开的。"
@@ -131,8 +130,6 @@ const qaDatabase = [
         keywords: ['电气', '自动化', '就业', '前景', 'cs', '转码'],
         answer: "您问到电气自动化？这是个好话题。2025年的风口不是‘电’，而是‘智’。1. **新能源与储能**：谁能搞定‘源网荷储’的自动化调度，谁就是大爷。2. **AI落地的物理载体**：懂强电的没你懂算法，懂算法的没你懂硬件。这就是我常说的**‘错位竞争’**！"
     },
-
-    // --- 第三章：方法论与心态 (植入Word文档的深度观点) ---
     {
         keywords: ['底层逻辑', '成功', '秘诀'],
         answer: "顺利考上目标大学的**底层逻辑其实很单纯**：**不放弃任何一个机会**。<br>比如一年两次留考EJU，如果你因为“没自信”而放弃6月，只参加11月，你将失去很多机会。很多大学申报时只需要『受験票』（考试凭证），并不需要具体成绩。你至少会失去一次**临场体验校内考核**的机会。这种人与人之间的**认知偏差**，就是决定你合格与否的关键。"
@@ -141,8 +138,6 @@ const qaDatabase = [
         keywords: ['累', '放弃', '焦虑', '失败', '被拒'],
         answer: "我理解你现在很累！但请记住：<strong>失败是挑战过程中获得的“肥料”</strong>。<br>失败，本身是**痛并快乐着**的。我们不怕失败，但怕**重复犯错**。小失败可以接受，但如果你重复犯错，不愿承认或总是找借口，最终只会酿成**悔恨但羞于启齿的大失败**。考学是心力博弈，调整心态，将大目标拆解成小任务，**踏实做好每一步，你不是一个人在战斗！**"
     },
-
-    // --- 第四章：文书与面试 (保持专业严谨) ---
     {
         keywords: ['方向', '题目', '选题', '思路'],
         answer: "研究方向是灵魂！好题目 = <strong>个人兴趣 + 教授领域 + 可操作性</strong>。切忌选太大的题目，那会显得空洞。我能通过头脑风暴，帮你筛选出最讨巧且最容易通过的切口。"
@@ -163,8 +158,6 @@ const qaDatabase = [
         keywords: ['刁钻', '听不懂', '不会'],
         answer: "面试听不懂教授问题怎么办？千万别慌！礼貌地说：'もう一度お願いできますか'（能请您再说一遍吗？）。教授不会介意，反而觉得你认真。如果是被问倒了，<strong>承认不足，并给出思路</strong>，这叫靠谱。"
     },
-    
-    // 保持完整性保留的其余问答
     {
         keywords: ['大龄', '年龄', '工作'],
         answer: "不用担心年龄问题，日本教授很欢迎有社会经验的学生。您的优势在于“问题意识”。把工作经验转化为研究课题，比应届生的空想更有说服力，这是你的独特竞争力！"
@@ -212,13 +205,12 @@ const qaDatabase = [
 ];
 
 // ==========================================
-// 第四部分：聊天核心逻辑
+// 第三部分：聊天核心逻辑
 // ==========================================
 
 // 处理用户输入
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
-        // 阻止默认行为（如表单提交或换行），确保只执行 sendMessage
         event.preventDefault(); 
         sendMessage();
     }
@@ -226,47 +218,42 @@ function handleKeyPress(event) {
 
 function sendMessage() {
     const inputField = document.getElementById('userInput');
-    const message = inputField ? inputField.value.trim() : ''; // 安全检查
+    const message = inputField ? inputField.value.trim() : ''; 
     
     if (message === "") return;
 
     // 1. 显示用户消息
     appendMessage(message, 'user');
-    if (inputField) inputField.value = ''; // 清空输入框
+    if (inputField) inputField.value = '';
 
     // 2. 模拟 AI 思考延迟
     setTimeout(() => {
         const reply = findAnswer(message);
         appendMessage(reply, 'ai');
-    }, 600); // 0.6秒延迟，模拟思考
+    }, 600);
 }
 
 function appendMessage(text, sender) {
     const chatBody = document.getElementById('chatBody');
-    if (!chatBody) return; // 如果找不到聊天主体，则退出函数
+    if (!chatBody) return;
 
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${sender}-message`;
     
-    // AI 回复支持 HTML 标签（用于换行和加粗），用户消息纯文本
     const bubbleContent = sender === 'ai' ? text : text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     
     msgDiv.innerHTML = `<div class="bubble">${bubbleContent}</div>`;
     chatBody.appendChild(msgDiv);
     
-    // 滚动到底部
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 // 关键词匹配算法
 function findAnswer(userText) {
-    // 默认回复 - 更具情商的引导
     let bestReply = "嗯，这是一个很好的问题！我是 AI 助理，关于这个细节，建议您直接点击左侧菜单查看我的<strong>辅导模式</strong>和<strong>核心优势</strong>，或者直接加微信 <strong>qiuwu999</strong> 详细评估。我们保证所有问题都会得到专业解答！";
 
-    // 遍历数据库匹配关键词
     const normalizedText = userText.toLowerCase();
     for (const item of qaDatabase) {
-        // 检查是否包含任意一个关键词
         const match = item.keywords.some(keyword => normalizedText.includes(keyword));
         if (match) {
             bestReply = item.answer;
@@ -274,4 +261,139 @@ function findAnswer(userText) {
         }
     }
     return bestReply;
+}
+
+// ==========================================
+// 第四部分：【新增】AI 升学破局测试 (故事卡) 逻辑
+// ==========================================
+
+// 故事卡内容数据库
+const storyCardData = {
+    // 步骤 1: 资源需求
+    'step1': {
+        title: 'AI 升学破局测试：快速锁定你的核心需求',
+        question: '您目前最缺乏的是什么？',
+        options: [
+            { text: '最缺研究计划书：思路混乱，不知道如何切入东大教授的领域。', nextStep: 'result_rps' },
+            { text: '最缺面试技巧：害怕被刁难，不知如何利用“弱点”转为优势。', nextStep: 'result_interview' },
+            { text: '最缺渠道资源：想走机构免佣直通车，追求最高性价比的通道。', nextStep: 'result_channel' }
+        ]
+    },
+    
+    // 结果 1: 研究计划书 (RPS) 路径
+    'result_rps': {
+        title: '💡 方案建议：计划书的“破绽利用法”',
+        result: `
+            <p>您的问题在于<strong>研究逻辑的重构</strong>，而不是写作本身。秋武老师的优势正是：利用您经历中的**“矛盾点”**，转化为独一无二的**研究动机**，让教授对您的好奇心大于对您背景的挑剔。</p>
+            <p><strong>【下一步行动】:</strong></p>
+            <ul>
+                <li>请即刻联系微信 <strong>qiuwu999</strong>，发送您的<strong>背景简历</strong>。</li>
+                <li>我们将为你安排一次**“破局初筛”**，评估您的经历中最具转折点的部分。</li>
+            </ul>
+        `,
+        isResult: true
+    },
+    
+    // 结果 2: 面试技巧 (Interview) 路径
+    'result_interview': {
+        title: '💡 方案建议：非语言博弈与心态建设',
+        result: `
+            <p>面试是您展示个人<strong>认知深度</strong>的最终战场。秋武老师的辅导独创了**“前30秒非语言博弈”**训练，从坐姿、眼神到递交材料，帮您在心理上压倒对手。</p>
+            <p><strong>【下一步行动】:</strong></p>
+            <ul>
+                <li>请即刻联系微信 <strong>qiuwu999</strong>，预约一次**“全真模拟面试”**。</li>
+                <li>在正式辅导前，您将免费获得一份**《东大教授面试心理学速查表》**。</li>
+            </ul>
+        `,
+        isResult: true
+    },
+
+    // 结果 3: 渠道资源 (Channel) 路径
+    'result_channel': {
+        title: '💡 方案建议：最高性价比的免佣直通车',
+        result: `
+            <p>您追求<strong>高效率与高性价比</strong>。秋武老师的**【核心私塾免佣直通车】**是最佳选择。辅导费用由机构承担，您获得顶级辅导，无需多花一分钱。</p>
+            <p><strong>【下一步行动】:</strong></p>
+            <ul>
+                <li>请即刻联系微信 <strong>qiuwu999</strong>，告知您想申请**“免佣直通车”**。</li>
+                <li>我们将为您匹配最合适的合作机构和语言学校，**立即开启零成本辅导流程**。</li>
+            </ul>
+        `,
+        isResult: true
+    }
+};
+
+
+// 核心函数：显示故事卡界面
+function showStoryCard(stepKey) {
+    const menuList = document.getElementById('menuList');
+    const contentDetail = document.getElementById('contentDetail');
+    const chatBody = document.getElementById('chatBody');
+    const chatInputArea = document.querySelector('.chat-input-area');
+    let storyContainer = document.getElementById('storyCardContainer');
+
+    // 1. 隐藏左侧菜单，确保内容详情页也隐藏
+    if (menuList) menuList.classList.add('hidden');
+    if (contentDetail) contentDetail.classList.add('hidden');
+
+    // 2. 隐藏聊天室组件
+    if (chatInputArea) chatInputArea.classList.add('hidden'); 
+    if (chatBody) chatBody.style.display = 'none';
+
+    // 3. 确保故事卡容器存在
+    if (!storyContainer) {
+        storyContainer = document.createElement('div');
+        storyContainer.id = 'storyCardContainer';
+        // 尝试将其放置在 chatBody 的父元素中
+        if (chatBody && chatBody.parentElement) {
+             chatBody.parentElement.appendChild(storyContainer);
+        } else {
+            console.error("无法找到 chatBody 或其父元素来插入 storyCardContainer。");
+            return;
+        }
+    }
+    storyContainer.style.display = 'block';
+
+    // 4. 获取当前步骤数据并构建 HTML
+    const stepData = storyCardData[stepKey];
+    if (!stepData) return;
+
+    let storyCardHtml = `<div class="story-card-container">`;
+    storyCardHtml += `<h3>${stepData.title}</h3>`;
+    
+    // 如果是问题 (有 options)
+    if (stepData.options) {
+        storyCardHtml += `<p class="question-text">${stepData.question}</p>`;
+        storyCardHtml += `<div class="options-list">`;
+        stepData.options.forEach(option => {
+            storyCardHtml += `
+                <button class="option-btn" onclick="showStoryCard('${option.nextStep}')">
+                    ${option.text}
+                </button>
+            `;
+        });
+        storyCardHtml += `</div>`;
+    } 
+    // 如果是结果 (有 result)
+    else if (stepData.isResult) {
+        storyCardHtml += `<div class="result-content">${stepData.result}</div>`;
+        storyCardHtml += `<button class="btn-return-chat" onclick="returnToChat()">← 返回 AI 咨询室</button>`;
+    }
+    
+    storyCardHtml += `</div>`;
+    storyContainer.innerHTML = storyCardHtml;
+}
+
+// 辅助函数：返回聊天室
+function returnToChat() {
+    const chatBody = document.getElementById('chatBody');
+    const chatInputArea = document.querySelector('.chat-input-area');
+    const storyContainer = document.getElementById('storyCardContainer');
+    
+    // 1. 恢复聊天体和输入区
+    if (chatBody) chatBody.style.display = 'flex'; 
+    if (chatInputArea) chatInputArea.classList.remove('hidden'); 
+
+    // 2. 隐藏故事卡容器
+    if (storyContainer) storyContainer.style.display = 'none';
 }
