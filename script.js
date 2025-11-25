@@ -1,4 +1,4 @@
-// script.js - 最终修复版：使用用户提供的原始完整代码
+// script.js - 恢复至原始功能完好版本
 
 // ==========================================
 // 第一部分：左侧面板逻辑 (菜单与详情切换)
@@ -156,3 +156,111 @@ const qaDatabase = [
         keywords: ['刁钻', '听不懂', '不会'],
         answer: "面试听不懂教授问题怎么办？千万别慌！礼貌地说：'もう一度お願いできますか'（能请您再说一遍吗？）。教授不会介意，反而觉得你认真。如果是被问倒了，<strong>承认不足，并给出思路</strong>，这叫靠谱。"
     },
+    
+    // 保持完整性保留的其余问答
+    {
+        keywords: ['大龄', '年龄', '工作'],
+        answer: "不用担心年龄问题，日本教授很欢迎有社会经验的学生。您的优势在于“问题意识”。把工作经验转化为研究课题，比应届生的空想更有说服力，这是你的独特竞争力！"
+    },
+    {
+        keywords: ['线上', '国内', '海外'],
+        answer: "完全可以！所有辅导都是通过线上（Zoom/LINE）进行，我们可以灵活安排时差。无论您在海外还是国内，文书修改和模拟面试都能保证同步高质量完成。"
+    },
+    {
+        keywords: ['区别', '私塾', '大班'],
+        answer: "我和普通私塾的区别在于模式。我提供个人<strong>精细化一对一辅导</strong>，区别于大机构的流水线作业。我的核心是攻克最难的“研究计划构建”和“教授心理博弈”，我们不辅导具体的数理化知识哦。"
+    },
+    {
+        keywords: ['ai', '代写'],
+        answer: "我强烈不建议使用AI代写。AI没有你的灵魂和经历，代写在面试时会让你一问三不知。我会帮你重构逻辑框架，但核心思想必须是你自己的。"
+    },
+    {
+        keywords: ['区别', '志望理由'],
+        answer: "志望理由书和研究计划书的区别在哪里呢？志望理由书讲<strong>“为什么选这个学校/教授”</strong>（偏动机），研究计划书讲<strong>“你打算做什么研究”</strong>（偏执行）。很多人混淆，这是致命问题。"
+    },
+    {
+        keywords: ['联系', '时间', '套磁'],
+        answer: "套磁时间很关键。出愿前<strong>6个月到3个月</strong>是黄金期。太早教授记不住，太晚名额可能已定。如果时间很紧，必须准备好材料强行套磁。"
+    },
+    {
+        keywords: ['不回', '没回复', '无视'],
+        answer: "教授不回邮件是常态，心态要稳！原因多是没看到或太忙。对策：一周后改标题<strong>重发一次</strong>。如果还没回，果断换教授，别浪费时间。"
+    },
+    {
+        keywords: ['再考虑', '模棱两可'],
+        answer: "教授说“再考虑”是拒绝吗？不一定！这代表你有潜力但他有顾虑。回复时要展现“死磕”精神，询问具体顾虑点并表示愿意改进，积极的执行力能逆转局面！"
+    },
+    {
+        keywords: ['自我介绍', '稿子'],
+        answer: "自我介绍不是背简历！重点讲清三个‘为什么’：<strong>为什么选这个专业？为什么选日本？为什么选这个教授？</strong>这三者逻辑贯通，最能打动人。"
+    },
+    {
+        keywords: ['eju', '留考', '分数'],
+        answer: "EJU成绩在本科申请是敲门砖，研究生申请是重要参考。高分当然有优势，但最终决定权仍在研究计划和面试。"
+    },
+    {
+        keywords: ['语言学校', '私塾'],
+        answer: "语言学校解决签证，私塾强化升学。最划算的方式是：通过我推荐进私塾/语校，可免我的辅导费，实现<strong>效率与费用的双赢</strong>。加微信 <strong>qiuwu999</strong> 聊聊具体方案！"
+    }
+];
+
+// ==========================================
+// 第四部分：聊天核心逻辑
+// ==========================================
+
+// 处理用户输入
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function sendMessage() {
+    const inputField = document.getElementById('userInput');
+    const message = inputField.value.trim();
+    
+    if (message === "") return;
+
+    // 1. 显示用户消息
+    appendMessage(message, 'user');
+    inputField.value = '';
+
+    // 2. 模拟 AI 思考延迟
+    setTimeout(() => {
+        const reply = findAnswer(message);
+        appendMessage(reply, 'ai');
+    }, 600); // 0.6秒延迟，模拟思考
+}
+
+function appendMessage(text, sender) {
+    const chatBody = document.getElementById('chatBody');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}-message`;
+    
+    // AI 回复支持 HTML 标签（用于换行和加粗），用户消息纯文本
+    const bubbleContent = sender === 'ai' ? text : text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    
+    msgDiv.innerHTML = `<div class="bubble">${bubbleContent}</div>`;
+    chatBody.appendChild(msgDiv);
+    
+    // 滚动到底部
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// 关键词匹配算法
+function findAnswer(userText) {
+    // 默认回复 - 更具情商的引导
+    let bestReply = "嗯，这是一个很好的问题！我是 AI 助理，关于这个细节，建议您直接点击左侧菜单查看我的<strong>辅导模式</strong>和<strong>核心优势</strong>，或者直接加微信 <strong>qiuwu999</strong> 详细评估。我们保证所有问题都会得到专业解答！";
+
+    // 遍历数据库匹配关键词
+    const normalizedText = userText.toLowerCase();
+    for (const item of qaDatabase) {
+        // 检查是否包含任意一个关键词
+        const match = item.keywords.some(keyword => normalizedText.includes(keyword));
+        if (match) {
+            bestReply = item.answer;
+            break;  
+        }
+    }
+    return bestReply;
+}
