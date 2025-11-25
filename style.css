@@ -1,10 +1,36 @@
-/* style.css - 左右分栏 AI 咨询室风格 (含故事卡样式) */
+/* style.css - 左右分栏 AI 咨询室风格 (含滚动条美化和故事卡样式) */
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+
+/* --- 新增：滚动条美化 (只对 Webkit 浏览器生效) --- */
+
+/* 聊天室和详情页的整体滚动条宽度 */
+.chat-body::-webkit-scrollbar, .content-detail::-webkit-scrollbar, #storyCardContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* 滚动条轨道背景 */
+.chat-body::-webkit-scrollbar-track, .content-detail::-webkit-scrollbar-track, #storyCardContainer::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 浅灰色背景 */
+    border-radius: 10px;
+}
+
+/* 滚动条滑块样式 */
+.chat-body::-webkit-scrollbar-thumb, .content-detail::-webkit-scrollbar-thumb, #storyCardContainer::-webkit-scrollbar-thumb {
+    background: #a29bfe; /* 您的主题色，或稍深一点 */
+    border-radius: 10px;
+}
+
+/* 鼠标悬停时滑块颜色变化 */
+.chat-body::-webkit-scrollbar-thumb:hover, .content-detail::-webkit-scrollbar-thumb:hover, #storyCardContainer::-webkit-scrollbar-thumb:hover {
+    background: #6c5ce7;
+}
+
+/* --- 基础布局和主题样式 --- */
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -300,6 +326,8 @@ body {
     font-size: 14px;
     line-height: 1.5;
     position: relative;
+    /* 确保 AI 消息内容有最小高度，避免打字机效果开始时跳动 */
+    min-height: 20px; 
 }
 
 .ai-message .bubble {
@@ -315,6 +343,24 @@ body {
     border-top-right-radius: 0;
     box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
 }
+
+/* --- 新增：打字机效果动画 CSS --- */
+/* 这个类会在 JS 中添加到 AI 消息的文本容器中 */
+.typing-cursor {
+    display: inline-block;
+    width: 2px; /* 光标宽度 */
+    height: 1em; /* 光标高度与字体大小对齐 */
+    background-color: #333;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { visibility: visible; }
+    50% { visibility: hidden; }
+}
+/* --- 结束打字机效果动画 CSS --- */
+
 
 .chat-input-area {
     background: white;
@@ -352,7 +398,7 @@ body {
     background: #5649c0;
 }
 
-/* --- 新增：AI 升学破局测试 (故事卡) 样式 --- */
+/* --- AI 升学破局测试 (故事卡) 样式 --- */
 #storyCardContainer {
     flex: 1;
     overflow-y: auto;
