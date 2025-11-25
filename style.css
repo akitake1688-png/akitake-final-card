@@ -1,5 +1,6 @@
-/* style.css - 左右分栏 AI 咨询室风格 (最终修复版) */
+/* style.css - 左右分栏 AI 咨询室风格 (优化精致版) */
 
+/* --- 基础设置 --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,33 +8,56 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    /* 背景色：紫色渐变 */
-    background: linear-gradient(135deg, #7c73e6 0%, #a29bfe 100%);
-    height: 100vh;
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 更改字体为更现代的 Inter 或默认无衬线 */
+    /* 背景色：柔和的紫色渐变 */
+    background: linear-gradient(135deg, #8a7aff 0%, #a29bfe 100%);
+    min-height: 100vh; /* 使用 min-height 以确保内容足够时也能撑开 */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    padding: 20px;
+    overflow: auto; /* 允许 body 滚动，但 .main-container 固定 */
 }
 
 .main-container {
     width: 95%;
-    max-width: 1200px;
+    max-width: 1300px; /* 略微加大最大宽度 */
     height: 90vh;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
-    border-radius: 20px;
+    min-height: 600px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px); /* 增强磨砂玻璃效果 */
+    border-radius: 24px; /* 增加圆角 */
     display: flex;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 25px 55px rgba(0,0,0,0.3); /* 增强阴影 */
+    border: 1px solid rgba(255,255,255,0.3);
 }
+
+/* --- 滚动条美化 (Webkit) --- */
+/* 适用于 .chat-body 和 .content-detail */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
 
 /* --- 左侧面板 --- */
 .left-panel {
     width: 40%;
-    background: rgba(255, 255, 255, 0.1);
+    min-width: 350px; /* 增加最小宽度，防止太窄 */
+    background: rgba(255, 255, 255, 0.15); /* 略微增加透明度 */
     padding: 40px;
     color: white;
     display: flex;
@@ -41,8 +65,8 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s ease;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* 更平滑的过渡 */
 }
 
 /* 封面状态 */
@@ -52,48 +76,63 @@ body {
 }
 
 .avatar-ring {
-    width: 150px;
-    height: 150px;
+    width: 160px; /* 略微增大头像 */
+    height: 160px;
     border-radius: 50%;
-    border: 4px solid rgba(255,255,255,0.8);
-    margin: 0 auto 20px;
-    overflow: hidden; /* 裁剪圆形的关键 */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border: 5px solid rgba(255,255,255,0.9);
+    margin: 0 auto 25px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    /* 呼吸光环动画 */
+    animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 0 0 rgba(255,255,255,0.4);
+    }
+    to {
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 0 10px rgba(255,255,255,0);
+    }
 }
 
 .avatar {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 .profile-cover h1 {
-    font-size: 28px;
+    font-size: 32px;
     margin-bottom: 15px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .subtitle {
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.8;
-    opacity: 0.9;
-    margin-bottom: 40px;
+    opacity: 0.95;
+    margin-bottom: 50px;
 }
 
 .btn-expand, .btn-back-home, .btn-back-menu {
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.3);
+    border: none; /* 移除冗余的边框 */
     color: white;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 16px;
+    padding: 14px 35px;
+    border-radius: 35px;
+    font-size: 17px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.btn-expand:hover {
+.btn-expand:hover, .btn-back-home:hover, .btn-back-menu:hover {
     background: white;
     color: #6c5ce7;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
 /* 菜单列表状态 */
@@ -103,40 +142,45 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0 20px; /* 增加内边距 */
 }
 
 .menu-list h2 {
-    margin-bottom: 30px;
-    font-size: 24px;
+    margin-bottom: 40px;
+    font-size: 28px;
     text-align: center;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .menu-item {
-    background: white;
+    background: rgba(255, 255, 255, 0.95); /* 更接近白色 */
     color: #333;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 15px;
+    padding: 22px;
+    border-radius: 15px;
+    margin-bottom: 18px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     position: relative;
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .menu-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    background: white;
 }
 
 .menu-item h3 {
-    color: #6c5ce7;
+    color: #7a6fff; /* 优化紫色 */
     margin-bottom: 8px;
-    font-size: 18px;
+    font-size: 19px;
+    font-weight: 700;
 }
 
 .menu-item p {
-    font-size: 13px;
+    font-size: 14px;
     color: #666;
 }
 
@@ -145,8 +189,14 @@ body {
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: #ccc;
-    font-weight: bold;
+    color: #b0c4de;
+    font-size: 1.2em;
+    font-weight: normal;
+    transition: color 0.3s;
+}
+
+.menu-item:hover .arrow {
+    color: #7a6fff;
 }
 
 /* 详情内容状态 */
@@ -154,59 +204,65 @@ body {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    padding-right: 5px;
+    padding-right: 5px; /* 留出滚动条空间 */
 }
 
 .btn-back-home, .btn-back-menu {
-    margin-bottom: 20px;
-    font-size: 14px;
-    padding: 8px 20px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    padding: 10px 25px;
 }
 
 .detail-card {
     background: white;
     color: #333;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    line-height: 1.7;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .detail-card h3 {
-    color: #6c5ce7;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+    color: #7a6fff;
+    border-bottom: 1px solid #e0e0e0; /* 略微减轻分割线 */
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    font-size: 20px;
 }
 
 .detail-card ul {
-    padding-left: 20px;
+    padding-left: 25px;
+    list-style-type: '👉 '; /* 趣味列表符号 */
 }
 
 .detail-card li {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .detail-card strong {
-    color: #2d3436;
+    color: #4a4a4a;
+    font-weight: 700;
 }
 
 /* 链接按钮样式 */
 .link-btn {
     display: block;
     background: #f1f2f6;
-    color: #6c5ce7;
+    color: #7a6fff;
     text-decoration: none;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 12px;
     font-weight: bold;
     text-align: center;
-    transition: background 0.3s;
+    transition: all 0.3s;
 }
 
 .link-btn:hover {
     background: #dfe6e9;
+    color: #5649c0;
+    transform: translateX(3px);
 }
 
 /* 隐藏类 */
@@ -218,151 +274,32 @@ body {
 /* --- 右侧面板 (聊天室) --- */
 .right-panel {
     width: 60%;
-    background: #f7f7f7;
+    background: #ffffff; /* 聊天背景使用纯白或极浅灰色 */
     display: flex;
     flex-direction: column;
 }
 
 .chat-header {
-    background: #6c5ce7;
-    padding: 15px 20px;
+    background: #7a6fff; /* 优化紫色 */
+    padding: 18px 25px;
     display: flex;
     align-items: center;
     color: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .header-avatar img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    border: 2px solid white;
-    margin-right: 12px;
-    object-fit: cover; 
-}
-
-.header-info {
-    display: flex;
-    flex-direction: column;
+    border: 3px solid white;
+    margin-right: 15px;
+    object-fit: cover;
 }
 
 .header-info .name {
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 17px;
 }
 
-.header-info .status {
-    font-size: 12px;
-    opacity: 0.8;
-}
-
-.chat-body {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.message {
-    display: flex;
-    max-width: 80%;
-}
-
-.ai-message {
-    align-self: flex-start;
-}
-
-.user-message {
-    align-self: flex-end;
-}
-
-.bubble {
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.5;
-    position: relative;
-}
-
-.ai-message .bubble {
-    background: white;
-    color: #333;
-    border-top-left-radius: 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.user-message .bubble {
-    background: #6c5ce7;
-    color: white;
-    border-top-right-radius: 0;
-    box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
-}
-
-.chat-input-area {
-    background: white;
-    padding: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    gap: 10px;
-}
-
-#userInput {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    outline: none;
-    font-size: 14px;
-}
-
-#userInput:focus {
-    border-color: #6c5ce7;
-}
-
-.chat-input-area button {
-    background: #6c5ce7;
-    color: white;
-    border: none;
-    padding: 0 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.chat-input-area button:hover {
-    background: #5649c0;
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        height: 100vh;
-        width: 100%;
-        border-radius: 0;
-    }
-    .left-panel, .right-panel {
-        width: 100%;
-    }
-    .left-panel {
-        height: 40%;
-        padding: 20px;
-    }
-    .right-panel {
-        height: 60%;
-    }
-    .avatar-ring {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 10px;
-    }
-    .profile-cover h1 {
-        font-size: 20px;
-    }
-    .subtitle {
-        display: none;
-    }
-}
+.header-info .
