@@ -1,19 +1,18 @@
-// script.js - 最终完整逻辑修复与健壮性增强版 (2025年11月)
+// script.js - 最终定稿版 (包含心理学内容优化与极致稳定性)
 
 // ==========================================
-// 第一部分：数据与内容配置
+// 第一部分：深度内容配置 (心理学/文化适应向)
 // ==========================================
 
-// 左侧菜单详情内容配置
+// 左侧菜单详情内容
 const contentData = {
     'strength': `
         <div class="detail-card">
             <h3>核心优势：以“破绽”为支点</h3>
             <ul>
-                <li><strong>跨学科降维打击：</strong> 本科理工思维 x 硕士东大农学生命科学（文理交叉），擅长构建其他人无法复制的多维视角。</li>
-                <li><strong>化“弱”为“强”：：</strong> 独创“破绽利用法”。我不掩盖你的劣势，而是将你经历中的“矛盾点”转化为最吸引教授的“研究动机”。</li>
-                <li><strong>东大底层逻辑：：</strong> 深入破解日本顶级学府的“潜规则”，提供符合“东大基准”的逻辑重构。</li>
-                <li><strong>非语言博弈：</strong> 独创“坐姿/眼神/递交材料”全真模拟，在面试的前30秒赢下心理战。</li>
+                <li><strong>跨学科降维打击：</strong> 本科理工思维 x 硕士东大农学生命科学。我擅长用<strong>“理科逻辑”</strong>重构<strong>“文科感性”</strong>，这种反差感是东大教授最喜欢的。</li>
+                <li><strong>化“弱”为“强”：</strong> 独创“破绽利用法”。利用心理学中的<strong>“必须性逻辑”</strong>，将你简历中的劣势（如跨专业、双非）包装成教授无法拒绝的“独特研究动机”。</li>
+                <li><strong>东大底层逻辑：</strong> 只有东大博士才懂的“潜规则”。我教你如何识别教授邮件中的“建前”（客套话）与“本音”（真心话）。</li>
             </ul>
         </div>
     `,
@@ -21,19 +20,16 @@ const contentData = {
         <div class="detail-card">
             <h3>辅导模式与价值承诺</h3>
             <ul>
-                <li><strong>1:1 师徒制：：</strong> 拒绝大班流水线。我只做精细化个人辅导，确保我的核心认知 100% 传递给你。</li>
-                <li><strong>【强推】免佣直通车：：</strong> 通过我推荐进入合作私塾/语言学校，<span style="color:#d9534f; font-weight:bold;">辅导费由机构承担</span>。
-                    <br><span style="font-size:0.9em; color:#666;">*这不仅是为您省钱，更是为了剔除中间商，建立最直接的“师徒”利益共同体。</span>
-                </li>
-                <li><strong>结果导向：</strong> 若第一年未合格，第二年免费继续辅导，直到你上岸。</li>
-                <li><strong>无限时服务：</strong> 不按课时算钱，只为最终合格率负责。</li>
+                <li><strong>1:1 师徒制：</strong> 拒绝大班流水线。留学申请本质上是建立<strong>“师徒契约”</strong>，我只做精细化辅导。</li>
+                <li><strong>【强推】免佣直通车：</strong> 利用我在业界的<strong>“信用背书”</strong>，直接送你进合作机构，<span style="color:#d9534f; font-weight:bold;">费用由机构承担</span>。这是最高效的三方共赢。</li>
+                <li><strong>结果导向：</strong> 我们的目标不是“递交材料”，而是“心理博弈的胜利”。</li>
             </ul>
         </div>
     `,
     'cases': `
         <div class="detail-card">
             <h3>成功案例 / 更多思考</h3>
-            <p style="margin-bottom: 15px;">不要只看结果，要看逻辑。深度阅读我的专栏，了解如何用“认知差”跨越学历壁垒：</p>
+            <p style="margin-bottom: 15px;">申请是一场认知战。建议深度阅读我的专栏，了解如何用“认知差”跨越学历壁垒：</p>
             
             <a href="https://zhuanlan.zhihu.com/p/691198840?share_code=sxm903a247yL&utm_psn=1976199060072453115" target="_blank" class="link-btn">
                 知乎：核心优势与背景解析 →
@@ -46,77 +42,90 @@ const contentData = {
     `
 };
 
-// 故事卡数据
+// 故事卡数据 (心理学/文化适应测试)
 const storyCardData = {
+    // 步骤 1: 核心痛点定位
     'step1': {
-        title: 'AI 升学破局测试：快速锁定你的核心需求',
-        question: '您目前最缺乏的是什么？',
+        title: 'AI 升学破局测试：你是哪种“文化不适症”？',
+        question: '在准备日本留学时，最让您感到“心里没底”的是什么？',
         options: [
-            { text: '最缺研究计划书：思路混乱，不知道如何切入东大教授的领域。', nextStep: 'result_rps' },
-            { text: '最缺面试技巧：害怕被刁难，不知如何利用“弱点”转为优势。', nextStep: 'result_interview' },
-            { text: '最缺渠道资源：想走机构免佣直通车，追求最高性价比的通道。', nextStep: 'result_channel' }
+            { text: '逻辑迷茫型：完全不懂教授想要什么，计划书像在写作文。', nextStep: 'result_rps' },
+            { text: '文化恐惧型：害怕面试冷场，不懂日本人的“潜台词”。', nextStep: 'result_interview' },
+            { text: '信息焦虑型：想省钱省力，但怕被黑中介坑，找不到靠谱渠道。', nextStep: 'result_channel' }
         ]
     },
+    
+    // 结果 1: 针对研究计划书
     'result_rps': {
-        title: '💡 方案建议：计划书的“破绽利用法”',
+        title: '💡 诊断：您需要的是“东大式逻辑重构”',
         result: `
-            <p>您的问题在于<strong>研究逻辑的重构</strong>，而不是写作本身。秋武老师的优势正是：利用您经历中的**“矛盾点”**，转化为独一无二的**研究动机**，让教授对您的好奇心大于对您背景的挑剔。</p>
-            <p><strong>【下一步行动】:</strong></p>
-            <ul>
-                <li>请即刻联系微信 <strong>qiuwu999</strong>，发送您的<strong>背景简历</strong>。</li>
-                <li>我们将为你安排一次**“破局初筛”**，评估您的经历中最具转折点的部分。</li>
-            </ul>
+            <p>您感到的迷茫，源于中日学术思维的差异。中国教育偏向“宏大叙事”，而日本研究看重<strong>“具体的逻辑闭环”</strong>。</p>
+            <p><strong>【破局心理学】:</strong></p>
+            <p>利用<strong>“单一归因法”</strong>。不要试图解决所有问题，我将教您如何只抓住一个极其细小的“破绽”，用手术刀般的精准度去解剖它。这种<strong>“钻研感”</strong>最能打动日本教授。</p>
+            <p><strong>【下一步】:</strong> 添加微信 <strong>qiuwu999</strong>，备注“逻辑诊断”，我帮您看一眼题目的可行性。</p>
         `,
         isResult: true
     },
+    
+    // 结果 2: 针对面试与文化
     'result_interview': {
-        title: '💡 方案建议：非语言博弈与心态建设',
+        title: '💡 诊断：您需要破解“空气文化”',
         result: `
-            <p>面试是您展示个人<strong>认知深度</strong>的最终战场。秋武老师的辅导独创了**“前30秒非语言博弈”**训练，从坐姿、眼神到递交材料，帮您在心理上压倒对手。</p>
-            <p><strong>【下一步行动】:</strong></p>
-            <ul>
-                <li>请即刻联系微信 <strong>qiuwu999</strong>，预约一次**“全真模拟面试”**。</li>
-                <li>在正式辅导前，您将免费获得一份**《东大教授面试心理学速查表》**。</li>
-            </ul>
+            <p>这种恐惧是正常的。日本面试本质上是一场<strong>“社会化测试”</strong>。教授在测试您是否能读懂<strong>“空气”（Kuuki）</strong>，即非语言的沟通。</p>
+            <p><strong>【破局心理学】:</strong></p>
+            <p>我们将进行<strong>“防御性悲观”</strong>训练。我会教您如何听懂教授问题的“弦外之音”（比如他问你“在这个领域有无其他兴趣”，其实可能是在暗示你的题目太窄）。掌握了这些暗号，面试就是一场愉快的聊天。</p>
+            <p><strong>【下一步】:</strong> 添加微信 <strong>qiuwu999</strong>，领取一份《日本教授面试潜台词对照表》。</p>
         `,
         isResult: true
     },
+
+    // 结果 3: 针对渠道资源
     'result_channel': {
-        title: '💡 方案建议：最高性价比的免佣直通车',
+        title: '💡 诊断：您需要建立“信任契约”',
         result: `
-            <p>您追求<strong>高效率与高性价比</strong>。秋武老师的**【核心私塾免佣直通车】**是最佳选择。辅导费用由机构承担，您获得顶级辅导，无需多花一分钱。</p>
-            <p><strong>【下一步行动】:</strong></p>
-            <ul>
-                <li>请即刻联系微信 <strong>qiuwu999</strong>，告知您想申请**“免佣直通车”**。</li>
-                <li>我们将为您匹配最合适的合作机构和语言学校，**立即开启零成本辅导流程**。</li>
-            </ul>
+            <p>您的焦虑来自于<strong>“信息不对称”</strong>。在日本社会，<strong>“信用”（Shinyo）</strong>是最昂贵的货币。</p>
+            <p><strong>【破局心理学】:</strong></p>
+            <p>走<strong>“权威背书”</strong>路线。不要自己在网上像无头苍蝇一样乱撞。利用我作为东大博士的信用背书，通过<strong>【免佣直通车】</strong>直接进入靠谱机构。这不仅是省钱，更是为了进入一个正确的“圈子”（Uchi）。</p>
+            <p><strong>【下一步】:</strong> 添加微信 <strong>qiuwu999</strong>，直接发送“直通车”，立即开启安全通道。</p>
         `,
         isResult: true
     }
 };
 
+// QA 数据库 (深度问答)
 const qaDatabase = [
     {
-        keywords: ['费用', '钱', '收费', '价格', '贵吗'],
-        answer: "关于费用，我的原则是<strong>【透明】与【价值对等】</strong>。**非常感谢您提出如此直接的问题。**<br><br>我们不进行低效的价格博弈。您所支付的，是获取我作为东大博士的<strong>【核心认知】与【通关经验】</strong>。<br>目前仅开放两种通道：<br>1. 机构通道：适合需要全套基础流程服务的同学。<br>2. <strong>【私塾核心】免佣直通车</strong>：这是我最推荐的模式。剔除中间商溢价，您所有的预算都将转化为我的**【有效辅导时长】**。<br><br>如果您已准备好为结果负责，请联系微信 <strong>qiuwu999</strong> 获取详细方案。"
+        keywords: ['费用', '钱', '收费', '价格', '贵吗', '多少钱'],
+        answer: "这是一个非常务实的问题。但在日本文化语境下，我们不仅谈**“价格”**，更谈**“价值交换”**。<br><br>我的服务模式基于日本社会的**“信用背书”**逻辑：<br>1. **【免佣直通车】（推荐）：** 利用我在业界的信用积累，直接对接合作私塾，费用由机构承担。这是最高效的“三方共赢”模式。<br>2. **【深度定制】：** 针对需要打破“学历壁垒”的同学，我提供的是不可复制的**认知重构**服务。<br><br>如果您想知道具体数字，请直接联系微信 <strong>qiuwu999</strong>。我们不进行低效的价格博弈，只做价值对等的契约。"
     },
     {
-        keywords: ['优势', '特点', '区别', '为什么选你', '实力', '厉害'],
-        answer: "市面上的辅导在帮您“补短板”，而我们的方法论是在帮您<strong>“利用破绽”</strong>。**我们更强调系统和方法论的构建。**<br><br>我的核心优势在于<strong>【理工科逻辑 x 农学生命力】</strong>的跨学科视角。在东大级别的教授眼中，完美的简历往往平庸。我擅长捕捉您经历中看似是弱点（破绽）的部分，通过独创的逻辑重构，将其转化为最具个人色彩的**【研究动机】**。<br>我无法辅导通用的数理化知识，但我能教您如何用教授无法拒绝的逻辑，赢下这场心理博弈。"
+        keywords: ['优势', '特点', '区别', '为什么选你', '靠谱吗'],
+        answer: "市面上的中介在帮您“填表格”，而我在教您**“读空气”（空気を読む）**。<br><br>日本教授录取学生，往往看的不是谁最强，而是谁最**“合适”（相性，Aishou）**。我的核心优势在于：<br>1. **【文化解码】：** 我能帮您识别教授邮件中的“建前”（客套话）与“本音”（真心话）。<br>2. **【破绽利用】：** 利用心理学中的**“必须性逻辑”**，将您的双非背景或跨专业劣势，包装成教授眼中“独特的跨学科视角”。<br>这不仅是申请，更是一场心理战。"
     },
     {
-        keywords: ['内诺', '内定', '潜规则'],
-        answer: "内诺（内定）是日本独特的制度文化，**它体现了师徒关系的提前确立。**内诺后，教授与学生之间会有‘契约感’。一旦您收到内诺，请务必保持**谦虚与敬语**，并立刻向教授递交**书面或邮件的感谢与确认函**。这是日本文化的规矩，也是我们确保顺利入学的关键步骤。"
+        keywords: ['套磁', '联系教授', '邮件', '不回信'],
+        answer: "套磁的本质，不是“推销自己”，而是**“确认归属感”**。日本教授极度看重**“礼节”（Reigi）**与**“边界感”**。<br><br>如果您发了邮件没回音，通常不是因为您不够优秀，而是触犯了文化禁忌：<br>1. **缺乏“谦逊的自信”：** 过于自夸会引发反感，过于卑微又会被无视。<br>2. **没踩准“时间窗口”：** 日本学术界有特定的繁忙期。<br><br>我有一套经过验证的**《东大式·结构化套磁信模板》**，专门通过心理暗示激发教授的回复欲望。需要的话，请在左侧进行测试或联系微信。"
+    },
+    {
+        keywords: ['计划书', '研究计划', '题目', '怎么写'],
+        answer: "研究计划书（RP）在教授眼中，其实是一份**“逻辑投名状”**。<br><br>中国学生常犯的错误是“大而全”，而日本教授偏爱**“小而精”且“逻辑闭环”**的东西。这涉及到日本人的**“职人精神”**心理。<br>我们不应该去碰那些看起来很宏大的题目，而要学会**“以小见大”**。我会教您如何用理工科的严密逻辑，去拆解文科的感性话题，这种**“反差感”**正是东大教授最喜欢的。"
+    },
+    {
+        keywords: ['面试', '口语', '紧张', '刁难'],
+        answer: "日本面试的底层逻辑是**“减分制”**与**“压力测试”**。教授不仅在听内容，更在观察您的**“非语言信号”**。<br><br>甚至在您进门敲门的那三秒，胜负可能已经定了。这涉及到日本文化中的**“身得”（Minashinami）**。<br>我首创的**【前30秒非语言博弈训练】**，通过调整您的眼神落点、坐姿重心和声音频率，让您在气场上表现出一种“虽然我是学生，但我已经准备好成为研究者”的稳重感。"
+    },
+    {
+        keywords: ['双非', '出身', '学历', '二本', '三本'],
+        answer: "在日本，**“出身校”**确实是一个门槛，但绝不是死局。所谓的“名校情结”，本质上是教授为了**“降低筛选风险”**的心理防御机制。<br><br>要打破这个防御，我们需要利用**“认知偏差”**：<br>不要试图掩盖您的出身，而是通过一份超高水准的**研究计划书**，制造巨大的**“期待违和感”**（Positive Surprise）。<br>当您的学术逻辑远超您的学历背景时，这种冲击力比名校生的平庸表现更具吸引力。"
     }
 ];
 
-
 // ==========================================
-// 第二部分：核心功能 - 状态切换
+// 第二部分：核心交互逻辑 (确保稳定性)
 // ==========================================
 
 /**
- * 确保右侧面板显示聊天室，隐藏故事卡
+ * 核心：确保右侧面板显示聊天室，隐藏其他内容
  */
 function returnToChat() {
     const chatBody = document.getElementById('chatBody');
@@ -127,20 +136,18 @@ function returnToChat() {
     if (chatBody) chatBody.style.display = 'block';
     if (chatInputArea) chatInputArea.style.display = 'flex';
     if (storyCardContainer) storyCardContainer.style.display = 'none';
-    if (loadingIndicator) loadingIndicator.classList.add('hidden'); // 确保加载器隐藏
+    if (loadingIndicator) loadingIndicator.classList.add('hidden');
 }
 
-
 /**
- * 切换左侧面板到菜单或封面状态
- * @param {boolean} showMenu - true: 显示菜单列表; false: 显示主页封面
+ * 切换左侧面板状态 (菜单 vs 封面)
  */
 function toggleMenu(showMenu) {
     const profileCover = document.getElementById('profileCover');
     const menuList = document.getElementById('menuList');
     const contentDetail = document.getElementById('contentDetail');
     
-    // 确保从任何左侧状态切换时，右侧是聊天室状态
+    // 每次切换左侧时，重置右侧为聊天模式，提升体验
     returnToChat(); 
 
     if (showMenu) {
@@ -148,7 +155,7 @@ function toggleMenu(showMenu) {
         if (menuList) menuList.classList.remove('hidden');
         if (contentDetail) contentDetail.classList.add('hidden'); 
     } else {
-        // 返回主页（封面）
+        // 返回封面
         if (profileCover) profileCover.classList.remove('hidden');
         if (menuList) menuList.classList.add('hidden');
         if (contentDetail) contentDetail.classList.add('hidden');
@@ -156,13 +163,12 @@ function toggleMenu(showMenu) {
 }
 
 /**
- * 从详情页返回菜单列表
+ * 左侧：从详情页返回菜单
  */
 function backToMenu() {
     const contentDetail = document.getElementById('contentDetail');
     const menuList = document.getElementById('menuList');
     
-    // 确保右侧是聊天室状态
     returnToChat(); 
 
     if (contentDetail) contentDetail.classList.add('hidden');
@@ -170,16 +176,14 @@ function backToMenu() {
 }
 
 /**
- * 显示左侧的详细内容
- * @param {string} type - 内容的类型键
+ * 左侧：显示具体内容详情
  */
 function showContent(type) {
     const menuList = document.getElementById('menuList');
     const contentDetail = document.getElementById('contentDetail');
     const dynamicContent = document.getElementById('dynamicContent');
 
-    // 确保右侧是聊天室状态
-    returnToChat();
+    returnToChat(); // 确保右侧是聊天
 
     if (dynamicContent) dynamicContent.innerHTML = contentData[type] || '未找到内容。';
 
@@ -187,15 +191,10 @@ function showContent(type) {
     if (contentDetail) contentDetail.classList.remove('hidden');
 }
 
-
 // ==========================================
-// 第三部分：故事卡模式（AI 升学破局测试）逻辑
+// 第三部分：故事卡模式逻辑
 // ==========================================
 
-/**
- * 渲染故事卡 UI
- * @param {object} step - 故事卡数据对象
- */
 function renderStoryCard(step) {
     const storyCardContainer = document.getElementById('storyCardContainer');
     if (!storyCardContainer) return;
@@ -203,11 +202,11 @@ function renderStoryCard(step) {
     let html = `<div class="story-card-inner"><h3>${step.title}</h3>`;
 
     if (step.isResult) {
-        // 结果卡
+        // 渲染结果
         html += `<div class="story-result">${step.result}</div>`;
         html += `<button class="btn-story-reset" onclick="resetAllViews()">完成测试，返回聊天</button>`;
     } else {
-        // 问题卡
+        // 渲染问题选项
         html += `<p class="story-question">${step.question}</p><div class="story-options">`;
         step.options.forEach(option => {
             html += `<button class="btn-story-option" onclick="showStoryCard('${option.nextStep}')">${option.text}</button>`;
@@ -219,21 +218,11 @@ function renderStoryCard(step) {
     storyCardContainer.innerHTML = html;
 }
 
-/**
- * 重置所有视图到初始聊天状态
- */
 function resetAllViews() {
-    // 左侧回到主页封面
-    toggleMenu(false);
-    // 右侧回到聊天模式
-    returnToChat();
+    toggleMenu(false); // 左侧回封面
+    returnToChat();    // 右侧回聊天
 }
 
-
-/**
- * 显示故事卡模式
- * @param {string} stepKey - 当前故事卡的步骤键
- */
 function showStoryCard(stepKey) {
     const menuList = document.getElementById('menuList');
     const contentDetail = document.getElementById('contentDetail');
@@ -242,12 +231,12 @@ function showStoryCard(stepKey) {
     const storyCardContainer = document.getElementById('storyCardContainer');
     const chatInputArea = document.querySelector('.chat-input-area');
 
-    // 1. 切换左侧面板到菜单
+    // 1. 左侧强制显示菜单状态
     if (profileCover) profileCover.classList.add('hidden');
     if (contentDetail) contentDetail.classList.add('hidden'); 
     if (menuList) menuList.classList.remove('hidden');
 
-    // 2. 切换右侧面板到故事卡
+    // 2. 右侧切换到故事卡模式
     if (chatBody) chatBody.style.display = 'none';
     if (chatInputArea) chatInputArea.style.display = 'none';
     if (storyCardContainer) storyCardContainer.style.display = 'block';
@@ -256,21 +245,15 @@ function showStoryCard(stepKey) {
     if (step) {
         renderStoryCard(step);
     } else {
-        alert("测试步骤出错或结束！");
+        console.error("Story step not found:", stepKey);
         resetAllViews();
     }
 }
 
-
 // ==========================================
-// 第四部分：聊天功能（QA 模式与 API 预留）
+// 第四部分：聊天与 AI 逻辑
 // ==========================================
 
-/**
- * 插入消息到聊天体
- * @param {string} message - 消息内容 (支持 HTML)
- * @param {string} sender - 'user' 或 'ai'
- */
 function appendMessage(message, sender) {
     const chatBody = document.getElementById('chatBody');
     const messageDiv = document.createElement('div');
@@ -283,19 +266,12 @@ function appendMessage(message, sender) {
     messageDiv.appendChild(bubbleDiv);
     chatBody.appendChild(messageDiv);
     
-    // 滚动到底部
+    // 自动滚动到底部
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-/**
- * 搜索关键词并返回最匹配的答案
- * @param {string} query - 用户输入
- * @returns {string | null} 匹配的答案或 null
- */
 function getAnswerFromDB(query) {
     const lowerQuery = query.toLowerCase().trim();
-
-    // 精确匹配搜索
     for (const qa of qaDatabase) {
         for (const keyword of qa.keywords) {
             if (lowerQuery.includes(keyword.toLowerCase())) {
@@ -306,73 +282,51 @@ function getAnswerFromDB(query) {
     return null;
 }
 
-/**
- * 【未来预留】调用 Gemini API 获取回复 (当前仅调用本地 DB)
- * @param {string} userQuery - 用户输入
- * @returns {Promise<string>} AI 的回复内容
- */
+// 模拟 API 调用（含延迟效果）
 async function callGeminiApi(userQuery) {
-    // 步骤 1: 检查本地 QA 数据库
+    // 1. 优先查本地库
     const dbAnswer = getAnswerFromDB(userQuery);
     if (dbAnswer) {
-        // 模拟 API 延迟
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // 模拟思考时间 600ms
+        await new Promise(resolve => setTimeout(resolve, 600));
         return dbAnswer;
     }
 
-    // 步骤 2: 【未来在这里接入真实的 Gemini API 调用】
-    // ... (此处省略实际 API 代码)
-    
-    // 步骤 3: 如果本地DB和API都找不到（或API未实现），返回默认回复
-    // 模拟 API 延迟
-    await new Promise(resolve => setTimeout(resolve, 800));
-    return `抱歉，您提出的 **${userQuery}** 关键词目前无法在我的知识库中找到精准匹配的答案。<br><br>如果您的问题涉及 **费用、优势、双非背景、套磁、计划书** 等核心问题，请尝试输入更明确的关键词。<br><br>您也可以点击左侧 **AI 升学破局测试** 获得个性化建议。`;
+    // 2. 兜底回复
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return `关于 **“${userQuery}”**，这是一个很细节的问题。<br><br>从日本教授的视角来看，这可能涉及到**“研究可行性”**或**“人际边界”**的问题。为了给出负责任的建议，我建议您直接联系微信 <strong>qiuwu999</strong>，我们进行一对一的背景诊断。`;
 }
 
-
-/**
- * 发送消息（用户点击发送按钮）
- */
 async function sendMessage() {
     const userInput = document.getElementById('userInput');
     const message = userInput.value.trim();
 
-    if (message === "") {
-        return; // 空消息不发送
-    }
+    if (message === "") return;
     
-    // 1. 显示用户消息
+    // 发送用户消息
     appendMessage(message, 'user');
-    
-    // 2. 清空输入框并锁定输入
     userInput.value = '';
-    userInput.disabled = true; // 锁定输入框，避免重复发送
+    userInput.disabled = true; // 锁定输入
 
+    // 显示加载动画
     const loadingIndicator = document.getElementById('loadingIndicator');
-    // 3. 显示加载器
     if (loadingIndicator) {
         loadingIndicator.classList.remove('hidden');
         document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
     }
 
-    // 4. 获取 AI 答案
+    // 获取回答
     const aiAnswer = await callGeminiApi(message);
 
-    // 5. 显示 AI 消息
+    // 显示 AI 回复
     appendMessage(aiAnswer, 'ai');
 
-    // 6. 隐藏加载器并解锁输入
-    if (loadingIndicator) {
-        loadingIndicator.classList.add('hidden');
-    }
+    // 隐藏加载动画并解锁
+    if (loadingIndicator) loadingIndicator.classList.add('hidden');
     userInput.disabled = false;
-    userInput.focus(); // 将焦点返回输入框
+    userInput.focus();
 }
 
-/**
- * 处理回车键发送
- * @param {Event} event 
- */
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
         sendMessage();
