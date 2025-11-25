@@ -45,6 +45,12 @@
                     <p>知乎专栏 / Bilibili 视频</p>
                     <span class="arrow">→</span>
                 </div>
+
+                <div class="menu-item new-feature" onclick="showStoryCard('step1')">
+                    <h3>🔥 AI 升学破局测试</h3>
+                    <p>30秒锁定你的核心需求与高性价比渠道</p>
+                    <span class="arrow">→</span>
+                </div>
             </div>
 
             <div class="content-detail hidden" id="contentDetail">
@@ -73,10 +79,12 @@
                         试试问我：
                         <br>“辅导费用高吗”
                         <br>“双非能申请东大吗”
-                        <br>“面试时被问倒了怎么办”
+                        <br>“面试时被问住了怎么办”
                     </div>
                 </div>
             </div>
+
+            <div id="storyCardContainer" style="display: none;"></div>
 
             <div class="chat-input-area">
                 <input type="text" id="userInput" placeholder="输入你的问题... (例如: 跨专业申请)" onkeypress="handleKeyPress(event)">
