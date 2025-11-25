@@ -1,9 +1,9 @@
-/* style.css - 完整样式表 (紫罗兰/心理学专业风) */
+/* style.css - 最终版 (紫罗兰主题 / 心理学光晕优化) */
 
 :root {
-    --primary-color: #6a5acd; /* 沉稳的紫罗兰，代表智慧与学术 */
-    --secondary-color: #4c4a8a; /* 深紫色，用于文字 */
-    --accent-color: #ff7f50; /* 珊瑚色，用于行动点 */
+    --primary-color: #6a5acd; /* 智慧紫 */
+    --secondary-color: #4c4a8a;
+    --accent-color: #ff7f50; 
     --background-color: #f7f7ff;
     --panel-bg: #e0e0ff;
     --text-dark: #333;
@@ -61,17 +61,32 @@ body {
     text-align: center;
 }
 
+/* 头像光晕设计 (核心修改) */
 .avatar-ring {
+    width: 130px;
+    height: 130px;
     border: 4px solid var(--primary-color);
     border-radius: 50%;
-    padding: 5px;
+    background-color: #fff; /* 空白时为纯白背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
-    background-color: #fff;
+    /* 心理学要素：紫色光晕呼吸灯，代表智慧与在线 */
+    box-shadow: 0 0 15px rgba(106, 90, 205, 0.5);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* 呼吸动画 */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(106, 90, 205, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(106, 90, 205, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(106, 90, 205, 0); }
 }
 
 .avatar {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     object-fit: cover;
 }
