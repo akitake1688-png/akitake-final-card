@@ -1,119 +1,93 @@
 /* =======================================================
-   数字卡功能与布局最终代码 (最安全版本)
+   最终代码：功能复位版 (确保 JS 逻辑生效)
    ======================================================= */
 
-/* --- 0. 最关键的功能类：确保 JS 切换状态正常 --- */
+/* --- 0. 核心功能类：最高优先级 --- */
+/* 强制隐藏，确保 JS 移除 .hidden 类时才能显示 */
 .hidden {
-    /* 必须使用 !important 确保它能覆盖所有其他样式规则 */
     display: none !important;
+    visibility: hidden !important; 
 }
 
-/* --- 1. 基础设置 --- */
+/* --- 1. 基础重置 (仅保留必要的) --- */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* 移除过渡效果，防止在调试功能时视觉延迟干扰判断 */
+    /* 移除所有过渡效果，确保功能切换是即时的 */
     transition: none !important; 
 }
 
 body {
-    font-family: 'Noto Sans SC', sans-serif;
-    background-color: #f0f2f5; 
-    line-height: 1.6;
+    font-family: sans-serif; /* 仅使用系统默认字体，不干扰 */
+    background-color: #ffffff; /* 纯白背景 */
+    line-height: 1.5;
     color: #333;
-    font-size: 16px;
     
-    /* 核心布局和溢出控制 */
+    /* 基础居中和溢出控制 */
     display: flex;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    padding: 30px 10px;
+    padding: 20px;
     overflow-x: hidden; 
+}
+
+/* --- 2. 核心布局：左右分栏容器 --- */
+.container, .main-container {
+    display: flex; /* 关键：启用 Flexbox */
     width: 100%;
-}
-
-/* --- 2. 核心布局：左右分栏容器 (.container) --- */
-.container {
-    display: flex; /* 关键：启用 Flexbox 实现左右分栏 */
-    width: 95%;
     max-width: 1200px; 
-    background-color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0; /* 移除圆角，减少潜在干扰 */
     overflow: hidden;
-    min-height: 600px; 
 }
 
-/* --- 3. 左侧栏样式 (.profile-card) --- */
-.profile-card {
-    width: 350px; /* 固定左侧栏宽度 */
-    min-width: 280px;
-    background-color: #4a69bd; 
-    color: white;
-    padding: 30px 20px;
-    display: flex;
-    flex-direction: column; 
+/* --- 3. 左侧栏样式 --- */
+.profile-card, .left-panel {
+    width: 350px; /* 固定左侧宽度 */
+    background-color: #f7f7f7; /* 极浅灰色 */
+    padding: 20px;
     flex-shrink: 0; 
-    overflow-y: auto; 
+    display: block; /* 确保自身显示，让内部元素去处理切换 */
 }
 
-/* --- 4. 右侧栏样式 (.main-content) --- */
-.main-content {
-    flex-grow: 1; /* 占据剩余所有空间 */
+/* --- 4. 右侧栏样式 --- */
+.main-content, .right-panel {
+    flex-grow: 1; 
     background-color: #ffffff; 
-    padding: 30px 35px;
-    overflow-y: auto; 
+    padding: 20px;
     min-width: 0; 
+    display: block; /* 确保自身显示 */
 }
 
-/* --- 5. 动态功能区块样式 (必须正确定义，不依赖头像) --- */
+/* --- 5. 动态功能区块样式 (仅保证显示逻辑) --- */
 
-/* 左侧内容容器，确保它们能被 JS 切换 */
+/* 确保这些区块本身是可用的，由 .hidden 类控制 */
 .profile-cover, .menu-list, .content-detail {
     width: 100%;
-    /* 确保它们不会意外地被 Flex 布局干扰 */
-    flex-shrink: 0; 
+    /* 保证这些区块的默认 display 状态是 block 或 flex，以便 .hidden 可以切换 */
+    display: block; 
 }
 
-/* 按钮样式 */
-.btn-expand, .btn-back-home, .btn-back-menu {
-    /* 仅保留最基本的样式，以确保功能不受影响 */
-    background: rgba(255,255,255,0.2);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
+/* 按钮和菜单项：只设置最基本的点击属性 */
+.btn-expand, .btn-back-home, .btn-back-menu, .menu-item {
     cursor: pointer;
-    margin-top: 15px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    background: #eee;
     text-decoration: none;
-    display: inline-block;
+    display: block;
+    text-align: center;
 }
-
-/* 菜单项样式 */
-.menu-item {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
 
 /* --- 6. 响应式设计 --- */
 @media (max-width: 768px) {
-    .container {
+    .container, .main-container {
         flex-direction: column; 
-        width: 100%;
-        border-radius: 0;
     }
-    .profile-card {
+    .profile-card, .left-panel {
         width: 100%; 
-        padding: 20px;
-    }
-    .main-content {
-        padding: 25px 20px;
     }
 }
