@@ -1,34 +1,8 @@
-// script.js - 最终优化版 (融入文化心理学和严谨措辞)
+// script.js - 最终完整逻辑修正与文化心理学优化版
 
 // ==========================================
 // 第一部分：左侧面板逻辑 (菜单与详情切换)
-// [保持不变]
 // ==========================================
-
-function toggleMenu(showMenu) {
-    const profileCover = document.getElementById('profileCover');
-    const menuList = document.getElementById('menuList');
-    const contentDetail = document.getElementById('contentDetail');
-    
-    returnToChat(); 
-
-    if (showMenu) {
-        if (profileCover) profileCover.classList.add('hidden');
-        if (menuList) menuList.classList.remove('hidden');
-        if (contentDetail) contentDetail.classList.add('hidden'); 
-    } else {
-        if (profileCover) profileCover.classList.remove('hidden');
-        if (menuList) menuList.classList.add('hidden');
-    }
-}
-
-function backToMenu() {
-    const contentDetail = document.getElementById('contentDetail');
-    const menuList = document.getElementById('menuList');
-
-    if (contentDetail) contentDetail.classList.add('hidden');
-    if (menuList) menuList.classList.remove('hidden');
-}
 
 // 左侧菜单详情内容配置 
 const contentData = {
@@ -48,7 +22,7 @@ const contentData = {
             <h3>辅导模式与价值承诺</h3>
             <ul>
                 <li><strong>1:1 师徒制：</strong> 拒绝大班流水线。我只做精细化个人辅导，确保我的核心认知 100% 传递给你。</li>
-                <li><strong>【强推】免佣直通车：</strong> 通过我推荐进入合作私塾/语言学校，<span style="color:#d9534f; font-weight:bold;">辅导费由机构承担</span>。
+                <li><strong>【强推】免佣直通车：：</strong> 通过我推荐进入合作私塾/语言学校，<span style="color:#d9534f; font-weight:bold;">辅导费由机构承担</span>。
                     <br><span style="font-size:0.9em; color:#666;">*这不仅是为您省钱，更是为了剔除中间商，建立最直接的“师徒”利益共同体。</span>
                 </li>
                 <li><strong>结果导向：</strong> 若第一年未合格，第二年免费继续辅导，直到你上岸。</li>
@@ -72,11 +46,52 @@ const contentData = {
     `
 };
 
+/**
+ * 切换左侧面板到菜单或封面状态
+ * @param {boolean} showMenu - true: 显示菜单列表; false: 显示主页封面
+ */
+function toggleMenu(showMenu) {
+    const profileCover = document.getElementById('profileCover');
+    const menuList = document.getElementById('menuList');
+    const contentDetail = document.getElementById('contentDetail');
+    
+    // 确保从内容详情页返回主页或菜单时，右侧是聊天室状态
+    if (!showMenu) {
+         returnToChat(); // 如果从菜单返回主页，则确保右侧是聊天室
+    }
+
+    if (showMenu) {
+        if (profileCover) profileCover.classList.add('hidden');
+        if (menuList) menuList.classList.remove('hidden');
+        if (contentDetail) contentDetail.classList.add('hidden'); 
+    } else {
+        if (profileCover) profileCover.classList.remove('hidden');
+        if (menuList) menuList.classList.add('hidden');
+        if (contentDetail) contentDetail.classList.add('hidden');
+    }
+}
+
+/**
+ * 从详情页返回菜单列表
+ */
+function backToMenu() {
+    const contentDetail = document.getElementById('contentDetail');
+    const menuList = document.getElementById('menuList');
+
+    if (contentDetail) contentDetail.classList.add('hidden');
+    if (menuList) menuList.classList.remove('hidden');
+}
+
+/**
+ * 显示左侧的详细内容
+ * @param {string} type - 内容的类型键
+ */
 function showContent(type) {
     const menuList = document.getElementById('menuList');
     const contentDetail = document.getElementById('contentDetail');
     const dynamicContent = document.getElementById('dynamicContent');
 
+    // 确保右侧是聊天室状态
     returnToChat();
 
     if (dynamicContent) dynamicContent.innerHTML = contentData[type] || '未找到内容。';
@@ -182,15 +197,7 @@ const qaDatabase = [
     }
 ];
 
-// ... [其余函数保持不变 typeMessage, appendMessage, findAnswer 等] ...
-
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); 
-        sendMessage();
-    }
-}
-
+// 核心功能：发送消息并获取回复
 function sendMessage() {
     const inputField = document.getElementById('userInput');
     const message = inputField ? inputField.value.trim() : ''; 
@@ -209,6 +216,15 @@ function sendMessage() {
     }, 600);
 }
 
+// 回车键发送消息
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); 
+        sendMessage();
+    }
+}
+
+// 模拟打字机效果 (已移除闪烁光标逻辑)
 function typeMessage(text) {
     const chatBody = document.getElementById('chatBody');
     const userInput = document.getElementById('userInput');
@@ -228,6 +244,7 @@ function typeMessage(text) {
 
     function typeChar() {
         if (i < text.length) {
+            // 处理HTML标签，确保它们不会被逐字打出
             if (text[i] === '<') {
                 const tagEnd = text.indexOf('>', i);
                 if (tagEnd !== -1) {
@@ -244,6 +261,7 @@ function typeMessage(text) {
             
             setTimeout(typeChar, typingSpeed);
         } else {
+            // 恢复输入框焦点和可用状态
             if (userInput) {
                 userInput.disabled = false;
                 userInput.focus();
@@ -254,6 +272,7 @@ function typeMessage(text) {
     typeChar();
 }
 
+// 附加用户或 AI 消息到聊天记录
 function appendMessage(text, sender) {
     const chatBody = document.getElementById('chatBody');
     if (!chatBody) return;
@@ -269,5 +288,167 @@ function appendMessage(text, sender) {
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
+// 从知识库中查找回复
 function findAnswer(userText) {
-    let bestReply = "非常感谢您提出如此深刻的问题！我是 AI 助理，关于这个细节，建议您直接点击左侧菜单查看我的<strong>辅导模式</strong>和<strong>核心优势</strong>，
+    let bestReply = "非常感谢您提出如此深刻的问题！我是 AI 助理，关于这个细节，建议您直接点击左侧菜单查看我的<strong>辅导模式</strong>和<strong>核心优势</strong>，或者直接加微信 <strong>qiuwu999</strong> 进行详细评估。我们保证所有问题都会得到专业解答！";
+
+    const normalizedText = userText.toLowerCase();
+    for (const item of qaDatabase) {
+        const match = item.keywords.some(keyword => normalizedText.includes(keyword));
+        if (match) {
+            bestReply = item.answer;
+            break;  
+        }
+    }
+    return bestReply;
+}
+
+
+// ==========================================
+// 第三部分：AI 升学破局测试 (故事卡) 逻辑 - 修复逻辑冲突
+// ==========================================
+const storyCardData = {
+    // 步骤 1: 资源需求
+    'step1': {
+        title: 'AI 升学破局测试：快速锁定你的核心需求',
+        question: '您目前最缺乏的是什么？',
+        options: [
+            { text: '最缺研究计划书：思路混乱，不知道如何切入东大教授的领域。', nextStep: 'result_rps' },
+            { text: '最缺面试技巧：害怕被刁难，不知如何利用“弱点”转为优势。', nextStep: 'result_interview' },
+            { text: '最缺渠道资源：想走机构免佣直通车，追求最高性价比的通道。', nextStep: 'result_channel' }
+        ]
+    },
+    
+    // 结果 1: 研究计划书 (RPS) 路径
+    'result_rps': {
+        title: '💡 方案建议：计划书的“破绽利用法”',
+        result: `
+            <p>您的问题在于<strong>研究逻辑的重构</strong>，而不是写作本身。秋武老师的优势正是：利用您经历中的**“矛盾点”**，转化为独一无二的**研究动机**，让教授对您的好奇心大于对您背景的挑剔。</p>
+            <p><strong>【下一步行动】:</strong></p>
+            <ul>
+                <li>请即刻联系微信 <strong>qiuwu999</strong>，发送您的<strong>背景简历</strong>。</li>
+                <li>我们将为你安排一次**“破局初筛”**，评估您的经历中最具转折点的部分。</li>
+            </ul>
+        `,
+        isResult: true
+    },
+    
+    // 结果 2: 面试技巧 (Interview) 路径
+    'result_interview': {
+        title: '💡 方案建议：非语言博弈与心态建设',
+        result: `
+            <p>面试是您展示个人<strong>认知深度</strong>的最终战场。秋武老师的辅导独创了**“前30秒非语言博弈”**训练，从坐姿、眼神到递交材料，帮您在心理上压倒对手。</p>
+            <p><strong>【下一步行动】:</strong></p>
+            <ul>
+                <li>请即刻联系微信 <strong>qiuwu999</strong>，预约一次**“全真模拟面试”**。</li>
+                <li>在正式辅导前，您将免费获得一份**《东大教授面试心理学速查表》**。</li>
+            </ul>
+        `,
+        isResult: true
+    },
+
+    // 结果 3: 渠道资源 (Channel) 路径
+    'result_channel': {
+        title: '💡 方案建议：最高性价比的免佣直通车',
+        result: `
+            <p>您追求<strong>高效率与高性价比</strong>。秋武老师的**【核心私塾免佣直通车】**是最佳选择。辅导费用由机构承担，您获得顶级辅导，无需多花一分钱。</p>
+            <p><strong>【下一步行动】:</strong></p>
+            <ul>
+                <li>请即刻联系微信 <strong>qiuwu999</strong>，告知您想申请**“免佣直通车”**。</li>
+                <li>我们将为您匹配最合适的合作机构和语言学校，**立即开启零成本辅导流程**。</li>
+            </ul>
+        `,
+        isResult: true
+    }
+};
+
+/**
+ * 显示故事卡模式 (修复了左/右侧内容切换逻辑)
+ * @param {string} stepKey - 当前故事卡的步骤键
+ */
+function showStoryCard(stepKey) {
+    const menuList = document.getElementById('menuList');
+    const contentDetail = document.getElementById('contentDetail');
+    const profileCover = document.getElementById('profileCover'); 
+    
+    const chatBody = document.getElementById('chatBody');
+    const chatInputArea = document.querySelector('.chat-input-area');
+    let storyContainer = document.getElementById('storyCardContainer');
+
+    // 隐藏所有左侧内容
+    if (menuList) menuList.classList.add('hidden');
+    if (contentDetail) contentDetail.classList.add('hidden');
+    if (profileCover) profileCover.classList.add('hidden'); 
+
+    // 隐藏右侧聊天和输入区域
+    if (chatInputArea) chatInputArea.classList.add('hidden'); 
+    if (chatBody) chatBody.style.display = 'none'; 
+
+    // 确保 storyContainer 存在
+    if (!storyContainer) {
+        storyContainer = document.createElement('div');
+        storyContainer.id = 'storyCardContainer';
+        if (chatBody && chatBody.parentElement) {
+             chatBody.parentElement.appendChild(storyContainer);
+        } else {
+            console.error("无法找到 chatBody 或其父元素来插入 storyCardContainer。");
+            return;
+        }
+    }
+    storyContainer.style.display = 'block'; // 显示故事卡区
+
+    const stepData = storyCardData[stepKey];
+    if (!stepData) return;
+
+    let storyCardHtml = `<div class="story-card-container">`;
+    storyCardHtml += `<h3>${stepData.title}</h3>`;
+    
+    if (stepData.options) {
+        storyCardHtml += `<p class="question-text">${stepData.question}</p>`;
+        storyCardHtml += `<div class="options-list">`;
+        stepData.options.forEach(option => {
+            storyCardHtml += `
+                <button class="option-btn" onclick="showStoryCard('${option.nextStep}')">
+                    ${option.text}
+                </button>
+            `;
+        });
+        storyCardHtml += `</div>`;
+    } 
+    else if (stepData.isResult) {
+        storyCardHtml += `<div class="result-content">${stepData.result}</div>`;
+        storyCardHtml += `<button class="btn-return-chat" onclick="returnToChat()">← 返回 AI 咨询室</button>`;
+    }
+    
+    storyCardHtml += `</div>`;
+    storyContainer.innerHTML = storyCardHtml;
+}
+
+/**
+ * 返回到聊天室模式 (修复了左/右侧内容切换逻辑)
+ */
+function returnToChat() {
+    const chatBody = document.getElementById('chatBody');
+    const chatInputArea = document.querySelector('.chat-input-area');
+    const storyContainer = document.getElementById('storyCardContainer');
+    
+    const profileCover = document.getElementById('profileCover'); 
+    const menuList = document.getElementById('menuList'); 
+    const contentDetail = document.getElementById('contentDetail'); 
+    
+    // 恢复右侧聊天和输入区域
+    if (chatBody) chatBody.style.display = 'flex'; 
+    if (chatInputArea) chatInputArea.classList.remove('hidden'); 
+    if (storyContainer) storyContainer.style.display = 'none'; // 隐藏故事卡区
+
+    // 恢复左侧封面，隐藏菜单和详情
+    if (profileCover) profileCover.classList.remove('hidden'); 
+    if (menuList) menuList.classList.add('hidden'); 
+    if (contentDetail) contentDetail.classList.add('hidden'); 
+    
+    const userInput = document.getElementById('userInput');
+    if (userInput) {
+        userInput.disabled = false;
+        userInput.focus();
+    }
+}
