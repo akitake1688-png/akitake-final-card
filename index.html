@@ -1,42 +1,177 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>东大日本秋武老师</title>
+
+    <title>秋武 AI 咨询室 - 东大日本求学</title>
+
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <script src="script.js" defer></script>
+
 </head>
+
 <body>
-    <div class="container">
-        <div class="profile-card">
-            <div class="avatar-container">
-                <img id="avatar" src="data:image/png;base64,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W//0w8E4P7f/t0/8n/++5/95Cd9fHxs78X7Qc5xVnUuXq9Xv2p1m0W90i5jVdK40m/1o2FpW1O5WjYt36sX3n/+89/4b/+hX/vLX/j7/8c/9n/6b/1f/s//V//zf/0nEIE4i8I5D/Wz/+D13/nN3/z53/3d/8c//0/90//mD/3D/+K//S/+63/9t/+g/3b/z//5f/4v//d/57/9l//t//P//L//4+N3/+f/y//4T/74x//m3/zn//3v//7L/8qf/h/8O/9t/9d/+O/8N/8v/+C//F/+s8V+/u2//dvwX68fV20P3N+c+g9jDPz853/8P/7T//b/9d/9e/+v//iP/27/1n/r3/y//x/x7/+O//N/8F//r//5v/8L/vv/2z/7D//hP/1f/tM/4v+f/+mf/s//9b/6b/9v/euvf/n3/u/9X//lX/7lX/+r/7/967/967/9a3/913/913/913/913/9F//t/+1v/m/+8z/++z///J//+Z//+3/7t//d//1v/zWv68f9g4/j0P/4v/3X//Tf/Fv/8G/8O//w7/wP/7/+7f/7//g/8D/6b/+v/9f/83/8R//Bf/uX//z7/+/+5//+f/z3/7d/+7/7//s//6//+v/zf/oP/1//2//D//j/8u/81//2//B//G//33/z/+t//e///v/9X//1v/5f/+t/8S///R/8h3/9t/9P/9f/8e//3/+/+5//+v/8//y//D//x//hf/0f/73/x//n//v///j/+/+7v/u7/7t//7f//f/8//6//+/+z/9+/2//x//h//s//w///P/87/8v/7//w//nf/9/8x//j//7v/8v//n/8//3f/93//d//9eP3z58/r8/P2//8//5//2//3/+//8///+PP/77P//7P//7P//7//u//+vH9+e///v///v/93///f//93//9f//d//v/9//zf/73f/93/+///P35/Pz8/Pz4/Hxz/ePz/Pz4//3f//1f/9/75u13d/93f/+7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/u7v/w6yYJc2XfS/Gf88gYh93zE3fV8iK+2RjO+3S3XJ3/d8z/t90Vz8V9/f8S23J8/k/s3+m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7m/v7tT3QpL5v5oOAAAg+LzE4Hh3f8eP210XFp2D9gW3j9+fHxc333W13e2puvn85v/xL/zP/iX/113r0rC52d67m5qJb7T9+b55J942Q1E4vLd3d63W/3f/u1/69/4u//h/z93f/d3//d/v063/8r//T/7f/y3/w+fH0cR0fH69X+4/3z/t3f/d3d/+7f/s2f71s4k1tUv5d278Q9Q/33V07QYVn065/e/d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d2d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d333d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d33d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3c
+
+    <div class="main-container">
+
+        
+
+        <div class="left-panel" id="leftPanel">
+
+            
+
+            <div class="profile-cover" id="profileCover">
+
+                <div class="avatar-ring">
+
+                    <img src="./profile.png" alt="秋武老师" class="avatar">
+
                 </div>
+
+                <h1>東大日本秋武老师</h1>
+
+                <div class="subtitle">
+
+                    <p>跨越文理，点亮思路</p>
+
+                    <p>用“破绽”引导成功</p>
+
+                </div>
+
+                <button class="btn-expand" onclick="toggleMenu(true)">点击展开</button>
+
+            </div>
+
+
+
+            <div class="menu-list hidden" id="menuList">
+
+                <button class="btn-back-home" onclick="toggleMenu(false)">← 返回首页</button>
+
+                <h2>请选择了解内容</h2>
+
+                
+
+                <div class="menu-item" onclick="showContent('strength')">
+
+                    <h3>核心优势</h3>
+
+                    <p>跨学科思维 / 东大背景 / 非语言沟通</p>
+
+                    <span class="arrow">→</span>
+
+                </div>
+
+
+
+                <div class="menu-item" onclick="showContent('model')">
+
+                    <h3>辅导模式</h3>
+
+                    <p>1:1 深度定制 / 免费辅导机制</p>
+
+                    <span class="arrow">→</span>
+
+                </div>
+
+
+
+                <div class="menu-item" onclick="showContent('cases')">
+
+                    <h3>成功案例 / 更多思考</h3>
+
+                    <p>知乎专栏 / Bilibili 视频</p>
+
+                    <span class="arrow">→</span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="content-detail hidden" id="contentDetail">
+
+                <button class="btn-back-menu" onclick="backToMenu()">← 返回菜单</button>
+
+                <div id="dynamicContent"></div>
+
+            </div>
+
+
+
         </div>
 
-        <div class="chat-room">
+
+
+        <div class="right-panel">
+
             <div class="chat-header">
-                <div class="ai-assistant-info">
-                    <span class="ai-name">秋武 AI 咨询室</span>
-                    <span class="status">• 在线</span>
+
+                <div class="header-avatar">
+
+                    <img src="./profile.png" alt="AI">
+
                 </div>
+
+                <div class="header-info">
+
+                    <span class="name">秋武 AI 咨询室</span>
+
+                    <span class="status">● 在线</span>
+
+                </div>
+
             </div>
-            <div class="chat-body">
-                <p class="greeting">你好！我是秋武老师的 AI 助理。关于日本考学、研究计划书或面试技巧，随时问我！</p>
-                <p class="try-prompt">试试问我：</p>
-                <ul>
-                    <li>"辅导费用贵吗"</li>
-                    <li>"双非能申请东大吗"</li>
-                    <li>"考学太累想放弃怎么办"</li>
-                </ul>
+
+
+
+            <div class="chat-body" id="chatBody">
+
+                <div class="message ai-message">
+
+                    <div class="bubble">
+
+                        你好！我是秋武老师的 AI 助理。关于日本考学、研究计划书或面试技巧，随时问我！
+
+                        <br><br>
+
+                        试试问我：
+
+                        <br>“辅导费用高吗”
+
+                        <br>“双非能申请东大吗”
+
+                        <br>“面试时被问倒了怎么办”
+
+                    </div>
+
+                </div>
+
             </div>
-            <div class="chat-input">
-                <input type="text" placeholder="输入你的问题... (例如: 跨专业申请)">
-                <button class="send-button">发送</button>
+
+
+
+            <div class="chat-input-area">
+
+                <input type="text" id="userInput" placeholder="输入你的问题... (例如: 跨专业申请)" onkeypress="handleKeyPress(event)">
+
+                <button onclick="sendMessage()">发送</button>
+
             </div>
+
         </div>
+
+
+
     </div>
-    <script src="script.js"></script>
+
 </body>
+
 </html>
