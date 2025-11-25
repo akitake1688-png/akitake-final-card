@@ -1,4 +1,4 @@
-// script.js - 最终完整逻辑修正与健壮性增强版
+// script.js - 最终完整逻辑修复与健壮性增强版 (2025年11月)
 
 // ==========================================
 // 第一部分：数据与内容配置
@@ -46,9 +46,8 @@ const contentData = {
     `
 };
 
-// 故事卡数据（已完整保留）
+// 故事卡数据
 const storyCardData = {
-    // 步骤 1: 资源需求
     'step1': {
         title: 'AI 升学破局测试：快速锁定你的核心需求',
         question: '您目前最缺乏的是什么？',
@@ -58,8 +57,6 @@ const storyCardData = {
             { text: '最缺渠道资源：想走机构免佣直通车，追求最高性价比的通道。', nextStep: 'result_channel' }
         ]
     },
-    
-    // 结果 1: 研究计划书 (RPS) 路径
     'result_rps': {
         title: '💡 方案建议：计划书的“破绽利用法”',
         result: `
@@ -72,8 +69,6 @@ const storyCardData = {
         `,
         isResult: true
     },
-    
-    // 结果 2: 面试技巧 (Interview) 路径
     'result_interview': {
         title: '💡 方案建议：非语言博弈与心态建设',
         result: `
@@ -86,8 +81,6 @@ const storyCardData = {
         `,
         isResult: true
     },
-
-    // 结果 3: 渠道资源 (Channel) 路径
     'result_channel': {
         title: '💡 方案建议：最高性价比的免佣直通车',
         result: `
@@ -103,7 +96,6 @@ const storyCardData = {
 };
 
 const qaDatabase = [
-    // ... (假设您已保留所有 QA 数据库内容)
     {
         keywords: ['费用', '钱', '收费', '价格', '贵吗'],
         answer: "关于费用，我的原则是<strong>【透明】与【价值对等】</strong>。**非常感谢您提出如此直接的问题。**<br><br>我们不进行低效的价格博弈。您所支付的，是获取我作为东大博士的<strong>【核心认知】与【通关经验】</strong>。<br>目前仅开放两种通道：<br>1. 机构通道：适合需要全套基础流程服务的同学。<br>2. <strong>【私塾核心】免佣直通车</strong>：这是我最推荐的模式。剔除中间商溢价，您所有的预算都将转化为我的**【有效辅导时长】**。<br><br>如果您已准备好为结果负责，请联系微信 <strong>qiuwu999</strong> 获取详细方案。"
@@ -120,7 +112,7 @@ const qaDatabase = [
 
 
 // ==========================================
-// 第二部分：核心功能 - 状态切换（修复冲突）
+// 第二部分：核心功能 - 状态切换
 // ==========================================
 
 /**
@@ -130,10 +122,12 @@ function returnToChat() {
     const chatBody = document.getElementById('chatBody');
     const storyCardContainer = document.getElementById('storyCardContainer');
     const chatInputArea = document.querySelector('.chat-input-area');
+    const loadingIndicator = document.getElementById('loadingIndicator');
 
     if (chatBody) chatBody.style.display = 'block';
-    if (chatInputArea) chatInputArea.style.display = 'flex'; // 确保输入区域显示
+    if (chatInputArea) chatInputArea.style.display = 'flex';
     if (storyCardContainer) storyCardContainer.style.display = 'none';
+    if (loadingIndicator) loadingIndicator.classList.add('hidden'); // 确保加载器隐藏
 }
 
 
@@ -195,7 +189,7 @@ function showContent(type) {
 
 
 // ==========================================
-// 第三部分：故事卡模式（AI 升学破局测试）逻辑 - 彻底修复
+// 第三部分：故事卡模式（AI 升学破局测试）逻辑
 // ==========================================
 
 /**
@@ -237,7 +231,7 @@ function resetAllViews() {
 
 
 /**
- * 显示故事卡模式 (彻底修复左/右侧内容切换逻辑)
+ * 显示故事卡模式
  * @param {string} stepKey - 当前故事卡的步骤键
  */
 function showStoryCard(stepKey) {
@@ -251,11 +245,11 @@ function showStoryCard(stepKey) {
     // 1. 切换左侧面板到菜单
     if (profileCover) profileCover.classList.add('hidden');
     if (contentDetail) contentDetail.classList.add('hidden'); 
-    if (menuList) menuList.classList.remove('hidden'); // 显示菜单，因为是从菜单点击进入测试的
+    if (menuList) menuList.classList.remove('hidden');
 
     // 2. 切换右侧面板到故事卡
     if (chatBody) chatBody.style.display = 'none';
-    if (chatInputArea) chatInputArea.style.display = 'none'; // 隐藏聊天输入框
+    if (chatInputArea) chatInputArea.style.display = 'none';
     if (storyCardContainer) storyCardContainer.style.display = 'block';
 
     const step = storyCardData[stepKey];
@@ -269,7 +263,7 @@ function showStoryCard(stepKey) {
 
 
 // ==========================================
-// 第四部分：聊天功能（QA 模式） - 彻底修复
+// 第四部分：聊天功能（QA 模式与 API 预留）
 // ==========================================
 
 /**
@@ -296,7 +290,7 @@ function appendMessage(message, sender) {
 /**
  * 搜索关键词并返回最匹配的答案
  * @param {string} query - 用户输入
- * @returns {string} 匹配的答案或默认回复
+ * @returns {string | null} 匹配的答案或 null
  */
 function getAnswerFromDB(query) {
     const lowerQuery = query.toLowerCase().trim();
@@ -309,15 +303,37 @@ function getAnswerFromDB(query) {
             }
         }
     }
-
-    // 默认回复
-    return `抱歉，您提出的 **${query}** 关键词目前无法在我的知识库中找到精准匹配的答案。<br><br>如果您的问题涉及 **费用、优势、双非背景、套磁、计划书** 等核心问题，请尝试输入更明确的关键词。<br><br>您也可以点击左侧 **AI 升学破局测试** 获得个性化建议。`;
+    return null;
 }
+
+/**
+ * 【未来预留】调用 Gemini API 获取回复 (当前仅调用本地 DB)
+ * @param {string} userQuery - 用户输入
+ * @returns {Promise<string>} AI 的回复内容
+ */
+async function callGeminiApi(userQuery) {
+    // 步骤 1: 检查本地 QA 数据库
+    const dbAnswer = getAnswerFromDB(userQuery);
+    if (dbAnswer) {
+        // 模拟 API 延迟
+        await new Promise(resolve => setTimeout(resolve, 500));
+        return dbAnswer;
+    }
+
+    // 步骤 2: 【未来在这里接入真实的 Gemini API 调用】
+    // ... (此处省略实际 API 代码)
+    
+    // 步骤 3: 如果本地DB和API都找不到（或API未实现），返回默认回复
+    // 模拟 API 延迟
+    await new Promise(resolve => setTimeout(resolve, 800));
+    return `抱歉，您提出的 **${userQuery}** 关键词目前无法在我的知识库中找到精准匹配的答案。<br><br>如果您的问题涉及 **费用、优势、双非背景、套磁、计划书** 等核心问题，请尝试输入更明确的关键词。<br><br>您也可以点击左侧 **AI 升学破局测试** 获得个性化建议。`;
+}
+
 
 /**
  * 发送消息（用户点击发送按钮）
  */
-function sendMessage() {
+async function sendMessage() {
     const userInput = document.getElementById('userInput');
     const message = userInput.value.trim();
 
@@ -328,15 +344,29 @@ function sendMessage() {
     // 1. 显示用户消息
     appendMessage(message, 'user');
     
-    // 2. 清空输入框
+    // 2. 清空输入框并锁定输入
     userInput.value = '';
-    
-    // 3. 处理并显示 AI 消息
-    // 模拟等待（可以替换为实际的 Gemini API 调用）
-    setTimeout(() => {
-        const aiAnswer = getAnswerFromDB(message);
-        appendMessage(aiAnswer, 'ai');
-    }, 500); // 模拟 0.5 秒的响应时间
+    userInput.disabled = true; // 锁定输入框，避免重复发送
+
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    // 3. 显示加载器
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+        document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
+    }
+
+    // 4. 获取 AI 答案
+    const aiAnswer = await callGeminiApi(message);
+
+    // 5. 显示 AI 消息
+    appendMessage(aiAnswer, 'ai');
+
+    // 6. 隐藏加载器并解锁输入
+    if (loadingIndicator) {
+        loadingIndicator.classList.add('hidden');
+    }
+    userInput.disabled = false;
+    userInput.focus(); // 将焦点返回输入框
 }
 
 /**
