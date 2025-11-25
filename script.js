@@ -1,4 +1,4 @@
-// script.js - 恢复至原始功能完好版本
+// script.js - 修复语法错误，确保功能运行
 
 // ==========================================
 // 第一部分：左侧面板逻辑 (菜单与详情切换)
@@ -7,24 +7,31 @@
 function toggleMenu(showMenu) {
     const profileCover = document.getElementById('profileCover');
     const menuList = document.getElementById('menuList');
+    const contentDetail = document.getElementById('contentDetail'); // 明确获取详情页元素
     
     if (showMenu) {
-        profileCover.classList.add('hidden');
-        menuList.classList.remove('hidden');
-        // 确保从封面展开菜单时，详情页是隐藏的
-        document.getElementById('contentDetail').classList.add('hidden'); 
+        // 展开菜单
+        if (profileCover) profileCover.classList.add('hidden');
+        if (menuList) menuList.classList.remove('hidden');
+        // 隐藏详情页
+        if (contentDetail) contentDetail.classList.add('hidden'); 
     } else {
-        profileCover.classList.remove('hidden');
-        menuList.classList.add('hidden');
+        // 返回封面
+        if (profileCover) profileCover.classList.remove('hidden');
+        if (menuList) menuList.classList.add('hidden');
+        // 注意：这里不需要处理 contentDetail，因为它应该已经在菜单或详情页状态了
     }
 }
 
 function backToMenu() {
-    document.getElementById('contentDetail').classList.add('hidden');
-    document.getElementById('menuList').classList.remove('hidden');
+    const contentDetail = document.getElementById('contentDetail');
+    const menuList = document.getElementById('menuList');
+
+    if (contentDetail) contentDetail.classList.add('hidden');
+    if (menuList) menuList.classList.remove('hidden');
 }
 
-// 左侧菜单详情内容配置 
+// 左侧菜单详情内容配置 (使用模板字符串和更清晰的结构)
 const contentData = {
     'strength': `
         <div class="detail-card">
@@ -72,11 +79,11 @@ function showContent(type) {
     const dynamicContent = document.getElementById('dynamicContent');
 
     // 填充内容
-    dynamicContent.innerHTML = contentData[type];
+    if (dynamicContent) dynamicContent.innerHTML = contentData[type] || '未找到内容。';
 
     // 切换显示
-    menuList.classList.add('hidden');
-    contentDetail.classList.remove('hidden');
+    if (menuList) menuList.classList.add('hidden');
+    if (contentDetail) contentDetail.classList.remove('hidden');
 }
 
 
@@ -211,19 +218,21 @@ const qaDatabase = [
 // 处理用户输入
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
+        // 阻止默认行为（如表单提交或换行），确保只执行 sendMessage
+        event.preventDefault(); 
         sendMessage();
     }
 }
 
 function sendMessage() {
     const inputField = document.getElementById('userInput');
-    const message = inputField.value.trim();
+    const message = inputField ? inputField.value.trim() : ''; // 安全检查
     
     if (message === "") return;
 
     // 1. 显示用户消息
     appendMessage(message, 'user');
-    inputField.value = '';
+    if (inputField) inputField.value = ''; // 清空输入框
 
     // 2. 模拟 AI 思考延迟
     setTimeout(() => {
@@ -234,6 +243,8 @@ function sendMessage() {
 
 function appendMessage(text, sender) {
     const chatBody = document.getElementById('chatBody');
+    if (!chatBody) return; // 如果找不到聊天主体，则退出函数
+
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${sender}-message`;
     
