@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 留学咨询室 - 升级版</title>
+    <title>AI 留学咨询室 - 深度心理学版</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,38 +13,43 @@
             
             <div id="profileCover" class="profile-cover">
                 <div class="avatar-ring">
-                    <img src="image_2ab2f3.jpg" alt="导师头像" class="avatar">
+                    <img src="avatar.jpg" alt="导师头像" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                 </div>
                 <h1>东大博士·留学破局咨询</h1>
                 <p class="subtitle">
                     不只提供信息，更提供“认知差”破局方案。<br>
-                    我们帮你用理工科的逻辑，解决文科申请的内耗问题。
+                    用心理学博弈论，破解日本留学的隐形壁垒。
                 </p>
                 <button class="btn-expand" onclick="toggleMenu(true)">探索我的咨询模式</button>
             </div>
 
             <div id="menuList" class="menu-list hidden">
                 <h2>咨询模块</h2>
+                
                 <div class="menu-item" onclick="showContent('strength')">
                     <h3>核心优势：以破绽为支点</h3>
-                    <p>我如何利用你的“弱点”转化为教授无法拒绝的研究动机。</p>
+                    <p>利用“认知偏差”，将你的弱点转化为教授眼中的独特动机。</p>
                     <span class="arrow">></span>
                 </div>
+                
                 <div class="menu-item" onclick="showContent('model')">
                     <h3>辅导模式与价值承诺</h3>
-                    <p>免佣直通车 / 未合格免费重辅，结果导向的模式。</p>
+                    <p>免佣直通车 / 结果导向。建立这一行的“信用契约”。</p>
                     <span class="arrow">></span>
                 </div>
+                
                 <div class="menu-item new-feature" onclick="showStoryCard('step1')">
                     <h3>AI 升学破局测试</h3>
-                    <p>快速定位你最核心的申请痛点，锁定最优路径。</p>
+                    <p>测测你的“文化适应度”，快速锁定申请痛点。</p>
                     <span class="arrow">></span>
                 </div>
+                
                 <div class="menu-item" onclick="showContent('cases')">
                     <h3>成功案例 / 更多思考</h3>
-                    <p>深度解析我的知乎与B站专栏，用逻辑跨越学历壁垒。</p>
+                    <p>深度解析“读空气”的艺术与学术逻辑的重构。</p>
                     <span class="arrow">></span>
                 </div>
+                
                 <button class="btn-back-home" onclick="toggleMenu(false)">← 返回主页</button>
             </div>
             
@@ -59,7 +64,7 @@
         <div class="right-panel">
             <div class="chat-header">
                 <div class="header-avatar">
-                    <img src="image_2ab2f3.jpg" alt="AI 导师">
+                    <img src="avatar.jpg" alt="AI 导师" onerror="this.src='https://via.placeholder.com/40'">
                 </div>
                 <div class="header-info">
                     <span class="name">东大留学 AI 咨询师</span>
@@ -70,21 +75,25 @@
             <div id="chatBody" class="chat-body">
                 <div class="message ai-message">
                     <div class="bubble">
-                        您好！我是您的 AI 留学咨询助理。您目前对 **费用、优势、双非背景** 还是 **套磁、计划书** 等问题更感兴趣？请直接输入关键词，或点击左侧 **AI 升学破局测试** 快速开始。
+                        您好！我是您的 AI 留学咨询助理。
+                        <br><br>
+                        在日本留学申请中，**“读懂空气”**与**“逻辑闭环”**同样重要。
+                        <br>
+                        您目前对 **费用、优势、双非背景** 还是 **套磁、计划书** 感兴趣？或者点击左侧 **AI 升学破局测试**，看看您在文化适应上是否存在盲区。
                     </div>
                 </div>
             </div>
             
             <div id="loadingIndicator" class="loading-indicator hidden">
                 <div class="dot-typing"></div>
-                <span class="status-text">AI 正在思考...</span>
+                <span class="status-text">AI 正在深度思考...</span>
             </div>
             
             <div id="storyCardContainer" style="display: none;">
                 </div>
 
             <div class="chat-input-area">
-                <input type="text" id="userInput" placeholder="输入您的问题关键词..." onkeypress="handleKeyPress(event)">
+                <input type="text" id="userInput" placeholder="输入关键词（如：费用、面试、双非）..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">发送</button>
             </div>
         </div>
