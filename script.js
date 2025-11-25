@@ -1,4 +1,4 @@
-// script.js - 最终完整版 (含 AI 聊天室和 AI 升学破局测试，新增打字机动画)
+// script.js - 最终优化版 (移除闪烁光标，只保留打字效果)
 
 // ==========================================
 // 第一部分：左侧面板逻辑 (菜单与详情切换)
@@ -30,7 +30,7 @@ function backToMenu() {
     if (menuList) menuList.classList.remove('hidden');
 }
 
-// 左侧菜单详情内容配置 
+// 左侧菜单详情内容配置 (内容保持不变)
 const contentData = {
     'strength': `
         <div class="detail-card">
@@ -205,7 +205,7 @@ const qaDatabase = [
 ];
 
 // ==========================================
-// 第三部分：聊天核心逻辑 (新增打字机动画和输入框自动聚焦)
+// 第三部分：聊天核心逻辑 (移除闪烁光标逻辑)
 // ==========================================
 
 // 处理用户输入
@@ -233,12 +233,12 @@ function sendMessage() {
     // 2. 模拟 AI 思考延迟
     setTimeout(() => {
         const reply = findAnswer(message);
-        // 调用新的打字机函数
+        // 调用打字机函数
         typeMessage(reply); 
     }, 600);
 }
 
-// 核心改动：使用打字机动画显示 AI 消息
+// 核心改动：移除光标和相关逻辑，只保留逐字打印
 function typeMessage(text) {
     const chatBody = document.getElementById('chatBody');
     const userInput = document.getElementById('userInput');
@@ -251,11 +251,7 @@ function typeMessage(text) {
     const bubbleDiv = document.createElement('div');
     bubbleDiv.className = 'bubble';
     
-    // 2. 创建光标元素 (用于打字机效果)
-    const cursorSpan = document.createElement('span');
-    cursorSpan.className = 'typing-cursor';
-    
-    // 3. 将气泡和光标添加到消息div
+    // 2. 将气泡添加到消息div
     msgDiv.appendChild(bubbleDiv);
     chatBody.appendChild(msgDiv);
     
@@ -280,21 +276,15 @@ function typeMessage(text) {
                 bubbleDiv.innerHTML += text[i++];
             }
             
-            // 确保光标始终在文本末尾
-            if (i < text.length) {
-                bubbleDiv.appendChild(cursorSpan);
-            }
-
             // 自动滚动到底部
             chatBody.scrollTop = chatBody.scrollHeight;
             
             setTimeout(typeChar, typingSpeed);
         } else {
-            // 4. 动画结束后，移除光标，恢复输入框
-            cursorSpan.remove();
+            // 动画结束后，恢复输入框
             if (userInput) {
                 userInput.disabled = false;
-                userInput.focus(); // 新增：自动聚焦输入框
+                userInput.focus(); // 自动聚焦输入框
             }
         }
     }
@@ -302,7 +292,7 @@ function typeMessage(text) {
     typeChar();
 }
 
-// 辅助函数：显示用户消息（简化版，因为AI消息有专属函数）
+// 辅助函数：显示用户消息（保持不变）
 function appendMessage(text, sender) {
     const chatBody = document.getElementById('chatBody');
     if (!chatBody) return;
@@ -310,7 +300,6 @@ function appendMessage(text, sender) {
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${sender}-message`;
     
-    // 用户消息不需要打字机效果，直接显示
     const bubbleContent = sender === 'ai' ? text : text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     
     msgDiv.innerHTML = `<div class="bubble">${bubbleContent}</div>`;
@@ -319,7 +308,7 @@ function appendMessage(text, sender) {
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-// 关键词匹配算法 (与之前版本保持一致)
+// 关键词匹配算法 (保持不变)
 function findAnswer(userText) {
     let bestReply = "嗯，这是一个很好的问题！我是 AI 助理，关于这个细节，建议您直接点击左侧菜单查看我的<strong>辅导模式</strong>和<strong>核心优势</strong>，或者直接加微信 <strong>qiuwu999</strong> 详细评估。我们保证所有问题都会得到专业解答！";
 
@@ -335,10 +324,9 @@ function findAnswer(userText) {
 }
 
 // ==========================================
-// 第四部分：AI 升学破局测试 (故事卡) 逻辑
+// 第四部分：AI 升学破局测试 (故事卡) 逻辑 (保持不变)
 // ==========================================
 
-// 故事卡内容数据库 (与之前版本保持一致)
 const storyCardData = {
     // 步骤 1: 资源需求
     'step1': {
@@ -395,7 +383,7 @@ const storyCardData = {
 };
 
 
-// 核心函数：显示故事卡界面 (与之前版本保持一致)
+// 核心函数：显示故事卡界面 (保持不变)
 function showStoryCard(stepKey) {
     const menuList = document.getElementById('menuList');
     const contentDetail = document.getElementById('contentDetail');
@@ -454,7 +442,7 @@ function showStoryCard(stepKey) {
     storyContainer.innerHTML = storyCardHtml;
 }
 
-// 辅助函数：返回聊天室 (已修正，增加左侧面板状态重置)
+// 辅助函数：返回聊天室 (保持不变)
 function returnToChat() {
     const chatBody = document.getElementById('chatBody');
     const chatInputArea = document.querySelector('.chat-input-area');
