@@ -1,16 +1,11 @@
-/*
- * style.css
- * AI 留学咨询室 数字卡片 完整样式表
- * 基于用户提供的紫罗兰色调和左右分栏布局
- */
+/* style.css - 完整样式表 (紫罗兰/心理学专业风) */
 
-/* 颜色变量 */
 :root {
-    --primary-color: #6a5acd; /* 深紫罗兰色，用于强调 */
-    --secondary-color: #4c4a8a; /* 稍深的紫色，用于文本/按钮 */
-    --accent-color: #ff7f50; /* 珊瑚色，用于 AI 测试等强调 */
-    --background-color: #f7f7ff; /* 浅紫/米白色背景 */
-    --panel-bg: #e0e0ff; /* 面板浅紫色背景 */
+    --primary-color: #6a5acd; /* 沉稳的紫罗兰，代表智慧与学术 */
+    --secondary-color: #4c4a8a; /* 深紫色，用于文字 */
+    --accent-color: #ff7f50; /* 珊瑚色，用于行动点 */
+    --background-color: #f7f7ff;
+    --panel-bg: #e0e0ff;
     --text-dark: #333;
     --text-light: #fff;
     --shadow-light: rgba(0, 0, 0, 0.1);
@@ -20,7 +15,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 body {
@@ -31,7 +26,6 @@ body {
     min-height: 100vh;
 }
 
-/* 容器和布局 */
 .main-container {
     display: flex;
     width: 90%;
@@ -43,31 +37,28 @@ body {
     box-shadow: 0 10px 40px var(--shadow-light);
 }
 
-/* ------------------------------------- */
-/* 左侧面板 (Left Panel) 样式 */
-/* ------------------------------------- */
-
-.left-panel {
-    flex: 1; /* 占据约 40% 宽度 */
-    max-width: 450px;
-    background-color: var(--panel-bg);
-    padding: 30px;
-    position: relative;
-    color: var(--text-dark);
-}
-
 .hidden {
     display: none !important;
 }
 
-/* 封面 (Profile Cover) */
-.profile-cover {
+/* --- 左侧面板 --- */
+.left-panel {
+    flex: 1;
+    max-width: 450px;
+    background-color: var(--panel-bg);
+    padding: 30px;
     display: flex;
     flex-direction: column;
+}
+
+/* 封面 */
+.profile-cover {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100%;
-    justify-content: center;
 }
 
 .avatar-ring {
@@ -75,7 +66,7 @@ body {
     border-radius: 50%;
     padding: 5px;
     margin-bottom: 20px;
-    background-color: var(--text-light);
+    background-color: #fff;
 }
 
 .avatar {
@@ -92,54 +83,52 @@ body {
 }
 
 .subtitle {
-    font-size: 1em;
+    font-size: 0.95em;
     color: #666;
     margin-bottom: 30px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .btn-expand {
     background-color: var(--primary-color);
-    color: var(--text-light);
+    color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 25px;
     font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s;
 }
 
 .btn-expand:hover {
     background-color: var(--secondary-color);
 }
 
-/* 菜单列表 (Menu List) */
+/* 菜单列表 */
 .menu-list {
-    height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
 .menu-list h2 {
     color: var(--secondary-color);
-    font-size: 1.5em;
     margin-bottom: 20px;
 }
 
 .menu-item {
-    background-color: var(--text-light);
-    padding: 15px 20px;
+    background-color: white;
+    padding: 15px;
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: 0.2s;
+    border-left: 5px solid transparent;
 }
 
 .menu-item:hover {
-    transform: translateY(-2px);
+    transform: translateX(5px);
+    border-left-color: var(--primary-color);
     box-shadow: 0 4px 10px var(--shadow-light);
 }
 
@@ -150,45 +139,35 @@ body {
 }
 
 .menu-item p {
-    font-size: 0.85em;
+    font-size: 0.8em;
     color: #777;
 }
 
 .menu-item .arrow {
+    float: right;
     color: var(--secondary-color);
-    font-size: 1.2em;
     font-weight: bold;
 }
 
 .new-feature {
-    background-color: var(--accent-color); /* 特殊强调色 */
-    color: var(--text-light);
+    background: linear-gradient(135deg, #ff9a9e 0%, #ff7f50 100%);
 }
 
-.new-feature h3 {
-    color: var(--text-light);
-}
-
-.new-feature p {
-    color: #f5f5f5;
+.new-feature h3, .new-feature p, .new-feature .arrow {
+    color: white !important;
 }
 
 .btn-back-home {
+    margin-top: auto;
     background: none;
     border: none;
     color: var(--secondary-color);
     cursor: pointer;
-    padding: 10px 0;
-    margin-top: auto; /* 确保它在底部 */
     text-align: left;
-    transition: color 0.3s;
+    padding: 10px 0;
 }
 
-.btn-back-home:hover {
-    color: var(--primary-color);
-}
-
-/* 内容详情 (Content Detail) */
+/* 内容详情 */
 .content-detail {
     height: 100%;
     overflow-y: auto;
@@ -199,67 +178,55 @@ body {
     border: none;
     color: var(--secondary-color);
     cursor: pointer;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    font-size: 1em;
+    margin-bottom: 15px;
 }
 
 .detail-card {
-    background-color: var(--text-light);
+    background-color: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px var(--shadow-light);
+    line-height: 1.6;
 }
 
 .detail-card h3 {
     color: var(--primary-color);
-    margin-bottom: 15px;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .detail-card ul {
-    list-style-type: disc;
-    margin-left: 20px;
+    padding-left: 20px;
 }
 
 .detail-card li {
     margin-bottom: 10px;
-    line-height: 1.5;
 }
 
 .link-btn {
     display: block;
-    padding: 10px 15px;
+    margin-top: 10px;
+    padding: 10px;
     background-color: var(--primary-color);
-    color: var(--text-light);
+    color: white;
+    text-align: center;
     text-decoration: none;
     border-radius: 8px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
 }
 
-.link-btn:hover {
-    background-color: var(--secondary-color);
-}
-
-/* ------------------------------------- */
-/* 右侧面板 (Right Panel) - 聊天室样式 */
-/* ------------------------------------- */
-
+/* --- 右侧面板 --- */
 .right-panel {
-    flex: 2; /* 占据约 60% 宽度 */
-    background-color: var(--text-light);
+    flex: 2;
+    background-color: white;
     display: flex;
     flex-direction: column;
 }
 
-/* 聊天头部 */
 .chat-header {
-    display: flex;
-    align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
 }
 
 .header-avatar img {
@@ -277,15 +244,13 @@ body {
 .header-info .name {
     font-weight: bold;
     color: var(--secondary-color);
-    font-size: 1.1em;
 }
 
 .header-info .status {
     font-size: 0.8em;
-    color: #4CAF50; /* 在线绿色 */
+    color: #4CAF50;
 }
 
-/* 聊天主体 */
 .chat-body {
     flex-grow: 1;
     padding: 20px;
@@ -299,246 +264,152 @@ body {
 }
 
 .bubble {
-    padding: 10px 15px;
+    padding: 12px 16px;
     border-radius: 15px;
-    max-width: 70%;
+    max-width: 75%;
     line-height: 1.5;
     word-wrap: break-word;
 }
 
-.ai-message {
-    justify-content: flex-start;
-}
+.ai-message { justify-content: flex-start; }
+.ai-message .bubble { background-color: var(--panel-bg); color: #333; border-top-left-radius: 2px; }
 
-.ai-message .bubble {
-    background-color: var(--panel-bg);
-    color: var(--text-dark);
-    border-top-left-radius: 5px;
-}
+.user-message { justify-content: flex-end; }
+.user-message .bubble { background-color: var(--primary-color); color: white; border-top-right-radius: 2px; }
 
-.user-message {
-    justify-content: flex-end;
-}
-
-.user-message .bubble {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    border-top-right-radius: 5px;
-}
-
-.bubble strong {
-    font-weight: bold;
-}
-
-
-/* 聊天输入区域 */
 .chat-input-area {
-    display: flex;
-    padding: 15px 20px;
+    padding: 15px;
     border-top: 1px solid #eee;
-    background-color: var(--text-light);
+    display: flex;
 }
 
 #userInput {
     flex-grow: 1;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
     margin-right: 10px;
-    font-size: 1em;
-    transition: border-color 0.3s;
-}
-
-#userInput:focus {
-    border-color: var(--primary-color);
     outline: none;
 }
 
+#userInput:focus { border-color: var(--primary-color); }
+
 .chat-input-area button {
     background-color: var(--primary-color);
-    color: var(--text-light);
+    color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 0 25px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.chat-input-area button:hover {
-    background-color: var(--secondary-color);
-}
+.chat-input-area button:hover { background-color: var(--secondary-color); }
 
-/* ========================================= */
-/* AI 思考中加载样式 (Loading Indicator) */
-/* ========================================= */
-
+/* 加载动画 */
 .loading-indicator {
+    padding: 10px 20px;
     display: flex;
     align-items: center;
-    padding: 10px 20px;
-    margin: 10px 0;
-    border-radius: 12px;
-    background-color: #e0e0f8; /* 浅紫色背景 */
-    color: #4c4a8a;
-    font-size: 0.9em;
+    background-color: #f0f0f0;
     width: fit-content;
-    margin-left: 20px;
+    border-radius: 20px;
+    margin: 0 0 10px 20px;
+    font-size: 0.85em;
+    color: #666;
 }
 
-.loading-indicator.hidden {
-    display: none;
-}
-
-.status-text {
-    margin-left: 10px;
-    font-weight: 500;
-}
-
-/* 经典打点动画 (Dot Typing Effect) */
 .dot-typing {
     position: relative;
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: #4c4a8a;
-    color: #4c4a8a;
+    background-color: #666;
     animation: dotTyping 1.5s infinite ease-in-out;
+    margin-right: 15px;
 }
-
 .dot-typing::before, .dot-typing::after {
-    content: '';
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: #4c4a8a;
-    animation: dotTyping 1.5s infinite ease-in-out;
+    content: ''; position: absolute; top: 0; width: 6px; height: 6px; border-radius: 50%; background-color: #666; animation: dotTyping 1.5s infinite ease-in-out;
 }
-
-.dot-typing::before {
-    left: -12px;
-    animation-delay: -0.3s;
-}
-
-.dot-typing::after {
-    left: 12px;
-    animation-delay: -0.6s;
-}
+.dot-typing::before { left: -10px; animation-delay: -0.3s; }
+.dot-typing::after { left: 10px; animation-delay: -0.6s; }
 
 @keyframes dotTyping {
     0% { transform: scale(1); }
-    50% { transform: scale(1.2); opacity: 0.5; }
+    50% { transform: scale(1.4); opacity: 0.5; }
     100% { transform: scale(1); }
 }
 
-/* ========================================= */
-/* AI 升学破局测试 (Story Card) 样式 */
-/* ========================================= */
-
+/* 故事卡样式 */
 #storyCardContainer {
-    /* 容器本身占据右侧面板除头部和输入区域之外的所有空间 */
-    flex-grow: 1; 
-    padding: 20px;
+    flex-grow: 1;
+    padding: 30px;
     overflow-y: auto;
     background-color: #f9f9f9;
-    /* 注意：display 状态由 JS 控制 */
 }
 
 .story-card-inner {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 20px var(--shadow-light);
-    max-width: 500px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    max-width: 600px;
     margin: 0 auto;
     text-align: center;
 }
 
 .story-card-inner h3 {
-    color: var(--secondary-color);
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #e0e0f8;
-    padding-bottom: 10px;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    font-size: 1.4em;
 }
 
 .story-question {
     font-size: 1.1em;
-    color: var(--text-dark);
-    margin-bottom: 25px;
     font-weight: bold;
+    margin-bottom: 30px;
+    color: #444;
 }
 
 .story-options {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-top: 20px;
 }
 
 .btn-story-option {
     padding: 15px;
-    border: none;
-    border-radius: 8px;
-    background-color: #f0f0ff; /* 浅紫/灰背景 */
+    background-color: #f0f0ff;
+    border: 1px solid #e0e0ff;
+    border-radius: 10px;
     color: var(--secondary-color);
-    font-size: 1em;
-    text-align: left;
     cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    line-height: 1.4;
-    box-shadow: 0 2px 4px var(--shadow-light);
+    text-align: left;
+    transition: 0.2s;
 }
 
 .btn-story-option:hover {
-    background-color: #e0e0f8;
-    box-shadow: 0 4px 8px var(--shadow-light);
+    background-color: var(--primary-color);
+    color: white;
 }
 
-/* 结果卡样式 */
 .story-result {
     text-align: left;
-    padding: 15px;
-    border: 1px solid var(--accent-color); /* 使用强调色 */
-    background-color: #fffafa;
-    border-radius: 8px;
+    background-color: #fff8f8;
+    border: 1px solid #ffe0e0;
+    padding: 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
-    line-height: 1.6;
 }
 
-.story-result p {
-    margin-bottom: 10px;
-    color: var(--text-dark);
-}
-
-.story-result strong {
-    color: var(--accent-color);
-}
-
-.story-result ul {
-    list-style-type: '👉 ';
-    margin-left: 20px;
-    padding-left: 0;
-}
-
-.story-result ul li {
-    margin-bottom: 8px;
-}
+.story-result p { margin-bottom: 10px; }
+.story-result strong { color: #d9534f; }
 
 .btn-story-reset {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 25px;
     background-color: var(--secondary-color);
-    color: var(--text-light);
-    font-size: 1em;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 15px;
-}
-
-.btn-story-reset:hover {
-    background-color: #383669;
+    margin-top: 10px;
 }
