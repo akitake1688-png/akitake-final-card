@@ -1,305 +1,180 @@
-/* style.css - 左右分栏 AI 咨询室风格 (优化精致版) */
-
-/* --- 基础设置 --- */
+/* =======================================================
+   1. 基础设置 (Reset & Base Styles) 
+   ======================================================= */
 * {
+    /* 边框和内边距不会增加元素的总宽度和高度，更易于布局 */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 更改字体为更现代的 Inter 或默认无衬线 */
-    /* 背景色：柔和的紫色渐变 */
-    background: linear-gradient(135deg, #8a7aff 0%, #a29bfe 100%);
-    min-height: 100vh; /* 使用 min-height 以确保内容足够时也能撑开 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    overflow: auto; /* 允许 body 滚动，但 .main-container 固定 */
-}
-
-.main-container {
-    width: 95%;
-    max-width: 1300px; /* 略微加大最大宽度 */
-    height: 90vh;
-    min-height: 600px;
-    background: rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(15px); /* 增强磨砂玻璃效果 */
-    border-radius: 24px; /* 增加圆角 */
-    display: flex;
-    overflow: hidden;
-    box-shadow: 0 25px 55px rgba(0,0,0,0.3); /* 增强阴影 */
-    border: 1px solid rgba(255,255,255,0.3);
-}
-
-/* --- 滚动条美化 (Webkit) --- */
-/* 适用于 .chat-body 和 .content-detail */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.6);
-}
-
-
-/* --- 左侧面板 --- */
-.left-panel {
-    width: 40%;
-    min-width: 350px; /* 增加最小宽度，防止太窄 */
-    background: rgba(255, 255, 255, 0.15); /* 略微增加透明度 */
-    padding: 40px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    border-right: 1px solid rgba(255,255,255,0.2);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* 更平滑的过渡 */
-}
-
-/* 封面状态 */
-.profile-cover {
-    text-align: center;
-    width: 100%;
-}
-
-.avatar-ring {
-    width: 160px; /* 略微增大头像 */
-    height: 160px;
-    border-radius: 50%;
-    border: 5px solid rgba(255,255,255,0.9);
-    margin: 0 auto 25px;
-    overflow: hidden;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-    /* 呼吸光环动画 */
-    animation: pulse 2s infinite alternate;
-}
-
-@keyframes pulse {
-    from {
-        box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 0 0 rgba(255,255,255,0.4);
-    }
-    to {
-        box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 0 10px rgba(255,255,255,0);
-    }
-}
-
-.avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-cover h1 {
-    font-size: 32px;
-    margin-bottom: 15px;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
-.subtitle {
-    font-size: 17px;
-    line-height: 1.8;
-    opacity: 0.95;
-    margin-bottom: 50px;
-}
-
-.btn-expand, .btn-back-home, .btn-back-menu {
-    background: rgba(255,255,255,0.3);
-    border: none; /* 移除冗余的边框 */
-    color: white;
-    padding: 14px 35px;
-    border-radius: 35px;
-    font-size: 17px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.btn-expand:hover, .btn-back-home:hover, .btn-back-menu:hover {
-    background: white;
-    color: #6c5ce7;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-/* 菜单列表状态 */
-.menu-list {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 20px; /* 增加内边距 */
-}
-
-.menu-list h2 {
-    margin-bottom: 40px;
-    font-size: 28px;
-    text-align: center;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.menu-item {
-    background: rgba(255, 255, 255, 0.95); /* 更接近白色 */
+    /* 使用您链接的思源黑体，如果加载失败则使用系统默认无衬线字体 */
+    font-family: 'Noto Sans SC', sans-serif;
+    background-color: #f4f4f9; /* 页面背景色 */
+    line-height: 1.6;
     color: #333;
-    padding: 22px;
-    border-radius: 15px;
-    margin-bottom: 18px;
-    cursor: pointer;
+    font-size: 16px;
+}
+
+/* =======================================================
+   2. 核心布局 - 实现左右分栏 (Flexbox) 
+   ======================================================= */
+.container {
+    display: flex; /* 启用 Flexbox 布局 */
+    width: 90%; /* 容器宽度 */
+    max-width: 1200px; /* 最大宽度 */
+    margin: 40px auto; /* 居中显示，上下留白 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 柔和的阴影 */
+    border-radius: 12px; /* 圆角 */
+    overflow: hidden; /* 裁剪掉超出容器的边框，确保圆角可见 */
+}
+
+/* =======================================================
+   3. 左侧栏样式 (.profile-card) 
+   ======================================================= */
+.profile-card {
+    width: 320px; /* 固定宽度：左侧栏 */
+    background-color: #3f51b5; /* 品牌蓝色 */
+    color: white;
+    padding: 30px 20px;
     display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    flex-direction: column; 
+    align-items: center; /* 内部内容居中 */
+    /* 确保左侧栏高度与右侧内容区域一致 */
+    min-height: 100%;
 }
 
-.menu-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    background: white;
-}
-
-.menu-item h3 {
-    color: #7a6fff; /* 优化紫色 */
-    margin-bottom: 8px;
-    font-size: 19px;
-    font-weight: 700;
-}
-
-.menu-item p {
-    font-size: 14px;
-    color: #666;
-}
-
-.menu-item .arrow {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #b0c4de;
-    font-size: 1.2em;
-    font-weight: normal;
-    transition: color 0.3s;
-}
-
-.menu-item:hover .arrow {
-    color: #7a6fff;
-}
-
-/* 详情内容状态 */
-.content-detail {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    padding-right: 5px; /* 留出滚动条空间 */
-}
-
-.btn-back-home, .btn-back-menu {
-    margin-bottom: 25px;
-    font-size: 15px;
-    padding: 10px 25px;
-}
-
-.detail-card {
-    background: white;
-    color: #333;
-    padding: 30px;
-    border-radius: 15px;
-    margin-bottom: 25px;
-    line-height: 1.7;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.detail-card h3 {
-    color: #7a6fff;
-    border-bottom: 1px solid #e0e0e0; /* 略微减轻分割线 */
-    padding-bottom: 12px;
+.avatar-container {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%; /* 圆形头像 */
+    overflow: hidden;
     margin-bottom: 20px;
-    font-size: 20px;
+    border: 6px solid rgba(255, 255, 255, 0.3); /* 强调边框 */
 }
 
-.detail-card ul {
-    padding-left: 25px;
-    list-style-type: '👉 '; /* 趣味列表符号 */
-}
-
-.detail-card li {
-    margin-bottom: 14px;
-}
-
-.detail-card strong {
-    color: #4a4a4a;
-    font-weight: 700;
-}
-
-/* 链接按钮样式 */
-.link-btn {
-    display: block;
-    background: #f1f2f6;
-    color: #7a6fff;
-    text-decoration: none;
-    padding: 16px;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    font-weight: bold;
-    text-align: center;
-    transition: all 0.3s;
-}
-
-.link-btn:hover {
-    background: #dfe6e9;
-    color: #5649c0;
-    transform: translateX(3px);
-}
-
-/* 隐藏类 */
-.hidden {
-    display: none !important;
-}
-
-
-/* --- 右侧面板 (聊天室) --- */
-.right-panel {
-    width: 60%;
-    background: #ffffff; /* 聊天背景使用纯白或极浅灰色 */
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-header {
-    background: #7a6fff; /* 优化紫色 */
-    padding: 18px 25px;
-    display: flex;
-    align-items: center;
-    color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.header-avatar img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 3px solid white;
-    margin-right: 15px;
+#avatar {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block; /* 移除图片底部的额外空间 */
 }
 
-.header-info .name {
-    font-weight: 700;
-    font-size: 17px;
+.profile-card h1 {
+    font-size: 2em;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
-.header-info .
+.profile-card p {
+    font-size: 1em;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 300;
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    font-size: 0.9em;
+}
+
+.contact-info li {
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-info li:last-child {
+    border-bottom: none;
+}
+
+
+/* =======================================================
+   4. 右侧栏样式 (.main-content) 
+   ======================================================= */
+.main-content {
+    flex-grow: 1; /* 占据剩余所有空间，实现自适应宽度 */
+    background-color: #ffffff; 
+    padding: 40px 30px;
+}
+
+.main-content section {
+    margin-bottom: 40px;
+}
+
+.main-content section:last-child {
+    margin-bottom: 0;
+}
+
+.main-content h2 {
+    color: #3f51b5; /* 与左侧栏匹配的颜色 */
+    font-size: 1.8em;
+    border-left: 6px solid #ff4081; /* 强调色边框（比如亮粉色） */
+    padding-left: 15px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.item-block {
+    margin-bottom: 20px;
+}
+
+.main-content h3 {
+    color: #333;
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.main-content p, .main-content ul {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.date-range {
+    display: block;
+    font-size: 0.9em;
+    color: #999;
+    margin-bottom: 5px;
+    font-weight: 300;
+}
+
+.main-content ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+/* =======================================================
+   5. 响应式设计 (Adaptation for Mobile) 
+   ======================================================= */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* 在窄屏上将左右分栏改为垂直堆叠 */
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .profile-card {
+        width: 100%; /* 左侧栏占据全部宽度 */
+        min-height: auto; 
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+    
+    .profile-card h1 {
+        font-size: 1.6em;
+    }
+
+    .main-content h2 {
+        font-size: 1.5em;
+    }
+}
