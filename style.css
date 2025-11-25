@@ -1,180 +1,119 @@
 /* =======================================================
-   1. 基础设置 (Reset & Base Styles) 
+   数字卡功能与布局最终代码 (最安全版本)
    ======================================================= */
+
+/* --- 0. 最关键的功能类：确保 JS 切换状态正常 --- */
+.hidden {
+    /* 必须使用 !important 确保它能覆盖所有其他样式规则 */
+    display: none !important;
+}
+
+/* --- 1. 基础设置 --- */
 * {
-    /* 边框和内边距不会增加元素的总宽度和高度，更易于布局 */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    /* 移除过渡效果，防止在调试功能时视觉延迟干扰判断 */
+    transition: none !important; 
 }
 
 body {
-    /* 使用您链接的思源黑体，如果加载失败则使用系统默认无衬线字体 */
     font-family: 'Noto Sans SC', sans-serif;
-    background-color: #f4f4f9; /* 页面背景色 */
+    background-color: #f0f2f5; 
     line-height: 1.6;
     color: #333;
     font-size: 16px;
+    
+    /* 核心布局和溢出控制 */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 30px 10px;
+    overflow-x: hidden; 
+    width: 100%;
 }
 
-/* =======================================================
-   2. 核心布局 - 实现左右分栏 (Flexbox) 
-   ======================================================= */
+/* --- 2. 核心布局：左右分栏容器 (.container) --- */
 .container {
-    display: flex; /* 启用 Flexbox 布局 */
-    width: 90%; /* 容器宽度 */
-    max-width: 1200px; /* 最大宽度 */
-    margin: 40px auto; /* 居中显示，上下留白 */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 柔和的阴影 */
-    border-radius: 12px; /* 圆角 */
-    overflow: hidden; /* 裁剪掉超出容器的边框，确保圆角可见 */
+    display: flex; /* 关键：启用 Flexbox 实现左右分栏 */
+    width: 95%;
+    max-width: 1200px; 
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 600px; 
 }
 
-/* =======================================================
-   3. 左侧栏样式 (.profile-card) 
-   ======================================================= */
+/* --- 3. 左侧栏样式 (.profile-card) --- */
 .profile-card {
-    width: 320px; /* 固定宽度：左侧栏 */
-    background-color: #3f51b5; /* 品牌蓝色 */
+    width: 350px; /* 固定左侧栏宽度 */
+    min-width: 280px;
+    background-color: #4a69bd; 
     color: white;
     padding: 30px 20px;
     display: flex;
     flex-direction: column; 
-    align-items: center; /* 内部内容居中 */
-    /* 确保左侧栏高度与右侧内容区域一致 */
-    min-height: 100%;
+    flex-shrink: 0; 
+    overflow-y: auto; 
 }
 
-.avatar-container {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%; /* 圆形头像 */
-    overflow: hidden;
-    margin-bottom: 20px;
-    border: 6px solid rgba(255, 255, 255, 0.3); /* 强调边框 */
-}
-
-#avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block; /* 移除图片底部的额外空间 */
-}
-
-.profile-card h1 {
-    font-size: 2em;
-    margin-bottom: 5px;
-    text-align: center;
-}
-
-.profile-card p {
-    font-size: 1em;
-    opacity: 0.9;
-    margin-bottom: 25px;
-    text-align: center;
-    font-weight: 300;
-}
-
-.contact-info {
-    list-style: none;
-    padding: 0;
-    width: 100%;
-    font-size: 0.9em;
-}
-
-.contact-info li {
-    margin-bottom: 12px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contact-info li:last-child {
-    border-bottom: none;
-}
-
-
-/* =======================================================
-   4. 右侧栏样式 (.main-content) 
-   ======================================================= */
+/* --- 4. 右侧栏样式 (.main-content) --- */
 .main-content {
-    flex-grow: 1; /* 占据剩余所有空间，实现自适应宽度 */
+    flex-grow: 1; /* 占据剩余所有空间 */
     background-color: #ffffff; 
-    padding: 40px 30px;
+    padding: 30px 35px;
+    overflow-y: auto; 
+    min-width: 0; 
 }
 
-.main-content section {
-    margin-bottom: 40px;
+/* --- 5. 动态功能区块样式 (必须正确定义，不依赖头像) --- */
+
+/* 左侧内容容器，确保它们能被 JS 切换 */
+.profile-cover, .menu-list, .content-detail {
+    width: 100%;
+    /* 确保它们不会意外地被 Flex 布局干扰 */
+    flex-shrink: 0; 
 }
 
-.main-content section:last-child {
-    margin-bottom: 0;
+/* 按钮样式 */
+.btn-expand, .btn-back-home, .btn-back-menu {
+    /* 仅保留最基本的样式，以确保功能不受影响 */
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.main-content h2 {
-    color: #3f51b5; /* 与左侧栏匹配的颜色 */
-    font-size: 1.8em;
-    border-left: 6px solid #ff4081; /* 强调色边框（比如亮粉色） */
-    padding-left: 15px;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-.item-block {
-    margin-bottom: 20px;
-}
-
-.main-content h3 {
-    color: #333;
-    font-size: 1.3em;
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.main-content p, .main-content ul {
-    font-size: 1em;
-    color: #555;
+/* 菜单项样式 */
+.menu-item {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
-.date-range {
-    display: block;
-    font-size: 0.9em;
-    color: #999;
-    margin-bottom: 5px;
-    font-weight: 300;
-}
 
-.main-content ul {
-    list-style-type: disc;
-    padding-left: 25px;
-}
-
-/* =======================================================
-   5. 响应式设计 (Adaptation for Mobile) 
-   ======================================================= */
+/* --- 6. 响应式设计 --- */
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* 在窄屏上将左右分栏改为垂直堆叠 */
+        flex-direction: column; 
         width: 100%;
-        margin: 0;
         border-radius: 0;
     }
-
     .profile-card {
-        width: 100%; /* 左侧栏占据全部宽度 */
-        min-height: auto; 
+        width: 100%; 
+        padding: 20px;
     }
-
     .main-content {
-        padding: 30px 20px;
-    }
-    
-    .profile-card h1 {
-        font-size: 1.6em;
-    }
-
-    .main-content h2 {
-        font-size: 1.5em;
+        padding: 25px 20px;
     }
 }
