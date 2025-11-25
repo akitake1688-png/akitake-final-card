@@ -1,508 +1,106 @@
-/* style.css - 最终色彩心理学与留白优化版 */
+/* ========================================= */
+/* AI 升学破局测试 (Story Card) 样式 */
+/* ========================================= */
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* --- 字体栈：增强工整专业感 --- */
-body {
-    font-family: 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
-    background: linear-gradient(135deg, #7c73e6 0%, #a29bfe 100%);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* --- 滚动条美化 --- */
-.chat-body::-webkit-scrollbar, .content-detail::-webkit-scrollbar, #storyCardContainer::-webkit-scrollbar {
-    width: 8px;
-}
-.chat-body::-webkit-scrollbar-track, .content-detail::-webkit-scrollbar-track, #storyCardContainer::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-.chat-body::-webkit-scrollbar-thumb, .content-detail::-webkit-scrollbar-thumb, #storyCardContainer::-webkit-scrollbar-thumb {
-    background: #a29bfe;
-    border-radius: 10px;
-}
-.chat-body::-webkit-scrollbar-thumb:hover, .content-detail::-webkit-scrollbar-thumb:hover, #storyCardContainer::-webkit-scrollbar-thumb:hover {
-    background: #6c5ce7;
-}
-
-/* --- 基础布局 --- */
-.main-container {
-    width: 95%;
-    max-width: 1200px;
-    height: 90vh;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    display: flex;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* --- 左侧面板 --- */
-.left-panel {
-    width: 40%;
-    background: rgba(255, 255, 255, 0.1); 
-    padding: 40px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s ease;
-}
-
-.profile-cover {
-    text-align: center;
-    width: 100%;
-}
-
-/* --- 头像光环呼吸动画 (专业感) --- */
-.avatar-ring {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 4px solid rgba(255,255,255,0.8);
-    margin: 0 auto 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    animation: pulse 2s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-    }
-    50% {
-        box-shadow: 0 0 15px 10px rgba(255, 255, 255, 0.3);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-    }
-}
-
-.avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  
-}
-
-.profile-cover h1 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.subtitle {
-    font-size: 16px;
-    line-height: 1.8;
-    opacity: 0.9;
-    margin-bottom: 40px;
-}
-
-/* --- 行动按钮状态优化 (加速决策) --- */
-.btn-expand, .btn-back-home, .btn-back-menu {
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.4);
-    color: white;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.btn-expand:hover {
-    background: #ffffff; 
-    color: #5649c0; 
-}
-
-/* 菜单列表状态 */
-.menu-list {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.menu-list h2 {
-    margin-bottom: 30px;
-    font-size: 24px;
-    text-align: center;
-}
-
-/* --- 菜单项留白优化 (日式“间”美学) --- */
-.menu-item {
-    background: white;
-    color: #333;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 18px; 
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: transform 0.2s;
-}
-
-.menu-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.menu-item h3 {
-    color: #6c5ce7;
-    margin-bottom: 8px;
-    font-size: 18px;
-}
-
-.menu-item p {
-    font-size: 13px;
-    color: #666;
-}
-
-.menu-item .arrow {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #ccc;
-    font-weight: bold;
-}
-
-.menu-item.new-feature {
-    background: linear-gradient(90deg, #ff7e5f, #feb47b);
-    color: white;
-}
-.menu-item.new-feature h3 {
-    color: white;
-}
-.menu-item.new-feature p {
-    color: rgba(255, 255, 255, 0.8);
-}
-.menu-item.new-feature:hover {
-    box-shadow: 0 8px 20px rgba(255, 126, 95, 0.5);
-    transform: translateY(-5px);
-}
-
-
-/* 详情内容状态 */
-.content-detail {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.btn-back-home, .btn-back-menu {
-    margin-bottom: 20px;
-    font-size: 14px;
-    padding: 8px 20px;
-}
-
-/* --- 详情卡片留白优化 --- */
-.detail-card {
-    background: white;
-    color: #333;
-    padding: 30px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    line-height: 1.7;
-}
-
-.detail-card h3 {
-    color: #6c5ce7;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-
-.detail-card ul {
-    padding-left: 20px;
-}
-
-.detail-card li {
-    margin-bottom: 12px;
-}
-
-.detail-card strong {
-    color: #2d3436;
-}
-
-/* --- 链接按钮背景色 (清新辅助色) --- */
-.link-btn {
-    display: block;
-    background: #e9f0f6; 
-    color: #6c5ce7;
-    text-decoration: none;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
-    transition: background 0.3s;
-}
-
-.link-btn:hover {
-    background: #dce4eb; 
-}
-
-/* 隐藏类 */
-.hidden {
-    display: none !important;
-}
-
-
-/* --- 右侧面板 (聊天室) --- */
-.right-panel {
-    width: 60%;
-    /* 柔和的淡米灰色，视觉零疲劳 */
-    background: #fcfcfc; 
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-header {
-    background: #6c5ce7;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    color: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.header-avatar img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid white;
-    margin-right: 12px;
-    object-fit: cover;  
-}
-
-.header-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.header-info .name {
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.header-info .status {
-    font-size: 12px;
-    opacity: 0.8;
-}
-
-.chat-body {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px; 
-}
-
-.message {
-    display: flex;
-    max-width: 80%;
-}
-
-.ai-message {
-    align-self: flex-start;
-}
-
-.user-message {
-    align-self: flex-end;
-}
-
-.bubble {
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.7; 
-    position: relative;
-    min-height: 20px; 
-}
-
-.ai-message .bubble {
-    background: white; 
-    color: #333;
-    border-top-left-radius: 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.user-message .bubble {
-    background: #6c5ce7;
-    color: white;
-    border-top-right-radius: 0;
-    box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
-}
-
-.chat-input-area {
-    background: white;
-    padding: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    gap: 10px;
-}
-
-#userInput {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    outline: none;
-    font-size: 14px;
-}
-
-#userInput:focus {
-    border-color: #6c5ce7;
-}
-
-/* --- 发送按钮悬停优化 (明确反馈) --- */
-.chat-input-area button {
-    background: #6c5ce7;
-    color: white;
-    border: none;
-    padding: 0 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.chat-input-area button:hover {
-    background: #4a3e97; 
-}
-
-/* --- AI 升学破局测试 (故事卡) 样式 --- */
 #storyCardContainer {
-    flex: 1;
+    padding: 20px;
+    height: 100%;
     overflow-y: auto;
 }
 
-.story-card-container {
+.story-card-inner {
+    background-color: #ffffff; /* 卡片背景 */
+    border-radius: 12px;
     padding: 30px;
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    max-width: 600px;
-    margin: 40px auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    max-width: 500px;
+    margin: 0 auto;
     text-align: center;
 }
 
-.story-card-container h3 {
-    color: #6c5ce7;
-    font-size: 24px;
+.story-card-inner h3 {
+    color: #4c4a8a; /* 标题颜色，匹配紫色调 */
+    font-size: 1.5em;
     margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0f8; /* 浅紫色下划线 */
+    padding-bottom: 10px;
 }
 
-.question-text {
-    font-size: 18px;
+.story-question {
+    font-size: 1.1em;
     color: #333;
-    margin-bottom: 30px;
-    font-weight: 500;
+    margin-bottom: 25px;
+    font-weight: bold;
 }
 
-.options-list {
+.story-options {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 20px;
 }
 
-.option-btn {
-    background: #f1f2f6;
-    border: 1px solid #ddd;
-    color: #444;
-    padding: 15px 25px;
-    border-radius: 10px;
-    font-size: 15px;
+.btn-story-option {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f0f0ff; /* 浅紫/灰背景 */
+    color: #4c4a8a; /* 文本颜色 */
+    font-size: 1em;
     text-align: left;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    line-height: 1.4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.option-btn:hover {
-    background: #e4e6f0;
-    border-color: #6c5ce7;
-    color: #6c5ce7;
-    transform: translateY(-2px);
+.btn-story-option:hover {
+    background-color: #e0e0f8; /* 鼠标悬停时的颜色 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.result-content {
+/* 结果卡样式 */
+.story-result {
     text-align: left;
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px dashed #6c5ce7;
-    border-radius: 10px;
-    background: #f8f8ff;
+    padding: 15px;
+    border: 1px solid #d9534f; /* 匹配结果卡强调色 */
+    background-color: #fffafa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
-.result-content ul {
-    list-style: none;
+.story-result p {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.story-result strong {
+    color: #d9534f; /* 强调关键词 */
+}
+
+.story-result ul {
+    list-style-type: '👉 '; /* 使用箭头作为列表符号 */
+    margin-left: 20px;
     padding-left: 0;
 }
 
-.result-content li {
-    margin-bottom: 10px;
+.story-result ul li {
+    margin-bottom: 8px;
 }
 
-.btn-return-chat {
-    margin-top: 30px;
-    background: #6c5ce7;
-    color: white;
+.btn-story-reset {
+    padding: 12px 25px;
     border: none;
-    padding: 10px 20px;
     border-radius: 25px;
+    background-color: #4c4a8a; /* 主色调按钮 */
+    color: white;
+    font-size: 1em;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color 0.3s;
+    margin-top: 15px;
 }
 
-.btn-return-chat:hover {
-    background: #5649c0;
-}
-
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        height: 100vh;
-        width: 100%;
-        border-radius: 0;
-    }
-    .left-panel, .right-panel {
-        width: 100%;
-    }
-    .left-panel {
-        height: 40%;
-        padding: 20px;
-    }
-    .right-panel {
-        height: 60%;
-    }
-    .avatar-ring {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 10px;
-    }
-    .profile-cover h1 {
-        font-size: 20px;
-    }
-    .subtitle {
-        display: none;
-    }
+.btn-story-reset:hover {
+    background-color: #383669;
 }
