@@ -4,7 +4,7 @@
 // 第一部分：数据与内容配置
 // ==========================================
 
-// 左侧菜单详情内容配置 
+// 左侧菜单详情内容配置
 const contentData = {
     'strength': `
         <div class="detail-card">
@@ -46,7 +46,7 @@ const contentData = {
     `
 };
 
-// 故事卡数据（为简洁省略，假设您已保留此数据）
+// 故事卡数据（已完整保留）
 const storyCardData = {
     // 步骤 1: 资源需求
     'step1': {
@@ -124,6 +124,20 @@ const qaDatabase = [
 // ==========================================
 
 /**
+ * 确保右侧面板显示聊天室，隐藏故事卡
+ */
+function returnToChat() {
+    const chatBody = document.getElementById('chatBody');
+    const storyCardContainer = document.getElementById('storyCardContainer');
+    const chatInputArea = document.querySelector('.chat-input-area');
+
+    if (chatBody) chatBody.style.display = 'block';
+    if (chatInputArea) chatInputArea.style.display = 'flex'; // 确保输入区域显示
+    if (storyCardContainer) storyCardContainer.style.display = 'none';
+}
+
+
+/**
  * 切换左侧面板到菜单或封面状态
  * @param {boolean} showMenu - true: 显示菜单列表; false: 显示主页封面
  */
@@ -185,6 +199,44 @@ function showContent(type) {
 // ==========================================
 
 /**
+ * 渲染故事卡 UI
+ * @param {object} step - 故事卡数据对象
+ */
+function renderStoryCard(step) {
+    const storyCardContainer = document.getElementById('storyCardContainer');
+    if (!storyCardContainer) return;
+
+    let html = `<div class="story-card-inner"><h3>${step.title}</h3>`;
+
+    if (step.isResult) {
+        // 结果卡
+        html += `<div class="story-result">${step.result}</div>`;
+        html += `<button class="btn-story-reset" onclick="resetAllViews()">完成测试，返回聊天</button>`;
+    } else {
+        // 问题卡
+        html += `<p class="story-question">${step.question}</p><div class="story-options">`;
+        step.options.forEach(option => {
+            html += `<button class="btn-story-option" onclick="showStoryCard('${option.nextStep}')">${option.text}</button>`;
+        });
+        html += `</div>`;
+    }
+
+    html += `</div>`;
+    storyCardContainer.innerHTML = html;
+}
+
+/**
+ * 重置所有视图到初始聊天状态
+ */
+function resetAllViews() {
+    // 左侧回到主页封面
+    toggleMenu(false);
+    // 右侧回到聊天模式
+    returnToChat();
+}
+
+
+/**
  * 显示故事卡模式 (彻底修复左/右侧内容切换逻辑)
  * @param {string} stepKey - 当前故事卡的步骤键
  */
@@ -192,3 +244,107 @@ function showStoryCard(stepKey) {
     const menuList = document.getElementById('menuList');
     const contentDetail = document.getElementById('contentDetail');
     const profileCover = document.getElementById('profileCover');
+    const chatBody = document.getElementById('chatBody');
+    const storyCardContainer = document.getElementById('storyCardContainer');
+    const chatInputArea = document.querySelector('.chat-input-area');
+
+    // 1. 切换左侧面板到菜单
+    if (profileCover) profileCover.classList.add('hidden');
+    if (contentDetail) contentDetail.classList.add('hidden'); 
+    if (menuList) menuList.classList.remove('hidden'); // 显示菜单，因为是从菜单点击进入测试的
+
+    // 2. 切换右侧面板到故事卡
+    if (chatBody) chatBody.style.display = 'none';
+    if (chatInputArea) chatInputArea.style.display = 'none'; // 隐藏聊天输入框
+    if (storyCardContainer) storyCardContainer.style.display = 'block';
+
+    const step = storyCardData[stepKey];
+    if (step) {
+        renderStoryCard(step);
+    } else {
+        alert("测试步骤出错或结束！");
+        resetAllViews();
+    }
+}
+
+
+// ==========================================
+// 第四部分：聊天功能（QA 模式） - 彻底修复
+// ==========================================
+
+/**
+ * 插入消息到聊天体
+ * @param {string} message - 消息内容 (支持 HTML)
+ * @param {string} sender - 'user' 或 'ai'
+ */
+function appendMessage(message, sender) {
+    const chatBody = document.getElementById('chatBody');
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
+    
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.classList.add('bubble');
+    bubbleDiv.innerHTML = message;
+
+    messageDiv.appendChild(bubbleDiv);
+    chatBody.appendChild(messageDiv);
+    
+    // 滚动到底部
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+/**
+ * 搜索关键词并返回最匹配的答案
+ * @param {string} query - 用户输入
+ * @returns {string} 匹配的答案或默认回复
+ */
+function getAnswerFromDB(query) {
+    const lowerQuery = query.toLowerCase().trim();
+
+    // 精确匹配搜索
+    for (const qa of qaDatabase) {
+        for (const keyword of qa.keywords) {
+            if (lowerQuery.includes(keyword.toLowerCase())) {
+                return qa.answer;
+            }
+        }
+    }
+
+    // 默认回复
+    return `抱歉，您提出的 **${query}** 关键词目前无法在我的知识库中找到精准匹配的答案。<br><br>如果您的问题涉及 **费用、优势、双非背景、套磁、计划书** 等核心问题，请尝试输入更明确的关键词。<br><br>您也可以点击左侧 **AI 升学破局测试** 获得个性化建议。`;
+}
+
+/**
+ * 发送消息（用户点击发送按钮）
+ */
+function sendMessage() {
+    const userInput = document.getElementById('userInput');
+    const message = userInput.value.trim();
+
+    if (message === "") {
+        return; // 空消息不发送
+    }
+    
+    // 1. 显示用户消息
+    appendMessage(message, 'user');
+    
+    // 2. 清空输入框
+    userInput.value = '';
+    
+    // 3. 处理并显示 AI 消息
+    // 模拟等待（可以替换为实际的 Gemini API 调用）
+    setTimeout(() => {
+        const aiAnswer = getAnswerFromDB(message);
+        appendMessage(aiAnswer, 'ai');
+    }, 500); // 模拟 0.5 秒的响应时间
+}
+
+/**
+ * 处理回车键发送
+ * @param {Event} event 
+ */
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
