@@ -1,4 +1,4 @@
-/* style.css - 左右分栏 AI 咨询室风格 */
+/* style.css - 左右分栏 AI 咨询室风格 (含故事卡样式) */
 
 * {
     box-sizing: border-box;
@@ -8,7 +8,6 @@
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    /* 背景色：参考截图的紫色渐变 */
     background: linear-gradient(135deg, #7c73e6 0%, #a29bfe 100%);
     height: 100vh;
     display: flex;
@@ -33,7 +32,7 @@ body {
 /* --- 左侧面板 --- */
 .left-panel {
     width: 40%;
-    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    background: rgba(255, 255, 255, 0.1); 
     padding: 40px;
     color: white;
     display: flex;
@@ -57,14 +56,13 @@ body {
     border-radius: 50%;
     border: 4px solid rgba(255,255,255,0.8);
     margin: 0 auto 20px;
-    overflow: hidden; /* 裁剪圆形的关键 */
+    overflow: hidden;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .avatar {
     width: 100%;
     height: 100%;
-    /* 确保图片完整填充父容器，并被父容器的 overflow: hidden 裁剪 */
     object-fit: cover;  
 }
 
@@ -149,6 +147,23 @@ body {
     color: #ccc;
     font-weight: bold;
 }
+
+/* 新增：左侧新菜单项的样式 */
+.menu-item.new-feature {
+    background: linear-gradient(90deg, #ff7e5f, #feb47b); /* 醒目的渐变色 */
+    color: white;
+}
+.menu-item.new-feature h3 {
+    color: white;
+}
+.menu-item.new-feature p {
+    color: rgba(255, 255, 255, 0.8);
+}
+.menu-item.new-feature:hover {
+    box-shadow: 0 8px 20px rgba(255, 126, 95, 0.5);
+    transform: translateY(-5px);
+}
+
 
 /* 详情内容状态 */
 .content-detail {
@@ -239,7 +254,6 @@ body {
     border-radius: 50%;
     border: 2px solid white;
     margin-right: 12px;
-    /* 确保聊天窗口的头像也正确裁剪 */
     object-fit: cover;  
 }
 
@@ -262,7 +276,7 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    display: flex;
+    display: flex; /* 确保聊天体是 flex 布局 */
     flex-direction: column;
     gap: 20px;
 }
@@ -337,6 +351,94 @@ body {
 .chat-input-area button:hover {
     background: #5649c0;
 }
+
+/* --- 新增：AI 升学破局测试 (故事卡) 样式 --- */
+#storyCardContainer {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.story-card-container {
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.story-card-container h3 {
+    color: #6c5ce7;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.question-text {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-btn {
+    background: #f1f2f6;
+    border: 1px solid #ddd;
+    color: #444;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-btn:hover {
+    background: #e4e6f0;
+    border-color: #6c5ce7;
+    color: #6c5ce7;
+    transform: translateY(-2px);
+}
+
+.result-content {
+    text-align: left;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px dashed #6c5ce7;
+    border-radius: 10px;
+    background: #f8f8ff;
+}
+
+.result-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.result-content li {
+    margin-bottom: 10px;
+}
+
+.btn-return-chat {
+    margin-top: 30px;
+    background: #6c5ce7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-return-chat:hover {
+    background: #5649c0;
+}
+
 
 /* 响应式调整 */
 @media (max-width: 768px) {
