@@ -1,4 +1,4 @@
-// script.js - 最终完整版 (含 AI 聊天室和 AI 升学破局测试)
+// script.js - 最终完整版 (含 AI 聊天室和 AI 升学破局测试，已修复返回逻辑)
 
 // ==========================================
 // 第一部分：左侧面板逻辑 (菜单与详情切换)
@@ -37,7 +37,7 @@ const contentData = {
             <h3>核心优势：以“破绽”为支点</h3>
             <ul>
                 <li><strong>跨学科降维打击：</strong> 本科理工思维 x 硕士东大农学生命科学（文理交叉），擅长构建其他人无法复制的多维视角。</li>
-                <li><strong>化“弱”为“强”：</strong> 独创“破绽利用法”。我不掩盖你的劣势，而是将你经历中的“矛盾点”转化为最吸引教授的“研究动机”。</li>
+                <li><strong>化“弱”为“强”：：</strong> 独创“破绽利用法”。我不掩盖你的劣势，而是将你经历中的“矛盾点”转化为最吸引教授的“研究动机”。</li>
                 <li><strong>东大底层逻辑：</strong> 深入破解日本顶级学府的“潜规则”，提供符合“东大基准”的逻辑重构。</li>
                 <li><strong>非语言博弈：</strong> 独创“坐姿/眼神/递交材料”全真模拟，在面试的前30秒赢下心理战。</li>
             </ul>
@@ -340,11 +340,10 @@ function showStoryCard(stepKey) {
     if (chatInputArea) chatInputArea.classList.add('hidden'); 
     if (chatBody) chatBody.style.display = 'none';
 
-    // 3. 确保故事卡容器存在
+    // 3. 确保故事卡容器存在并显示
     if (!storyContainer) {
         storyContainer = document.createElement('div');
         storyContainer.id = 'storyCardContainer';
-        // 尝试将其放置在 chatBody 的父元素中
         if (chatBody && chatBody.parentElement) {
              chatBody.parentElement.appendChild(storyContainer);
         } else {
@@ -384,16 +383,23 @@ function showStoryCard(stepKey) {
     storyContainer.innerHTML = storyCardHtml;
 }
 
-// 辅助函数：返回聊天室
+// 辅助函数：返回聊天室 (已修正，增加左侧面板状态重置)
 function returnToChat() {
     const chatBody = document.getElementById('chatBody');
     const chatInputArea = document.querySelector('.chat-input-area');
     const storyContainer = document.getElementById('storyCardContainer');
     
-    // 1. 恢复聊天体和输入区
+    const profileCover = document.getElementById('profileCover'); // 获取封面
+    const menuList = document.getElementById('menuList'); // 获取菜单列表
+    const contentDetail = document.getElementById('contentDetail'); // 获取详情页
+    
+    // --- 1. 恢复右侧聊天室 ---
     if (chatBody) chatBody.style.display = 'flex'; 
     if (chatInputArea) chatInputArea.classList.remove('hidden'); 
-
-    // 2. 隐藏故事卡容器
     if (storyContainer) storyContainer.style.display = 'none';
+
+    // --- 2. 重置左侧面板到“封面”状态 (解决返回后左侧空白的问题) ---
+    if (profileCover) profileCover.classList.remove('hidden'); // 显示封面
+    if (menuList) menuList.classList.add('hidden'); // 隐藏菜单
+    if (contentDetail) contentDetail.classList.add('hidden'); // 隐藏详情页
 }
