@@ -1,4 +1,4 @@
-/* style.css - 左右分栏 AI 咨询室风格 (最终修复版，包含头像裁剪) */
+/* style.css - 左右分栏 AI 咨询室风格 */
 
 * {
     box-sizing: border-box;
@@ -64,7 +64,7 @@ body {
 .avatar {
     width: 100%;
     height: 100%;
-    /* 关键修复：确保图片完整填充父容器，并被父容器的 overflow: hidden 裁剪 */
+    /* 确保图片完整填充父容器，并被父容器的 overflow: hidden 裁剪 */
     object-fit: cover;  
 }
 
