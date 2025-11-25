@@ -1,177 +1,92 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>秋武 AI 咨询室 - 东大日本求学</title>
-
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css"> 
     <script src="script.js" defer></script>
-
 </head>
-
 <body>
-
     <div class="main-container">
-
         
-
         <div class="left-panel" id="leftPanel">
-
             
-
             <div class="profile-cover" id="profileCover">
-
                 <div class="avatar-ring">
-
                     <img src="./profile.png" alt="秋武老师" class="avatar">
-
                 </div>
-
                 <h1>東大日本秋武老师</h1>
-
                 <div class="subtitle">
-
                     <p>跨越文理，点亮思路</p>
-
                     <p>用“破绽”引导成功</p>
-
                 </div>
-
                 <button class="btn-expand" onclick="toggleMenu(true)">点击展开</button>
-
             </div>
-
-
 
             <div class="menu-list hidden" id="menuList">
-
                 <button class="btn-back-home" onclick="toggleMenu(false)">← 返回首页</button>
-
                 <h2>请选择了解内容</h2>
-
                 
-
                 <div class="menu-item" onclick="showContent('strength')">
-
                     <h3>核心优势</h3>
-
                     <p>跨学科思维 / 东大背景 / 非语言沟通</p>
-
                     <span class="arrow">→</span>
-
                 </div>
-
-
 
                 <div class="menu-item" onclick="showContent('model')">
-
                     <h3>辅导模式</h3>
-
                     <p>1:1 深度定制 / 免费辅导机制</p>
-
                     <span class="arrow">→</span>
-
                 </div>
-
-
 
                 <div class="menu-item" onclick="showContent('cases')">
-
                     <h3>成功案例 / 更多思考</h3>
-
                     <p>知乎专栏 / Bilibili 视频</p>
-
                     <span class="arrow">→</span>
-
                 </div>
-
             </div>
-
-
 
             <div class="content-detail hidden" id="contentDetail">
-
                 <button class="btn-back-menu" onclick="backToMenu()">← 返回菜单</button>
-
                 <div id="dynamicContent"></div>
-
             </div>
 
-
-
         </div>
-
-
 
         <div class="right-panel">
-
             <div class="chat-header">
-
                 <div class="header-avatar">
-
                     <img src="./profile.png" alt="AI">
-
                 </div>
-
                 <div class="header-info">
-
                     <span class="name">秋武 AI 咨询室</span>
-
                     <span class="status">● 在线</span>
-
                 </div>
-
             </div>
-
-
 
             <div class="chat-body" id="chatBody">
-
                 <div class="message ai-message">
-
                     <div class="bubble">
-
                         你好！我是秋武老师的 AI 助理。关于日本考学、研究计划书或面试技巧，随时问我！
-
                         <br><br>
-
                         试试问我：
-
                         <br>“辅导费用高吗”
-
                         <br>“双非能申请东大吗”
-
                         <br>“面试时被问倒了怎么办”
-
+                        <div style="margin-top: 15px;">
+                            <button class="user-prompt-btn" onclick="sendMessageFromPrompt('辅导费用高吗')">费用贵吗？</button>
+                        </div>
                     </div>
-
                 </div>
-
             </div>
-
-
 
             <div class="chat-input-area">
-
                 <input type="text" id="userInput" placeholder="输入你的问题... (例如: 跨专业申请)" onkeypress="handleKeyPress(event)">
-
                 <button onclick="sendMessage()">发送</button>
-
             </div>
-
         </div>
 
-
-
     </div>
-
 </body>
-
 </html>
