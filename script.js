@@ -1,7 +1,7 @@
-// script.js - 终极格式及启动提示整合版 (新增提示关闭功能)
+// script.js - 终极格式及启动提示整合版 (已修正联系方式逻辑)
 
 // ==========================================
-// 零部分：平台启动提示 (已新增关闭按钮及逻辑)
+// 零部分：平台启动提示
 // ==========================================
 
 const initialWelcomeMessage = `
@@ -14,9 +14,7 @@ const initialWelcomeMessage = `
     </div>
 `;
 
-// 新增功能：用于移除欢迎信息（响应用户点击“好的，知道了”按钮）
 function dismissWelcomeMessage(buttonElement) {
-    // 向上查找最近的 '.message' 容器，并将其移除
     let messageDiv = buttonElement.closest('.message');
     if (messageDiv) {
         messageDiv.remove();
@@ -26,7 +24,6 @@ function dismissWelcomeMessage(buttonElement) {
 function displayWelcomeMessage() {
     const chatBody = document.getElementById('chatBody');
     if (chatBody) {
-        // 仅在 chatBody 为空时显示 (确保只在首次加载时出现)
         if (chatBody.children.length === 0) {
              appendMessage(initialWelcomeMessage, 'ai');
         }
@@ -124,11 +121,17 @@ const storyCardData = {
 };
 
 // ==========================================
-// 第三部分：问答数据库 (保持稳定)
+// 第三部分：问答数据库 (核心修改区域)
 // ==========================================
 
 const qaDatabase = [
-    // --- 类别 A：身份与价值锚定 ---
+    // --- 类别 AA：联系方式/微信 (高优先级直接回复) --- 【新增修正】
+    {
+        keywords: ['微信', '联系', '怎么联系', '微信号', '加微信', '怎么加', '秋武老师微信', '武老师微信'],
+        answer: "非常感谢您对高效率咨询的需求。请直接添加我的微信：**qiuwu999**。<br><br>备注您的核心问题，我们将立即进入**一对一的逻辑诊断**环节。这是目前最高效的联系方式。"
+    },
+    
+    // --- 类别 A：身份与价值锚定 --- (优先级降级，避免与联系方式冲突)
     {
         keywords: ['博士', '修士', '学历', '真的吗', '背景', '你是谁', '简历', '骗子', '靠谱吗', '秋武老师'],
         answer: "这是一个关于**信任**的核心问题。我必须诚实地澄清：我是**东大修士（学际信息/交叉研究室）毕业**，拥有10年一线辅导经验。 <br><br> 虽然我不是博士，但我拥有稀缺的**【理工科入口 + 文科研究】**的跨学科背景。在考学实战中，我提供的**“向量逻辑重构”**，能为您带来**高效率的合格实绩**，这是我的价值保证。"
