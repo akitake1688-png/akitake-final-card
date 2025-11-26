@@ -1,4 +1,37 @@
-// script.js - 终极格式修正版 (学者派中肯风格，格式统一)
+// script.js - 终极格式及启动提示整合版 (新增提示关闭功能)
+
+// ==========================================
+// 零部分：平台启动提示 (已新增关闭按钮及逻辑)
+// ==========================================
+
+const initialWelcomeMessage = `
+    <div style="padding: 10px; border: 1px solid #ffcc00; background-color: #fff8e1; border-radius: 5px; margin-bottom: 10px;">
+        <h4 style="margin-top: 0; color: #ff6f00;">⚠️ 平台启动提示 (Disclaimer)</h4>
+        <p style="margin-bottom: 5px; font-size: 0.95em;">本 AI 助手是基于**东大修士秋武老师**提供的逻辑和数据构建的**咨询及效率工具**。</p>
+        <p style="margin-bottom: 10px; font-size: 0.95em;">请注意：AI 分析仅供**逻辑重构和策略参考**，所有**最终申请材料和决策**必须与**真人顾问（秋武老师）**进行**一对一确认**。</p>
+        <button onclick="dismissWelcomeMessage(this)" style="background-color: #ffcc00; color: #333; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; float: right; font-weight: bold;">好的，知道了</button>
+        <div style="clear: both;"></div>
+    </div>
+`;
+
+// 新增功能：用于移除欢迎信息（响应用户点击“好的，知道了”按钮）
+function dismissWelcomeMessage(buttonElement) {
+    // 向上查找最近的 '.message' 容器，并将其移除
+    let messageDiv = buttonElement.closest('.message');
+    if (messageDiv) {
+        messageDiv.remove();
+    }
+}
+
+function displayWelcomeMessage() {
+    const chatBody = document.getElementById('chatBody');
+    if (chatBody) {
+        // 仅在 chatBody 为空时显示 (确保只在首次加载时出现)
+        if (chatBody.children.length === 0) {
+             appendMessage(initialWelcomeMessage, 'ai');
+        }
+    }
+}
 
 // ==========================================
 // 第一部分：内容配置 (左侧菜单 - 深度植入人设与背景)
@@ -15,7 +48,7 @@ const contentData = {
                 <li><strong>破绽利用：</strong> 独创**“破绽利用法”**。利用您的背景差异（如跨专业），打造教授眼中**“无法拒绝的必然性动机”**。</li>
             </ul>
         </div>
-    `, // <<<--- [已修正：移除多余符号]
+    `, 
     // 模式：明确列出“一问一答”、“草稿编辑”等具体服务
     'model': `
         <div class="detail-card">
@@ -26,7 +59,7 @@ const contentData = {
                 <li><strong>【核心模式】“辅导费用置换”契约：</strong> 通过我的渠道进入合作私塾或语言学校，机构支付的介绍费**等同于抵消您的秋武老师一对一辅导费用**。实现**零额外支出**享受高端定制辅导。</li>
             </ul>
         </div>
-    `, // <<<--- [已修正：移除多余符号]
+    `, 
     // 案例：保持认知战的基调
     'cases': `
         <div class="detail-card">
@@ -63,7 +96,7 @@ const storyCardData = {
         result: `
             <p>您感到的迷茫，源于中日学术思维的差异。中国教育偏向“宏大叙事”，而日本研究看重<strong>“具体的逻辑闭环”</strong>。</p>
             <p><strong>【破局心理学】:</strong></p>
-            <p>运用<strong>“向量逻辑降维法”</strong>。您的计划书需要从“作文”升级为<strong>“逻辑闭环的最小可行性模型（MVP）”</strong>。抓住一个细小破绽，深度解剖，才能引发教授的**钻研欲望**。</p>
+            <p>运用<strong>“向量逻辑降维法”</strong>。您的计划书需要从“作文”升级为**“逻辑闭环的最小可行性模型（MVP）”**。抓住一个细小破绽，深度解剖，才能引发教授的**钻研欲望**。</p>
             <p><strong>【下一步】:</strong> 添加微信 <strong>qiuwu999</strong>，备注“逻辑诊断”，我帮您看一眼题目的可行性。</p>
         `,
         isResult: true
@@ -388,3 +421,6 @@ function showStoryCard(stepKey) {
         resetAllViews();
     }
 }
+
+// ⚠️ 【重要】请在您的 HTML 文件中，确保在页面加载完成后调用此函数一次，例如在 <body> 标签末尾添加：
+// <script>document.addEventListener('DOMContentLoaded', displayWelcomeMessage);</script>
