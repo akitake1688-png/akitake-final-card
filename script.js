@@ -1,4 +1,4 @@
-// script.js - 终极全覆盖版 (包含 SNS 评论生成器 V2.0 深度优化)
+// script.js - 终极全覆盖版 (V3.0：SNS 评论生成器 语气/字数深度优化)
 
 // ==========================================
 // 零部分：平台启动提示 (带关闭功能)
@@ -219,7 +219,7 @@ const qaDatabase = [
 
 
 // ==========================================
-// 第四部分：核心 AI 逻辑 (SNS 评论生成器 V2.0 逻辑)
+// 第四部分：核心 AI 逻辑 (SNS 评论生成器 V3.0 逻辑)
 // ==========================================
 
 // 统一的 CTA 引导
@@ -255,33 +255,33 @@ function isNonProfessionalQuery(query) {
 }
 
 // ==========================================
-// 核心函数：根据用户输入生成专业评论 (V2.0 增强版)
+// 核心函数：根据用户输入生成专业评论 (V3.0 最终优化版)
 // ==========================================
 function generateExpertComment(postContent) {
     const lowerContent = postContent.toLowerCase();
     
     // 1. 研究计划书 / 选题 / 逻辑重构
     if (lowerContent.includes('研究计划书') || lowerContent.includes('选题') || lowerContent.includes('宏大') || lowerContent.includes('方向') || lowerContent.includes('没头绪')) {
-        return `【东大逻辑诊断】选题宏大是致命错误，教授寻求的是「最小可行性模型(MVP)」。您的计划书缺乏向量逻辑降维。立即停止内耗，微信 qiuwu999，我为您找准逻辑破绽。`;
+        return `【东大逻辑诊断】选题的挑战在于边界设定。建议考虑应用「最小可行性模型(MVP)」思维，将课题降维，以增强可行性。我们可以为您提供逻辑重构的思路建议。微信 qiuwu999，期待深度交流。`;
     }
     // 2. 教授面试 / 文化 / 紧张 / 冷场
     if (lowerContent.includes('面试') || lowerContent.includes('紧张') || lowerContent.includes('冷场') || lowerContent.includes('潜台词') || lowerContent.includes('空气')) {
-        return `面试不是考口语，而是考「读空气」能力。别在建前上浪费时间，需要破解教授的本音暗示。微信 qiuwu999，领取《教授潜台词对照表》，实战训练。`;
+        return `面试的关键在于文化理解。建议将注意力从日语流利度转向破解「读空气」的能力。掌握教授潜台词是最高效的策略。您可以加微信 qiuwu999，领取一份专业对照表。`;
     }
     // 3. 费用 / 中介 / 渠道 / 担心被骗
     if (lowerContent.includes('中介') || lowerContent.includes('费用') || lowerContent.includes('渠道') || lowerContent.includes('花钱') || lowerContent.includes('机构')) {
-        return `留学费用是隐形成本。避免信息焦虑，请利用“辅导费用置换”契约，零额外支出享受高效率辅导。微信 qiuwu999，咨询置换详情。`;
+        return `对传统模式的担忧非常务实。您的情况更适合采用「辅导费用置换」策略，确保定制化服务的同时实现零额外支出。建议加微信 qiuwu999，咨询具体的契约详情。`;
     }
     // 4. EJU / 放弃 / 没考好 / 准考证
     if (lowerContent.includes('eju') || lowerContent.includes('留考') || lowerContent.includes('放弃') || lowerContent.includes('没自信')) {
-        return `策略性放弃EJU是巨大错误！准考证就是校内考入场券。放弃意味着失去临场软实力考核机会。立即停止内耗，微信 qiuwu999 索取战略指导。`;
+        return `即使感到准备不足，也强烈建议参加 EJU 考试。准考证本身就是校内考入场券，这是一次不可替代的战略机会。建议加微信 qiuwu999，获取低压备考的战略指导。`;
     }
     // 5. 跨专业 / 双非 / 背景弱
     if (lowerContent.includes('跨专业') || lowerContent.includes('双非') || lowerContent.includes('背景弱') || lowerContent.includes('二本') || lowerContent.includes('三本')) {
-        return `背景不是终点，认知才是限制。利用理工科（或原专业）思维重构跨专业动机，可打造稀缺性。用实力打破背景防御，微信 qiuwu999 寻求诊断。`;
+        return `背景的差异是挑战，也是破局的资本。建议用您的原专业优势，重构新研究切入点，打造无法被替代的稀缺性。您可以加微信 qiuwu999，寻求深度逻辑诊断。`;
     }
     // 默认兜底评论，保证引流
-    return `您的困惑需要高维度的逻辑重构。AI只能分析已知，真人顾问提供破局策略。请直接加微信 qiuwu999，进行一对一诊断，高效解决。`;
+    return `您的困惑需要更具针对性的策略建议。AI 分析仅为参考，人对人的诊断才能提供破局的关键。建议加微信 qiuwu999，我们进行一次高效的一对一诊断。`;
 }
 
 
@@ -418,12 +418,17 @@ function handleKeyPress(event) {
 
 // 新增：点击复制功能（方便复制评论）
 function copyTextToClipboard(text) {
-    // 移除评论文本中的 Emoji 和最后的 CTA
-    let cleanText = text.replace(/【东大逻辑诊断】|【东大逻辑重构】|【面试恐惧】|【费用契约】|【战略纠错】|【背景破局】/g, '').trim();
-    cleanText = cleanText.split('。')[0] + '。' + cleanText.split('。')[1]; // 仅复制前两句，增加拟人化
+    // 移除评论文本中的 UI 提示内容，只保留实际的评论文本
+    // 寻找并提取 '【...】' 到 '微信 qiuwu999' 之间的内容
+    const startPattern = /【.*】/g;
+    const endPattern = /微信 qiuwu999.*/g;
+
+    let cleanText = text.replace(startPattern, '').trim(); 
+    let finalCopyText = cleanText.replace(endPattern, '').trim(); 
     
-    // 优化：在复制时自动加入微信联系方式
-    const finalCopyText = cleanText.split('微信 qiuwu999')[0] + " 微信：qiuwu999。";
+    // 重新组合，确保格式统一且包含微信号
+    const wechatCTA = " 微信 qiuwu999，期待深度交流。";
+    finalCopyText = finalCopyText.trim() + wechatCTA;
 
 
     if (!navigator.clipboard) {
@@ -438,7 +443,7 @@ function copyTextToClipboard(text) {
         navigator.clipboard.writeText(finalCopyText);
     }
     
-    alert("已复制到剪贴板，请粘贴至 SNS 平台。\n\n复制内容为: " + finalCopyText);
+    alert("✅ 评论已复制到剪贴板。\n\n复制内容为: " + finalCopyText);
 }
 
 
