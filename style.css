@@ -1,4 +1,4 @@
-/* style.css - 最终版 (紫罗兰主题 / 心理学光晕优化 / 卡牌模拟系统) */
+/* style.css - 最终版 (紫罗兰主题 / 心理学光晕优化 / 卡牌模拟系统) - 续 */
 
 :root {
     --primary-color: #6a5acd; /* 智慧紫 */
@@ -21,6 +21,13 @@
     --resource-color-energy: #3498db; /* 精力蓝色 */
     --resource-color-insight: #e67e22; /* 洞察力橙色 */
     --resource-color-credit: #f39c12; /* 信用分金色 */
+
+    /* 状态颜色 */
+    --status-good: #2ecc71; /* 绿色 */
+    --status-neutral: #f39c12; /* 黄色 */
+    --status-bad: #e74c3c; /* 红色 */
+    --status-positive: #2ecc71;
+    --status-negative: #e74c3c;
 }
 
 * {
@@ -479,7 +486,7 @@ body {
     background-color: var(--game-bg-dark); /* 深色游戏背景 */
     color: var(--text-light); /* 浅色文字 */
     padding: 20px;
-    overflow: hidden; /* 防止内部元素溢出导致滚动条 */
+    overflow-y: auto; /* 允许游戏区域内部滚动 */
 }
 
 .game-header {
@@ -519,6 +526,7 @@ body {
     border-radius: 10px;
     margin-bottom: 20px;
     flex-shrink: 0;
+    font-size: 0.95em;
 }
 
 .game-phase span {
@@ -553,25 +561,34 @@ body {
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 适应性更强 */
     gap: 10px;
+    margin-bottom: 10px;
 }
 
 .dash-item {
     background-color: rgba(255, 255, 255, 0.08);
     padding: 8px 12px;
     border-radius: 5px;
-    font-size: 0.9em;
+    font-size: 0.85em; /* 略微缩小字体 */
     color: #ccc;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s ease;
 }
 
 .dash-item span {
     font-weight: bold;
     color: white;
+    transition: color 0.3s ease;
 }
+
+/* 动态状态颜色 */
+.dash-item.positive span { color: var(--status-positive); }
+.dash-item.negative span { color: var(--status-negative); }
+.dash-item.neutral span { color: var(--status-neutral); }
+
 
 .dash-traits {
     margin-top: 10px;
@@ -595,4 +612,287 @@ body {
     text-align: center;
 }
 
-.target-goal-display
+.target-goal-display h3 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.goal-requirements {
+    display: flex;
+    flex-wrap: wrap; /* 允许换行 */
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.goal-requirement-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #ddd;
+}
+.goal-requirement-item span {
+    font-weight: bold;
+    color: white;
+}
+.goal-requirement-item.met {
+    background-color: rgba(46, 204, 113, 0.2); /* 绿色背景 */
+    color: var(--status-positive);
+}
+.goal-requirement-item.unmet {
+    background-color: rgba(231, 76, 60, 0.2); /* 红色背景 */
+    color: var(--status-negative);
+}
+
+/* 游戏场上区域 (挑战卡) */
+.in-play-area {
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.in-play-area h4 {
+    color: #eee;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.active-challenges-container {
+    display: flex;
+    flex-wrap: wrap; /* 允许挑战卡换行 */
+    gap: 15px;
+    min-height: 100px; /* 至少保证显示一块区域 */
+    justify-content: center;
+}
+
+.placeholder-challenge, .placeholder-hand {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    color: #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 15px;
+    width: 180px; /* 匹配卡牌宽度 */
+    height: 120px; /* 匹配卡牌高度 */
+}
+
+
+/* 手牌区 (策略卡) */
+.hand-area {
+    margin-bottom: 20px;
+    flex-grow: 1; /* 占据剩余空间，方便滚动 */
+    overflow-y: auto; /* 允许手牌区滚动 */
+}
+
+.hand-area h4 {
+    color: #eee;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.player-hand-container {
+    display: flex;
+    flex-wrap: wrap; /* 允许手牌换行 */
+    gap: 15px;
+    justify-content: center;
+}
+
+/* 通用卡牌样式 */
+.card {
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--card-border-color);
+    border-radius: 10px;
+    width: 180px; /* 固定卡牌宽度 */
+    height: 250px; /* 固定卡牌高度 */
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.card.selected {
+    border: 3px solid var(--primary-color);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.card-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+.card-type {
+    font-size: 0.8em;
+    color: #777;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.card-cost {
+    font-size: 0.85em;
+    color: var(--resource-color-energy);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.card-description {
+    font-size: 0.8em;
+    color: #555;
+    flex-grow: 1; /* 描述占据剩余空间 */
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 超出部分显示省略号 */
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* 最多显示5行 */
+    -webkit-box-orient: vertical;
+}
+
+/* 策略卡特定样式 */
+.card.strategy-card {
+    background: linear-gradient(135deg, #fdfd96 0%, var(--strategy-card-color) 100%); /* 淡黄到亮黄 */
+    border-color: #f0e68c;
+}
+
+/* 挑战卡特定样式 */
+.card.challenge-card {
+    background: linear-gradient(135deg, #ffb3ba 0%, var(--challenge-card-color) 100%); /* 淡粉到红色 */
+    border-color: #ffcccb;
+    color: var(--text-light); /* 挑战卡默认文字为白色 */
+}
+.card.challenge-card .card-title,
+.card.challenge-card .card-type,
+.card.challenge-card .card-description {
+    color: var(--text-light);
+}
+.card.challenge-card .card-cost { /* 挑战卡一般无费用 */
+    color: #f7f7f7;
+}
+
+/* 游戏操作按钮 */
+.game-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-shrink: 0;
+}
+
+.btn-game-action {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-game-action:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn-end-turn {
+    background-color: var(--accent-color);
+}
+.btn-end-turn:hover {
+    background-color: #e0622c;
+}
+
+/* 游戏结果屏幕 */
+.game-result-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 62, 80, 0.95); /* 半透明深色背景 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    z-index: 100; /* 确保在最上层 */
+}
+
+.game-result-screen h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: var(--status-positive); /* 胜利绿色 */
+}
+
+.game-result-screen p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+
+/* 响应式设计 */
+@media (max-width: 900px) {
+    .main-container {
+        flex-direction: column;
+        height: 95vh;
+        width: 95%;
+    }
+
+    .left-panel {
+        max-width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .profile-cover {
+        padding: 20px 0;
+    }
+
+    .menu-list, .content-detail {
+        padding-top: 20px;
+    }
+
+    .right-panel {
+        flex: 1; /* 让右侧面板占据剩余空间 */
+    }
+    
+    .game-simulation-section {
+        padding: 15px;
+    }
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    .game-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .player-hand-container, .active-challenges-container {
+        justify-content: center;
+    }
+    .card {
+        width: 150px;
+        height: 220px;
+        font-size: 0.9em;
+    }
+    .card-title {
+        font-size: 1em;
+    }
+    .card-description {
+        -webkit-line-clamp: 4; /* 小屏幕减少行数 */
+    }
+    .placeholder-challenge, .placeholder
