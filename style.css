@@ -1,14 +1,26 @@
-/* style.css - 最终版 (紫罗兰主题 / 心理学光晕优化) */
+/* style.css - 最终版 (紫罗兰主题 / 心理学光晕优化 / 卡牌模拟系统) */
 
 :root {
     --primary-color: #6a5acd; /* 智慧紫 */
-    --secondary-color: #4c4a8a;
-    --accent-color: #ff7f50; 
-    --background-color: #f7f7ff;
-    --panel-bg: #e0e0ff;
-    --text-dark: #333;
-    --text-light: #fff;
-    --shadow-light: rgba(0, 0, 0, 0.1);
+    --secondary-color: #4c4a8a; /* 深紫蓝 */
+    --accent-color: #ff7f50; /* 珊瑚橙，强调色 */
+    --background-color: #f7f7ff; /* 淡紫白背景 */
+    --panel-bg: #e0e0ff; /* 面板背景 */
+    --text-dark: #333; /* 深色文本 */
+    --text-light: #fff; /* 浅色文本 */
+    --shadow-light: rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+
+    /* 游戏模拟专用颜色 */
+    --game-bg-dark: #2c3e50; /* 深蓝灰，游戏背景 */
+    --card-bg-light: #ecf0f1; /* 浅灰，卡牌背景 */
+    --card-border-color: #bdc3c7; /* 卡牌边框 */
+    --student-card-color: #2ecc71; /* 学生卡绿色 */
+    --strategy-card-color: #f1c40f; /* 策略卡黄色 */
+    --challenge-card-color: #e74c3c; /* 挑战卡红色 */
+    --goal-card-color: #9b59b6; /* 目标卡紫色 */
+    --resource-color-energy: #3498db; /* 精力蓝色 */
+    --resource-color-insight: #e67e22; /* 洞察力橙色 */
+    --resource-color-credit: #f39c12; /* 信用分金色 */
 }
 
 * {
@@ -24,14 +36,15 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow: hidden; /* 防止滚动条出现，由内部面板控制 */
 }
 
 .main-container {
     display: flex;
     width: 90%;
     max-width: 1200px;
-    height: 80vh;
-    min-height: 650px;
+    height: 85vh; /* 略微增加高度，为游戏界面留出空间 */
+    min-height: 700px; /* 调整最小高度 */
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px var(--shadow-light);
@@ -49,6 +62,8 @@ body {
     padding: 30px;
     display: flex;
     flex-direction: column;
+    position: relative; /* 允许内部元素绝对定位 */
+    z-index: 10; /* 确保在最上层 */
 }
 
 /* 封面 */
@@ -59,6 +74,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    transition: opacity 0.3s ease; /* 添加过渡效果 */
 }
 
 /* 头像光晕设计 (核心修改) */
@@ -124,6 +140,7 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    /* transition: opacity 0.3s ease; */
 }
 
 .menu-list h2 {
@@ -139,6 +156,9 @@ body {
     cursor: pointer;
     transition: 0.2s;
     border-left: 5px solid transparent;
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: space-between; /* 箭头在最右边 */
 }
 
 .menu-item:hover {
@@ -151,17 +171,21 @@ body {
     font-size: 1.1em;
     color: var(--text-dark);
     margin-bottom: 5px;
+    flex-shrink: 0; /* 阻止标题收缩 */
 }
 
 .menu-item p {
     font-size: 0.8em;
     color: #777;
+    flex-grow: 1; /* 让段落占据剩余空间 */
+    margin-right: 10px; /* 和箭头保持距离 */
 }
 
 .menu-item .arrow {
-    float: right;
+    /* float: right; */ /* 移除 float, 改用 flex */
     color: var(--secondary-color);
     font-weight: bold;
+    flex-shrink: 0; /* 阻止箭头收缩 */
 }
 
 .new-feature {
@@ -227,6 +251,11 @@ body {
     text-align: center;
     text-decoration: none;
     border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.link-btn:hover {
+    background-color: var(--secondary-color);
 }
 
 /* --- 右侧面板 --- */
@@ -235,6 +264,15 @@ body {
     background-color: white;
     display: flex;
     flex-direction: column;
+    position: relative; /* 允许内部元素绝对定位 */
+}
+
+/* 聊天区域 */
+.chat-section {
+    display: flex; /* 默认显示 */
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
 .chat-header {
@@ -242,6 +280,7 @@ body {
     border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
+    flex-shrink: 0; /* 防止收缩 */
 }
 
 .header-avatar img {
@@ -296,6 +335,7 @@ body {
     padding: 15px;
     border-top: 1px solid #eee;
     display: flex;
+    flex-shrink: 0; /* 防止收缩 */
 }
 
 #userInput {
@@ -316,6 +356,7 @@ body {
     padding: 0 25px;
     border-radius: 25px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .chat-input-area button:hover { background-color: var(--secondary-color); }
@@ -354,7 +395,7 @@ body {
     100% { transform: scale(1); }
 }
 
-/* 故事卡样式 */
+/* 故事卡样式 - 保持兼容，但现在由游戏模拟取代 */
 #storyCardContainer {
     flex-grow: 1;
     padding: 30px;
@@ -428,3 +469,130 @@ body {
     cursor: pointer;
     margin-top: 10px;
 }
+
+/* --- 新增：卡牌游戏模拟区域样式 --- */
+.game-simulation-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: var(--game-bg-dark); /* 深色游戏背景 */
+    color: var(--text-light); /* 浅色文字 */
+    padding: 20px;
+    overflow: hidden; /* 防止内部元素溢出导致滚动条 */
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.game-header h2 {
+    color: white;
+    font-size: 1.5em;
+}
+
+.btn-back-to-chat {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back-to-chat:hover {
+    background-color: var(--secondary-color);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.game-phase span {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.game-resources span {
+    font-weight: bold;
+    margin-left: 5px;
+}
+#playerEnergy { color: var(--resource-color-energy); }
+#playerInsight { color: var(--resource-color-insight); }
+#playerCredit { color: var(--resource-color-credit); }
+
+
+/* 学生状态仪表板 */
+.student-dashboard {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.student-dashboard h3 {
+    font-size: 1.2em;
+    color: white;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.dash-item {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    color: #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dash-item span {
+    font-weight: bold;
+    color: white;
+}
+
+.dash-traits {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #aaa;
+    text-align: center;
+}
+
+.dash-traits span {
+    font-style: italic;
+    color: #eee;
+}
+
+/* 目标大学/专业显示 */
+.target-goal-display {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.target-goal-display
