@@ -1,4 +1,4 @@
-// script.js - 终极全覆盖版 (包含EJU修正、联系方式优先、关闭按钮及所有逻辑优化)
+// script.js - 终极全覆盖版 (包含 SNS 评论生成器 V2.0 深度优化)
 
 // ==========================================
 // 零部分：平台启动提示 (带关闭功能)
@@ -124,35 +124,41 @@ const storyCardData = {
 };
 
 // ==========================================
-// 第三部分：问答数据库 (关键修正：联系方式优先 + EJU服务明确)
+// 第三部分：问答数据库 (关键修正：联系方式优先 + EJU服务明确 + SNS工具)
 // ==========================================
 
 const qaDatabase = [
+    // --- 类别 AAA：SNS 评论生成器 (最高优先级工具) ---
+    {
+        keywords: ['生成评论', 'sns评论', '文案生成', '生成回复', '生成文案', '帮我回复'],
+        answer: "好的，**AI评论助手已启动**。请**直接粘贴**您想评论的**目标用户帖子内容**（如‘研究计划书选题太大了’），AI将为您生成一段**犀利、引流**的专业评论文案，请您**手动复制粘贴**到SNS平台。",
+        isTool: true,
+        toolType: 'SNS_COMMENT_GENERATOR'
+    },
+    
     // --- 类别 AA：联系方式/微信 (最高优先级) ---
     {
         keywords: ['微信', '联系', '怎么联系', '微信号', '加微信', '怎么加', '秋武老师微信', '武老师微信'],
         answer: "非常感谢您对高效率咨询的需求。请直接添加我的微信：**qiuwu999**。<br><br>备注您的核心问题，我们将立即进入**一对一的逻辑诊断**环节。这是目前最高效的联系方式。"
     },
     
-    // --- 类别 A：身份与价值锚定 (修正：移除通用名字关键词，防止误判) ---
+    // --- 类别 A：身份与价值锚定 ---
     {
         keywords: ['博士', '修士', '学历', '真的吗', '背景', '你是谁', '简历', '骗子', '靠谱吗'],
         answer: "这是一个关于**信任**的核心问题。我必须诚实地澄清：我是**东大修士（学际信息/交叉研究室）毕业**，拥有10年一线辅导经验。 <br><br> 虽然我不是博士，但我拥有稀缺的**【理工科入口 + 文科研究】**的跨学科背景。在考学实战中，我提供的**“向量逻辑重构”**，能为您带来**高效率的合格实绩**，这是我的价值保证。"
     },
     
-    // --- 类别 X：EJU 专项回答 (新增：区分服务与对比) ---
-    // 1. 回答“辅导EJU吗” - 明确服务边界
+    // --- 类别 X：EJU 专项回答 ---
     {
         keywords: ['辅导eju', '教eju', '补习eju', '留考辅导', 'eju课程', '教不教', '补课', '私塾'],
         answer: "关于**EJU学科辅导**（数学/理综/综合），我的策略是**“专业分工”**。<br><br>我不直接讲授高中学科知识，我专注于更高维的**“考学战略”**与**“校内考逻辑重构”**。对于EJU学科补习，我强烈建议走我的**【辅导费用置换】**渠道，推荐您进入专业的合作私塾。这样您既能获得系统的学科训练，又能利用机构的介绍费**抵消我的高端战略辅导费**，实现双赢。"
     },
-    // 2. 回答“EJU与JLPT难度对比” - 深度认知
     {
         keywords: ['jlpt', 'n1', 'n2', '日语考试', '难度', '区别', '含金量', 'eju'],
         answer: "这不仅是难度的区别，更是**“选拔逻辑”**的区别。<br><br><strong>JLPT (N1/N2)</strong> 是**“资格证逻辑”**，只要过线即可，考的是日语知识的**存量**。而 <strong>EJU (留考)</strong> 是**“竞赛逻辑”**，考的是在日语语境下的**学术处理速度和逻辑能力**。<br>对于名校申请，**EJU的高分更具决定性**，因为它直接证明了您是否具备“在东大听课并进行思考”的能力。不要用考N1的思维去备考EJU。"
     },
     
-    // --- 类别 B：费用与模式 (中肯靠谱) ---
+    // --- 类别 B：费用与模式 ---
     {
         keywords: ['费用', '钱', '收费', '价格', '贵吗', '多少钱', '免费模式', '溢价', '隐形成本'],
         answer: "问得好，我的价格基于**稀缺价值**。<strong>平时辅导需单独付费，具体价格根据项目而定。</strong>但我们有**“费用置换”**模式：通过我的渠道进入合作私塾或语言学校，机构支付的介绍费**等同于替您支付了我的辅导费用**。**高效**是降低留学**隐形成本**的关键。"
@@ -162,7 +168,7 @@ const qaDatabase = [
         answer: "多数机构注重**流程化服务**，我的核心价值在于**“认知重构”**。<br><br>我的核心优势源于我独特的学术轨迹：我是**理工科入口、东大修士**，用**工程学的严密逻辑**去降维重构您的课题。至于服务模式，我们提供**“费用置换”**模式：机构的介绍费将**等额抵消**您的秋武老师辅导费用，为您提供最高效率的解决方案。"
     },
     
-    // --- 类别 C：文书与逻辑 (区分 RP 和 SoP) ---
+    // --- 类别 C：文书与逻辑 ---
     {
         keywords: ['跨专业', '转专业', '法学', '经济学', '文科转理科', '理科转文科', '背景弱'],
         answer: "你的优势是**“语言资本”**和**“跨专业动机”**。但光有语言，没有**“逻辑骨架”**是危险的。我们会利用你的**原专业思维**（如法学的严密逻辑）来重构你的**新研究切入点**，让教授看到的是一个**“思维健全、动机明确”**的跨学科人才，而不是一个“基础薄弱的自学者”。"
@@ -176,7 +182,7 @@ const qaDatabase = [
         answer: "<strong>【志望理由书】</strong>（学部本科/修士考研通用）的核心是**“内驱力”**。它不是研究计划的缩写，而是要回答：**“为什么是这所大学？为什么是这个专业？为什么是您？”** 我会利用您的背景（如学際交叉或特殊经历）制造**“稀缺性”**，帮您梳理出一条**“无法被替代”**的人生逻辑线。"
     },
     
-    // --- 类别 D：心态与失败重塑 (高情商) ---
+    // --- 类别 D：心态与失败重塑 ---
     {
         keywords: ['失败', '重试', '焦虑', '内耗', '完美主义', '不够好', '不自信', '借口', '拖延', '没动力', '迷茫'],
         answer: "**【心理学/EQ】** 拖延不是懒惰，而是源于对**“任务全貌”的恐惧**。你不是在逃避写作，而是在逃避**“不知道如何开始”的无力感**。我的方法是：**任务降维**。把研究计划书拆解成**100个微任务**，一旦开始积累**“微实绩”**，大脑的**奖励机制**就会启动，拖延自然瓦解。记住：**失败是肥料，但不能是借口**。"
@@ -186,7 +192,7 @@ const qaDatabase = [
         answer: "在东大的学术标准里，没有‘失败品’，只有**‘没有找对肥料的果实’**。一次失败的套磁只证明了您**发送的时间或方式错了**，而不是您这个人错了。我会用《东大式·结构化套磁信模板》，通过心理暗示，激发教授的回复欲望。**我们只谈策略，不谈宿命论。**"
     },
     
-    // --- 类别 E：文化与面试 (具体策略) ---
+    // --- 类别 E：文化与面试 ---
     {
         keywords: ['流利口语', '日语流利', '面试自信', '文化差异', '读空气', '潜规则', '面试错误', '红线', '禁忌'],
         answer: "停止！这是一个**致命的文化误区**。如果您的日语很流利，您需要学会的不是**“表达流利度”**，而是**“读懂空气”（空気を読む）**。<br><br>日本人看重的自信，是**“理解潜台词”**。我的面试训练：重点是您如何在**30秒内**，传达出**最精准的逻辑闭环和对教授的尊重**。流利度在文化盲区面前，就是**“噪音”**。"
@@ -204,15 +210,16 @@ const qaDatabase = [
         answer: "在考学策略上，最大的认知偏差是**“放弃”**。即使您觉得没学好、没自信，也**绝对不能放弃 EJU 考试机会**。<br><br>**底层逻辑是：** 很多大学在申报时只需要**“受験票”**（准考证），并不需要具体成绩。放弃意味着您失去了**临场体验校内考核**的机会，尤其在软实力考核上，这种落差是无法弥补的。"
     },
     
-    // --- 类别 F：双非/背景 (成长论) ---
+    // --- 类别 F：双非/背景 ---
     {
         keywords: ['双非', '出身', '二本', '三本', '弥补', '借口', '背景'],
         answer: "在日本，**“出身校”**只是门槛，不是终点。要打破这个防御，需要您积累**“一个一个小的实绩”**。<br><br>正如我从理工科跨越到社会学研究一样，**背景不是限制，认知才是**。成功的底层逻辑是：**积累实绩，不找借口、不抱怨**。当您的学术逻辑和面试表现（软实力）远超您的学历背景时，冲击力更具吸引力。"
     }
 ];
 
+
 // ==========================================
-// 第四、五部分：核心交互/AI 逻辑 (兜底逻辑 - 中肯靠谱)
+// 第四部分：核心 AI 逻辑 (SNS 评论生成器 V2.0 逻辑)
 // ==========================================
 
 // 统一的 CTA 引导
@@ -247,15 +254,90 @@ function isNonProfessionalQuery(query) {
     return false;
 }
 
+// ==========================================
+// 核心函数：根据用户输入生成专业评论 (V2.0 增强版)
+// ==========================================
+function generateExpertComment(postContent) {
+    const lowerContent = postContent.toLowerCase();
+    
+    // 1. 研究计划书 / 选题 / 逻辑重构
+    if (lowerContent.includes('研究计划书') || lowerContent.includes('选题') || lowerContent.includes('宏大') || lowerContent.includes('方向') || lowerContent.includes('没头绪')) {
+        return `【东大逻辑诊断】选题宏大是致命错误，教授寻求的是「最小可行性模型(MVP)」。您的计划书缺乏向量逻辑降维。立即停止内耗，微信 qiuwu999，我为您找准逻辑破绽。`;
+    }
+    // 2. 教授面试 / 文化 / 紧张 / 冷场
+    if (lowerContent.includes('面试') || lowerContent.includes('紧张') || lowerContent.includes('冷场') || lowerContent.includes('潜台词') || lowerContent.includes('空气')) {
+        return `面试不是考口语，而是考「读空气」能力。别在建前上浪费时间，需要破解教授的本音暗示。微信 qiuwu999，领取《教授潜台词对照表》，实战训练。`;
+    }
+    // 3. 费用 / 中介 / 渠道 / 担心被骗
+    if (lowerContent.includes('中介') || lowerContent.includes('费用') || lowerContent.includes('渠道') || lowerContent.includes('花钱') || lowerContent.includes('机构')) {
+        return `留学费用是隐形成本。避免信息焦虑，请利用“辅导费用置换”契约，零额外支出享受高效率辅导。微信 qiuwu999，咨询置换详情。`;
+    }
+    // 4. EJU / 放弃 / 没考好 / 准考证
+    if (lowerContent.includes('eju') || lowerContent.includes('留考') || lowerContent.includes('放弃') || lowerContent.includes('没自信')) {
+        return `策略性放弃EJU是巨大错误！准考证就是校内考入场券。放弃意味着失去临场软实力考核机会。立即停止内耗，微信 qiuwu999 索取战略指导。`;
+    }
+    // 5. 跨专业 / 双非 / 背景弱
+    if (lowerContent.includes('跨专业') || lowerContent.includes('双非') || lowerContent.includes('背景弱') || lowerContent.includes('二本') || lowerContent.includes('三本')) {
+        return `背景不是终点，认知才是限制。利用理工科（或原专业）思维重构跨专业动机，可打造稀缺性。用实力打破背景防御，微信 qiuwu999 寻求诊断。`;
+    }
+    // 默认兜底评论，保证引流
+    return `您的困惑需要高维度的逻辑重构。AI只能分析已知，真人顾问提供破局策略。请直接加微信 qiuwu999，进行一对一诊断，高效解决。`;
+}
+
+
 async function callGeminiApi(userQuery) {
-    // 优先级 1 (P1): 非专业/人设提问
+    
+    // 优先级 1.1 (P1.1): SNS 评论生成模式 (新增逻辑)
+    // 检查用户输入中是否有关键词，并且判断该回复是否被标记为工具
+    let dbEntry = qaDatabase.find(qa => 
+        qa.keywords.some(keyword => userQuery.toLowerCase().includes(keyword.toLowerCase()))
+    );
+
+    if (dbEntry && dbEntry.isTool && dbEntry.toolType === 'SNS_COMMENT_GENERATOR') {
+        
+        // 提取用户真正想评论的内容：清除指令关键词，只保留内容
+        const toolKeywords = dbEntry.keywords.join('|');
+        const pattern = new RegExp(`(${toolKeywords})`, 'gi');
+        const postContent = userQuery.replace(pattern, '').trim();
+
+        let generatedComment = '';
+
+        if (postContent.length < 5) { // 如果内容太短，认为用户只输入了指令
+             // 如果用户只输入了“生成评论”而没有带内容，则返回提示语
+             return dbEntry.answer;
+        } else {
+             // 调用增强版的生成函数
+             generatedComment = generateExpertComment(postContent);
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        
+        // 封装 AI 回复，使其在聊天界面中高亮且易于复制
+        return `
+            <div style="padding: 15px; border: 2px solid #0056b3; background-color: #e6f7ff; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: #0056b3;">🔥 AI 专家评论（SNS 专用，已优化逻辑）</h4>
+                <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 10px;">
+                    **【目标痛点】**：${postContent.substring(0, 25)}${postContent.length > 25 ? '...' : ''} → 针对该痛点的专家回复：
+                </p>
+                <div style="font-weight: bold; color: #333; padding: 10px; background-color: #cceeff; border-radius: 5px; cursor: pointer;" 
+                     onclick="copyTextToClipboard(this.innerText)">
+                    ${generatedComment}
+                </div>
+                <p style="margin-top: 10px; font-size: 0.85em; color: #666;">
+                    ✅ **已生成。** 点击上方蓝色框可复制文本。请手动发布到您的目标 SNS 平台。
+                </p>
+            </div>
+        `;
+    }
+    
+    // 优先级 1.2 (P1.2): 非专业/人设提问
     if (isNonProfessionalQuery(userQuery)) {
         await new Promise(resolve => setTimeout(resolve, 800)); 
         const randomIndex = Math.floor(Math.random() * personalityFallbackResponses.length);
         return personalityFallbackResponses[randomIndex] + finalCTA; 
     }
     
-    // 优先级 2 (P2): 知识库/专业提问 (已大幅扩充和优化)
+    // 优先级 2 (P2): 知识库/专业提问
     const dbAnswer = getAnswerFromDB(userQuery);
     if (dbAnswer) {
         await new Promise(resolve => setTimeout(resolve, 600));
@@ -268,7 +350,9 @@ async function callGeminiApi(userQuery) {
     return strategicFallbackResponses[randomIndex];
 }
 
-// ... (以下 UI/交互函数保持不变) ...
+// ==========================================
+// 第五部分：核心交互/AI 逻辑 (UI/交互函数)
+// ==========================================
 
 function appendMessage(message, sender) {
     const chatBody = document.getElementById('chatBody');
@@ -287,9 +371,11 @@ function appendMessage(message, sender) {
 
 function getAnswerFromDB(query) {
     const lowerQuery = query.toLowerCase().trim();
-    for (const qa of qaDatabase) {
+    // 排除工具类指令，避免干扰常规问答
+    const regularQaDatabase = qaDatabase.filter(qa => !qa.isTool);
+    
+    for (const qa of regularQaDatabase) {
         for (const keyword of qa.keywords) {
-            // 使用 includes 进行宽松匹配，捕获意想不到的提问
             if (lowerQuery.includes(keyword.toLowerCase())) {
                 return qa.answer;
             }
@@ -329,6 +415,32 @@ function handleKeyPress(event) {
         sendMessage();
     }
 }
+
+// 新增：点击复制功能（方便复制评论）
+function copyTextToClipboard(text) {
+    // 移除评论文本中的 Emoji 和最后的 CTA
+    let cleanText = text.replace(/【东大逻辑诊断】|【东大逻辑重构】|【面试恐惧】|【费用契约】|【战略纠错】|【背景破局】/g, '').trim();
+    cleanText = cleanText.split('。')[0] + '。' + cleanText.split('。')[1]; // 仅复制前两句，增加拟人化
+    
+    // 优化：在复制时自动加入微信联系方式
+    const finalCopyText = cleanText.split('微信 qiuwu999')[0] + " 微信：qiuwu999。";
+
+
+    if (!navigator.clipboard) {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = finalCopyText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    } else {
+        navigator.clipboard.writeText(finalCopyText);
+    }
+    
+    alert("已复制到剪贴板，请粘贴至 SNS 平台。\n\n复制内容为: " + finalCopyText);
+}
+
 
 function returnToChat() {
     const chatBody = document.getElementById('chatBody');
@@ -433,5 +545,4 @@ function showStoryCard(stepKey) {
     }
 }
 
-// ⚠️ 【重要】请在您的 HTML 文件中，确保在页面加载完成后调用此函数一次，例如在 <body> 标签末尾添加：
-// <script>document.addEventListener('DOMContentLoaded', displayWelcomeMessage);</script>
+document.addEventListener('DOMContentLoaded', displayWelcomeMessage);
