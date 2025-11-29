@@ -31,7 +31,6 @@ const contentMap = {
             </div>
         `
     },
-    // 【修改点 4】优化内容与【修改点 3】整合内容
     cases: {
         title: "📚 破局行动指南：抓住『可控增量』，停止内耗",
         content: `
@@ -62,6 +61,13 @@ const suggestedPrompts = [
     "面试时教授的真实期待是什么？",
     "跨专业转经济有希望吗？",
     "我感到焦虑/内耗，该怎么办？"
+];
+
+// 外部链接配置
+// 【请在此处填入您具体的知乎和B站网址】
+const externalLinks = [
+    { name: "知乎 (Zhihu)", url: "https://www.zhihu.com/placeholder" }, 
+    { name: "B站 (Bilibili)", url: "https://space.bilibili.com/placeholder" } 
 ];
 
 
@@ -100,9 +106,6 @@ function handleKeyPress(event) {
     }
 }
 
-/**
- * 强制复制文本到剪贴板
- */
 function copyTextToClipboard(text, showConfirmation = true) {
     const tempInput = document.createElement('textarea');
     tempInput.value = text;
@@ -123,23 +126,45 @@ function handlePromptClick(text) {
     userInputField.focus(); 
 }
 
+/**
+ * 渲染提示标签和外部链接
+ */
 function renderPrompts() {
     const promptsContainer = document.getElementById('chatPrompts');
     if (!promptsContainer) return;
 
+    // 1. 渲染咨询提示标签
     promptsContainer.innerHTML = suggestedPrompts.map(prompt => 
         `<span class="prompt-tag" onclick="handlePromptClick('${prompt.replace(/'/g, "\\'")}')">${prompt}</span>`
     ).join('');
+    
+    // 2. 添加外部链接 (在输入框附近/右下方)
+    const linksHTML = externalLinks.map(link => 
+        `<a href="${link.url}" target="_blank" class="external-link">🌐 ${link.name}</a>`
+    ).join('');
+    
+    // 创建链接容器
+    const linkContainer = document.createElement('div');
+    linkContainer.className = 'external-links-container';
+    linkContainer.style.cssText = 'text-align: right; padding: 5px 0; margin-top: 5px;'; // 强制右对齐
+    linkContainer.innerHTML = `<p style="font-size: 0.8em; color: #777; display: inline-block; margin-right: 10px;">外部洞察：</p>${linksHTML}`;
+    
+    // 将链接容器放在提示标签容器的旁边或下方
+    // 假设 chatPrompts 在 .chat-input-area 上方，我们添加到 chatPrompts 的父级
+    if (promptsContainer.parentNode) {
+         promptsContainer.parentNode.insertBefore(linkContainer, promptsContainer.nextSibling);
+    }
 }
 
 /**
- * 【FIXED】统一强制滚动到底部，解决滑动受限问题
+ * 统一强制滚动到底部
  */
 function scrollToBottom() {
     const chatBody = document.getElementById('chatBody');
     if (chatBody) {
-        // 尝试使用 smooth 滚动，但关键是保证 scrollHeight 被正确计算
-        chatBody.scrollTop = chatBody.scrollHeight;
+        setTimeout(() => {
+             chatBody.scrollTop = chatBody.scrollHeight;
+        }, 50); 
     }
 }
 
@@ -185,9 +210,6 @@ function sendMessage() {
     }, 1200);
 }
 
-/**
- * 显示 AI 响应
- */
 function displayAIResponse(responseText, isSystemMessage = false) {
     const chatBody = document.getElementById('chatBody');
     const aiMessageDiv = document.createElement('div');
@@ -214,7 +236,7 @@ function displayAIResponse(responseText, isSystemMessage = false) {
 
 
 // ===============================================
-// 3. 【核心逻辑】专业咨询与灵活应答模块 (最终语气精修)
+// 3. 【核心逻辑】专业咨询与灵活应答模块
 // ===============================================
 
 function handleNonSeriousQuery(query) {
@@ -273,7 +295,7 @@ function generateSnsComment(content) {
     } else if (content.includes("教授") || content.includes("面试") || content.includes("关系")) {
         insight = "「文化心理博弈」：教授看重你的『潜在研究能力』与『文化适应性』。文案要展现逻辑穿透力，强调你是能理解日本**『本音 vs 建前』**的潜在协作者。";
     } else if (content.includes("转专业") || content.includes("跨考")) {
-        insight = "「文理融合策略」：跨考不是『裸转』。评论要强调寻找原专业与新专业的**『结合点』**，例如：**法学转经济**要突出利用现有**法律框架**分析经济问题。这是高效的破局路径。";
+        insight = "「文理融合策略」：跨考不是『裸转』。评论要强调寻找原专业与新专业的**『结合点』**，例如：**法学转经济**要突出利用现有**法律框架**分析经济数据。这是高效的破局路径。";
     } else {
         insight = "「系统分析」：留学申请越来越像一场**『高阶博弈』**。建议保持一份**「游刃有余的节奏感」**（遊び感覚），别被大环境的喧嚣影响。抓住**『认知差』**这个核心，才能轻松破局。";
     }
@@ -350,7 +372,7 @@ function getAIResponse(userInput) {
         ▶ <strong>稀缺背景：</strong> 东大修士毕业，10年辅导经验现役老师。
         ▶ <strong>服务价值：</strong> **个人精细化一对一辅导**，不走大机构流水线。我们提供的核心是**「东大基准」**的**逻辑重构**和**「文理交叉」**视角，帮学生**避免走弯路**，直接切入破局增量。
         <br>
-        我们只接能通过**『破局系统』**实现跃迁的学生。`;
+        只接能通过**『破局系统』**实现跃迁的学生。`;
     }
     
     // 私塾/多此一举
@@ -362,11 +384,6 @@ function getAIResponse(userInput) {
         <br>
         二者功能不重叠。我们只解决最难、最核心的**『破局增量』**问题。`;
     }
-    
-    // 【修改点 3】删除此处的知乎/B站回复，已整合到 contentMap.cases
-    // if (lowerInput.includes('知乎') || lowerInput.includes('哔哩哔哩') || lowerInput.includes('b站') || lowerInput.includes('渠道') || lowerInput.includes('链接')) {
-    //     return `【外部深度内容】...`;
-    // }
     
     if (lowerInput.includes('费用') || lowerInput.includes('收费') || lowerInput.includes('价格') || lowerInput.includes('免费')) {
         return `【透明商业逻辑】我们强烈推荐**“零成本模式”**：通过我推荐进入合作私塾或语校，机构支付的介绍费即覆盖您的全部辅导费。这是一种**三方共赢的价值模式**，对您**无任何隐形消费**。
@@ -406,22 +423,46 @@ function getAIResponse(userInput) {
 // 5. 页面初始化 (Initialization)
 // ===============================================
 window.onload = function() {
-    // 初始化时渲染咨询提示标签
+    // 初始化时渲染咨询提示标签及外部链接
     renderPrompts(); 
 
-    // 【修改点 1 & 2】UI/CSS 强制修复滚动，并删除冗余菜单项的事件绑定
+    // **【滚动修复与元素移除】**
+    
+    // 1. **【关键修复】** 彻底清除所有可能的滚动箭头或浮动按钮
+    // 尝试寻找所有位于屏幕角落且包含箭头图标的元素
+    const floatingButtons = document.querySelectorAll('button, div, a');
+    floatingButtons.forEach(el => {
+        const style = window.getComputedStyle(el);
+        const position = style.getPropertyValue('position');
+        const content = el.textContent || el.innerHTML;
+
+        // 策略A: 移除具有 "scroll" 或 "arrow" 关键字的浮动/固定按钮
+        if (position === 'fixed' || position === 'absolute') {
+            if (content.includes('▲') || content.includes('▼') || content.includes('↑') || content.includes('↓') || content.includes('scroll') || content.includes('返回顶部')) {
+                if (el.parentNode) {
+                    el.parentNode.removeChild(el); // 暴力移除
+                }
+            }
+        }
+        
+        // 策略B: 移除或隐藏包含外部平台名称的元素 (防止残留)
+        if (content.includes('微信') || content.includes('知乎') || content.includes('哔哩哔哩') || content.includes('B站')) {
+             if (!content.includes('qiuwu999')) { // 排除合法的联系方式提示
+                 el.style.display = 'none'; // 隐藏
+             }
+        }
+    });
+
+
+    // 2. 确保聊天主体和整个应用容器的滚动保障
     const chatBody = document.getElementById('chatBody');
     if (chatBody) {
-        // 强制设置 CSS 属性来保证滚动
         chatBody.style.overflowY = 'auto'; 
         chatBody.style.flexShrink = '1';
         chatBody.style.minHeight = '0';
-        chatBody.style.position = 'relative'; // 确保内容流正常
+        chatBody.style.webkitOverflowScrolling = 'touch'; 
     }
     
-    // 假设菜单项是通过特定ID或类名管理的，此处无法直接修改HTML，但可以删除其JS行为或依赖
-    // 需确保HTML中删除了 '升学破局策略游戏' 和 '知乎和哔哩哔哩网站' 两个按钮元素
-    
-    // 由于无法修改HTML，我无法删除按钮本身，但如果它们是通过JS动态添加的，此处可阻止。
-    // 假设您在HTML中已手动删除了这两个按钮，JS部分保持简洁。
+    // 3. 整个应用容器的滚动保障（假设外层容器是 'app-container' 或 body）
+    document.body.style.overflowY = 'auto'; 
 };
