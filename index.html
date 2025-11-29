@@ -9,7 +9,6 @@
 <body>
 
 <div class="main-container">
-
     <div class="left-panel">
         
         <div class="profile-cover">
@@ -33,9 +32,6 @@
             <a href="#" class="menu-item" onclick="showContent('cases')">
                 📚 成功案例 / 熵增行动
             </a>
-            <a href="#" class="menu-item menu-game-btn" onclick="showChatSection(false)">
-                🎯 AI 升学破局模拟 (策略游戏)
-            </a>
             <a href="#" class="menu-item menu-back-btn hidden" onclick="backToMenu()">
                 🔙 返回聊天界面
             </a>
@@ -47,10 +43,10 @@
                 <a href="#" target="_blank" class="social-icon wechat-id">
                     <span class="platform-name">微信ID: qiuwu999</span>
                 </a>
-                <a href="#" target="_blank" class="social-icon zhihu">
+                <a href="https://www.zhihu.com/placeholder" target="_blank" class="social-icon zhihu">
                     <span class="platform-name">知乎 (深度长文)</span>
                 </a>
-                <a href="#" target="_blank" class="social-icon bilibili">
+                <a href="https://space.bilibili.com/placeholder" target="_blank" class="social-icon bilibili">
                     <span class="platform-name">B站 (视频解析)</span>
                 </a>
             </div>
@@ -75,7 +71,7 @@
             </div>
 
             <div id="chatPrompts" class="chat-prompts">
-                </div>
+            </div>
 
             <div class="chat-input-area">
                 <input type="text" id="userInput" placeholder="请输入您的提问或关键词..." onkeypress="handleKeyPress(event)">
@@ -87,16 +83,9 @@
         </div>
 
         <div id="contentSection" class="content-section hidden">
-            </div>
-
-        <div id="gameSection" class="game-simulation-section hidden">
-            <h2>🎯 AI 升学破局模拟 (策略训练)</h2>
-            <p>点击开始，模拟一次完整的申请周期，测试您的「行动力」与「破局策略」。</p>
-            <button class="btn-expand" onclick="startGameSimulation()">开始模拟</button>
-            <div id="gameDashboard" class="dashboard hidden">
-                </div>
         </div>
-    </div>
+
+        </div>
 </div>
 
 <script src="script.js"></script>
