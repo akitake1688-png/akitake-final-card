@@ -70,8 +70,13 @@ const externalLinks = [
 // ===============================================
 
 function showChatSection(isChat) {
+    // 聊天和内容区互斥显示
     document.getElementById('chatSection').classList.toggle('hidden', !isChat);
     document.getElementById('contentSection').classList.add('hidden');
+    // 游戏/策略区也必须隐藏，防止冲突
+    const gameSection = document.getElementById('gameSection');
+    if (gameSection) gameSection.classList.add('hidden');
+    
     const backBtn = document.querySelector('.menu-back-btn');
     if (backBtn) backBtn.classList.toggle('hidden', isChat);
 }
@@ -80,6 +85,9 @@ function showContent(contentKey) {
     const content = contentMap[contentKey];
     if (content) {
         document.getElementById('chatSection').classList.add('hidden');
+        // 游戏/策略区也必须隐藏
+        const gameSection = document.getElementById('gameSection');
+        if (gameSection) gameSection.classList.add('hidden');
 
         const contentSection = document.getElementById('contentSection');
         contentSection.innerHTML = `<h2>${content.title}</h2>${content.content}`;
@@ -121,7 +129,7 @@ function handlePromptClick(text) {
 }
 
 /**
- * 渲染提示标签和外部链接，并确保链接在右侧下方
+ * 渲染提示标签和外部链接
  */
 function renderPrompts() {
     const promptsContainer = document.getElementById('chatPrompts');
@@ -146,7 +154,6 @@ function renderPrompts() {
     linkContainer.innerHTML = `<p style="font-size: 0.8em; color: #777; display: inline-block; margin-right: 10px;">外部洞察：</p>${linksHTML}`;
     
     // 将链接容器插入到 promptsContainer 后面
-    // 先检查是否已存在，防止重复插入
     if (!parentContainer.querySelector('.external-links-container')) {
         parentContainer.insertBefore(linkContainer, promptsContainer.nextSibling);
     }
@@ -440,6 +447,30 @@ function generateSnsComment(content) {
     return `SNS::${comment}`;
 }
 
+// ===============================================
+// 4. 【加固】AI 策略模拟模块占位函数 (防止 HTML 中有隐性按钮导致 ReferenceError)
+// ===============================================
+function startGameSimulation() {
+    alert("【秋武顾问】『AI 升学破局模拟』功能为定制化付费服务。请加微信 qiuwu999 获取您的专属模拟策略训练方案。");
+    // 如果 HTML 中存在 gameSection，执行隐藏和占位操作
+    const gameSection = document.getElementById('gameSection');
+    if (gameSection) {
+        // 确保点击后显示游戏区内容并隐藏开始按钮
+        const dashboard = document.getElementById('gameDashboard');
+        const expandBtn = gameSection.querySelector('.btn-expand');
+        
+        gameSection.classList.remove('hidden');
+        document.getElementById('contentSection').classList.add('hidden'); 
+        document.getElementById('chatSection').classList.add('hidden');
+        
+        // 替换内容
+        if (gameSection.querySelector('h2')) gameSection.querySelector('h2').textContent = '🎯 策略模拟：请联系顾问获取权限';
+        if (gameSection.querySelector('p')) gameSection.querySelector('p').innerHTML = '<strong>功能已锁定。</strong> 请加微信 <strong>qiuwu999</strong> 获取您的专属策略训练。';
+        if (expandBtn) expandBtn.style.display = 'none';
+        if (dashboard) dashboard.innerHTML = '<p style="color: red; padding: 20px;">请勿在关键升学期进行随机测试，策略模拟需要基于您的真实背景和目标学校进行定制化设计。</p>';
+    }
+}
+
 
 // ===============================================
 // 5. 页面初始化 (Initialization) - 包含滚动修复和元素清除强化 (加固版)
@@ -468,7 +499,8 @@ window.onload = function() {
                 }
                 
                 // 策略B: 移除包含特定“游戏/策略”关键词的元素
-                if (lowerContent.includes('升学破局') && lowerContent.includes('策略') && lowerContent.includes('游戏')) {
+                // 由于我们清除了HTML，这里主要处理残余或动态生成的内容
+                if (lowerContent.includes('升学破局') && lowerContent.includes('策略') && lowerContent.includes('游戏') && !el.classList.contains('message')) {
                      if (el.parentNode) {
                          el.parentNode.removeChild(el); 
                      } else {
