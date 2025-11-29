@@ -271,7 +271,7 @@ const SNS_COMMENT_GENERATOR = {
         if (keywords.some(k => k.includes('焦虑') || k.includes('不安'))) insights.push("博主分享的焦虑感，是留学路上的常见‘心魔’。如何在‘不确定性’中建立‘安全区’，正是心理学博弈的关键。");
         if (keywords.some(k => k.includes('文书') || k.includes('计划书'))) insights.push("关于文书，除了语言，更要用‘向量逻辑降维法’将个人经历与研究课题进行深度绑定，构建教授无法拒绝的‘认知差’。");
         if (keywords.some(k => k.includes('教授') || k.includes('套磁'))) insights.push("与教授沟通，不仅是信息传递，更是‘读空气’的艺术。我们需洞察‘建前与本音’，找到教授研究方向的‘破绽’。");
-        if (keywords.some(k => k.includes('背景') || k.includes('双非'))) insights.push("‘双非’并非劣势，而是转化‘破绽’的契机。关键在于如何重构叙事，展现独立思考与逆境成长力。");
+        if (keywords.some(k => k.includes('背景') || k => k.includes('双非'))) insights.push("‘双非’并非劣势，而是转化‘破绽’的契机。关键在于如何重构叙事，展现独立思考与逆境成长力。");
         if (keywords.some(k => k.includes('跨专业'))) insights.push("跨专业是展现‘学习能力’与‘独特视角’的绝佳机会。用‘逻辑链条重构’，让教授看到你的无限潜力。");
         if (keywords.some(k => k.includes('费用') || k.includes('经济'))) insights.push("关于留学费用，我们提供创新的‘费用置换契约’模式，助你打破经济壁垒，实现无忧升学。");
         if (insights.length === 0) insights.push("感谢博主分享！留学路上，‘认知差’往往决定成败。如何洞察并利用，是我们的核心。");
@@ -337,9 +337,24 @@ function renderChallenges() {
 }
 
 function selectCard(card, index) {
-    if (gameState.selectedCard && gameState.selectedCard.instanceId === card.instanceId) { gameState.selectedCard = null; } else { gameState.selectedCard = { ...card, instanceId: card.instanceId, handIndex: index }; }
+    if (gameState.selectedCard && gameState.selectedCard.id === card.id && gameState.selectedCard.instanceId === card.instanceId) { gameState.selectedCard = null; } else { gameState.selectedCard = { ...card, instanceId: card.instanceId, handIndex: index }; }
     updateGameUI();
 }
 
 function drawCards(num = 1) {
-    if (gameState.playerHand.length >= 5) { sendAiMessage("您的手牌已满，无法再抽牌。",
+    if (gameState.playerHand.length >= 5) { sendAiMessage("您的手牌已满，无法再抽牌。", 500); return; }
+    let drawnCount = 0;
+    for (let i = 0; i < num; i++) {
+        if (gameState.playerHand.length >= 5) break;
+        const newCard = { ...getRandomElement(strategyCards), instanceId: Date.now() + Math.random() }; gameState.playerHand.push(newCard); drawnCount++;
+    }
+    if (drawnCount > 0) sendAiMessage(`您抽到了 ${drawnCount} 张策略卡！`, 500);
+    updateGameUI();
+}
+
+async function parseAndApplyEffect(effectCode) {
+    const student = gameState.currentStudent;
+    const alertMessages = [];
+
+    // 支持简单的 IF/THEN 逻辑
+    const ifRegex = /IF\s*(.+?)\s*THEN\s*(.+)/;
