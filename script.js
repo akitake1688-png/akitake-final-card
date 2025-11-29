@@ -234,7 +234,7 @@ function generatePsychologicalInsight(query) {
     let response = null;
     psychologicalCounter++; 
 
-    // 1. 识别焦虑/情绪关键词 (保持不变，已使用高级逻辑)
+    // 1. 识别焦虑/情绪关键词 (连续提问下的回复轮换)
     const psychologicalKeywords = ["焦虑", "压力", "内耗", "迷茫", "没自信", "不安", "拖延", "情绪", "想放弃"];
     if (psychologicalKeywords.some(k => q.includes(k))) {
         
@@ -248,15 +248,15 @@ function generatePsychologicalInsight(query) {
         return `▶ 系统分析：${response}`;
     }
 
-    // 2. 识别文化/博弈关键词 (整合知乎/内部资料中的教授心理)
+    // 2. 识别文化/博弈关键词 (深度分析)
     const culturalKeywords = ["面试", "读空气", "本音", "建前", "教授关系", "失败", "落榜", "浪人", "答辩", "草稿"];
     if (culturalKeywords.some(k => q.includes(k))) {
         
         if (psychologicalCounter % 2 === 1) {
-            // 整合内部资料：面试的底层逻辑
+            // 引用内部资料：面试的底层逻辑 - 倒推法
             response = `【教授答辩底层逻辑】面试的底层逻辑是：**倒推阐述你的毕业后打算/目标/梦想**。教授需要看到你清晰的「学以致用」逻辑。我们辅导的核心是帮助你构建这种**『倒推式逻辑链』**。`;
         } else {
-            // 整合知乎资料：文化心理博弈
+            // 引用知乎资料：文化心理博弈
             response = `【文化心理学解析 - 精英博弈】面试的本质是对你<strong>『读空气（Kuuki o Yomu）』</strong>能力的压力测试。教授的<strong>『本音（Hon-ne）』</strong>绝不会轻易通过『建前（Tatemae）』暴露。策略核心：展现「人味知性」，传递「我是可信赖的、高潜力的协作者」的信号。`;
         }
         return `▶ 系统分析：${response}`;
@@ -269,18 +269,18 @@ function generatePsychologicalInsight(query) {
 function generateSnsComment(content) {
     const briefContent = content.substring(0, 30).trim() + (content.length > 30 ? '...' : '');
 
-    // 深度融合“秋武特色”的指导意见
+    // 深度融合“秋武特色”的指导意见（体现多领域专业视角和文化差异）
     let insight = '';
     if (content.includes("焦虑") || content.includes("迷茫") || content.includes("内耗")) {
-        insight = "「熵增警告」：焦虑是行动不足的信号。停止在评论区内耗，立即将精力投入到<strong>研究计划的最小化行动</strong>上。行动是抵抗不确定性的唯一方法。";
+        insight = "「熵增警告」：焦虑是行动不足的信号。停止在评论区内耗，立即将精力投入到**研究计划的最小化行动**上。记住，**行动是抵抗不确定性的唯一方法**。";
     } else if (content.includes("GPA") || content.includes("双非") || content.includes("背景")) {
-        insight = "「认知差破局」：背景劣势是既定事实。破局不在于抱怨，而在于用<strong>『东大基准』</strong>的研究计划进行<strong>「升维打击」</strong>。用可控的增量覆盖不可控的存量。";
+        insight = "「认知差破局」：背景劣势是既定事实。破局不在于抱怨，而在于用**『东大基准』**的研究计划进行**「升维打击」**。这是最中肯的升学策略。";
     } else if (content.includes("教授") || content.includes("面试") || content.includes("关系")) {
-        insight = "「教授心理博弈」：教授看重的是你的『潜在研究能力』与『文化适应性』。文案要展现逻辑穿透力，强调你是能理解<strong>『本音』</strong>的潜在协作者。";
+        insight = "「文化心理博弈」：教授看重你的『潜在研究能力』与『文化适应性』。文案要展现逻辑穿透力，强调你是能理解日本**『本音 vs 建前』**的潜在协作者。";
     } else if (content.includes("转专业") || content.includes("跨考")) {
-        insight = "「文理融合策略」：跨考不是『裸转』。评论要强调寻找原专业与新专业的<strong>『结合点』</strong>，利用现有技能（如数据分析、法律框架）为新研究赋能，这是高效的破局路径。";
+        insight = "「文理融合策略」：跨考不是『裸转』。评论要强调寻找原专业与新专业的**『结合点』**，利用现有技能（如数据分析、法律框架）为新研究赋能，这是高效的破局路径。";
     } else {
-        insight = "「系统分析」：留学大环境进入『竞争熵增』时代。要从战略高度看待留学，避开信息差陷阱，抓住<strong>『认知差』</strong>破局。";
+        insight = "「系统分析」：留学大环境进入『竞争熵增』时代。请保持**「遊び感覚/节奏感」**，避免信息差陷阱，抓住**『认知差』**破局，从战略高度看待留学。";
     }
 
     const comment = `
@@ -297,7 +297,7 @@ function generateSnsComment(content) {
 
 
 function getAIResponse(userInput) {
-    // 预处理：去除首尾可能存在的引号、空格、全角空格等干扰字符
+    // 预处理：去除首尾可能存在的引号、空格、全角空格等干扰字符 (增强鲁棒性)
     let cleanInput = userInput.trim().replace(/^['"”‘“\s]+|['"”‘“\s]+$/g, '');
     const lowerInput = cleanInput.toLowerCase();
     let response = null;
@@ -312,23 +312,18 @@ function getAIResponse(userInput) {
     if (response) return response;
 
     // 2. 【优先级次高】SNS 评论/回复模式检测 (增强兼容性)
-    const commentPrefix = '生成评论';
-    const replyPrefix = '生成回复';
-    const combinedPrefix = '生成评论或回复'; // 兼容旧指令
+    const prefixes = ['生成评论或回复', '生成评论', '生成回复'];
 
     let snsTriggered = false;
     let content = '';
     let prefixLength = 0;
 
-    if (lowerInput.startsWith(commentPrefix)) {
-        prefixLength = commentPrefix.length;
-        snsTriggered = true;
-    } else if (lowerInput.startsWith(replyPrefix)) {
-        prefixLength = replyPrefix.length;
-        snsTriggered = true;
-    } else if (lowerInput.startsWith(combinedPrefix)) {
-        prefixLength = combinedPrefix.length;
-        snsTriggered = true;
+    for (const prefix of prefixes) {
+        if (lowerInput.startsWith(prefix)) {
+            prefixLength = prefix.length;
+            snsTriggered = true;
+            break;
+        }
     }
     
     if (snsTriggered) {
@@ -352,54 +347,58 @@ function getAIResponse(userInput) {
 
     // 4. 关键词匹配 (中肯基础信息)
     
-    // 修正：答辩草稿/一问一答式辅导 (必须提供针对性的服务内容)
+    // 优化：答辩草稿/一问一答式辅导 (第二个图内容加强)
     if (lowerInput.includes('答辩') || lowerInput.includes('草稿') || lowerInput.includes('一问一答')) {
-        // 引用内部资料：文书/模拟面试/全套项目
-        return `【定制服务】是的，<strong>「一问一答式教授答辩草稿辅导」</strong>是我们的<strong>核心服务项目</strong>之一。
+        return `【核心服务：倒推式答辩辅导】是的，**「一问一答式教授答辩草稿辅导」**是我们的**核心服务项目**之一。
         <br>
-        我们的辅导绝非简单润色，而是：
+        ▶ <strong>辅导逻辑：</strong> 我们摒弃传统的一问一答，采用**『倒推法』**。以**“你毕业后的打算、目标、梦想”**为起点，倒推出你在大学的学习重点和计划，确保你的回答具有**『学以致用』**的强大逻辑支撑，消除教授的隐性顾虑。
         <br>
-        1. <strong>逻辑重构：</strong> 确保答辩稿与研究计划书的底层逻辑一致，避免教授在细节处抓到矛盾点。
-        2. <strong>核心问题演练：</strong> 围绕“毕业后的打算/目标/梦想”等关键问题进行<strong>倒推式实战演练</strong>，让你在面试中展现出明确的<strong>『学以致用』</strong>计划。
-        <br>
-        <strong>服务项目：</strong> 文书、模拟面试、全套（详情加微信 <strong>qiuwu999</strong> 沟通项目价位）。`;
+        ▶ <strong>服务项目：</strong> 文书、模拟面试、全套项目均包含此核心逻辑辅导。详情请加微信 <strong>qiuwu999</strong> 沟通项目价位。`;
     }
 
-    // 修正：私塾/多此一举 (重点突出秋武老师的优势)
+    // 优化：优势/特点/背景 (第一个图内容加强，突出文理交叉和一对一)
+    if (lowerInput.includes('优势') || lowerInput.includes('特点') || lowerInput.includes('你是谁') || lowerInput.includes('背景') || lowerInput.includes('辅导方式')) {
+        return `【秋武老师：核心优势】
+        <br>
+        ▶ <strong>背景：</strong> 东大修士毕业，10年辅导经验现役老师。
+        ▶ <strong>辅导方式：</strong> **个人精细化一对一辅导**，彻底区别于大机构的流水线作业。
+        ▶ <strong>核心竞争力：</strong> 提供**「文理交叉」**的跨学科视角和**「东大基准」**的逻辑重构。核心不只是改文书，而是提供**『认知差』**的破局方案。
+        <br>
+        我们只接能通过**『破局系统』**实现跃迁的学生。`;
+    }
+    
+    // 修正：私塾/多此一举 (保持清晰的逻辑重构 vs 流程管理)
     if (lowerInput.includes('私塾') || lowerInput.includes('多此一举') || lowerInput.includes('为什么要')) {
         // 强调“认知差”和“逻辑重构”
         return `【认知差破局】<strong>私塾是『流程管理』，秋武老师是『逻辑重构』。</strong>
         <br>
         1. <strong>私塾/大机构：</strong> 主要解决标准化问题（如语言课、基础知识、走流程），是<strong>『广度』</strong>。
-        2. <strong>秋武老师：</strong> 提供<strong>「东大基准」</strong>的<strong>『认知差』</strong>和<strong>「升维打击」</strong>。解决你研究计划书中的<strong>底层逻辑缺陷</strong>和<strong>教授心理博弈</strong>，是<strong>『深度』</strong>。
+        2. <strong>秋武老师：</strong> 提供**「东大基准」**的**『认知差』**和**「升维打击」**。解决你研究计划书中的<strong>底层逻辑缺陷</strong>和**教授心理博弈**，是<strong>『深度』</strong>。
         <br>
         二者功能不重叠。我们只解决最难、最核心的<strong>『破局增量』</strong>问题。`;
     }
     
-    // 增加知乎/B站外部渠道连接的引导
+    // 增加知乎/B站外部渠道连接的引导 (引用文化差异和节奏感)
     if (lowerInput.includes('知乎') || lowerInput.includes('哔哩哔哩') || lowerInput.includes('b站') || lowerInput.includes('渠道')) {
-        // 引用知乎/B站数据中的内容：语种纠缠、文化梗、遊び感覚
-        return `【外部深度内容】是的，秋武老师在知乎和B站上发布了大量<strong>专业深度分析</strong>，包括：
+        return `【外部深度内容】秋武老师在知乎和B站上发布了大量**专业深度分析**，包括：
         <br>
-        1. <strong>文化心理：</strong> 留学环境中的<strong>『熵增』</strong>与<strong>『遊び感覚/节奏感』</strong>。
-        2. <strong>语言/文化：</strong> 语种学习中的<strong>『纠缠』</strong>与<strong>『言外之意』</strong>，避免文化梗误解。
+        1. <strong>文化心理：</strong> 留学环境中的**『熵增』**与**『遊び感覚/节奏感』**（保持余裕）。
+        2. <strong>语言/文化差异：</strong> 语种学习中的**『纠缠』**与**『言外之意』**，避免文化梗误解。
         <br>
-        这些内容旨在提升你的<strong>『认知差』</strong>。请搜索：<strong>秋武老师</strong>，查看完整的 <strong>文理融合/教授心理学</strong> 深度分析。`;
+        这些内容旨在提升你的**『认知差』**。请搜索：**秋武老师**，查看完整的 **文理融合/教授心理学** 深度分析。`;
     }
     
-    if (lowerInput.includes('费用') || lowerInput.includes('收费') || lowerInput.includes('价格')) {
-        return `【透明商业逻辑】我们强烈推荐<strong>“免费模式”</strong>：通过我推荐进入合作私塾或语校，机构支付的介绍费即覆盖您的全部辅导费。这是一种<strong>三方共赢的价值模式</strong>。
+    if (lowerInput.includes('费用') || lowerInput.includes('收费') || lowerInput.includes('价格') || lowerInput.includes('免费')) {
+        return `【透明商业逻辑】我们强烈推荐<strong>“免费模式”</strong>：通过我推荐进入合作私塾或语校，机构支付的介绍费即覆盖您的全部辅导费。这是一种**三方共赢的价值模式**，无任何隐形消费。
         <br>
         <strong>细节请加微信：qiuwu999</strong> 沟通。`;
     }
     if (lowerInput.includes('双非') || lowerInput.includes('gpa') || lowerInput.includes('出身校')) {
-        return `【双非/GPA破局】出身校是既定事实，不要内耗。<strong>策略是：</strong> 必须用高品质的<strong>研究计划书</strong> + 高分语言成绩（N1/托福）来实现<strong>「升维打击」</strong>。这是双非逆袭的底层逻辑。`;
+        return `【双非/GPA破局】出身校是既定事实，不要内耗。<strong>策略是：</strong> 必须用高品质的<strong>研究计划书</strong> + 高分语言成绩（N1/托福）来实现**「升维打击」**。这是双非逆袭的底层逻辑。`;
     }
-    if (lowerInput.includes('优势') || lowerInput.includes('特点') || lowerInput.includes('你是谁') || lowerInput.includes('背景')) {
-        return `【秋武老师背景】东大修士毕业，10年辅导经验。<strong>核心特点：</strong> 专注攻克最难的「研究计划构建」和「教授心理博弈」。提供「文理融合」的跨学科视角和「东大基准」的逻辑重构。`;
-    }
+    
     if (lowerInput.includes('跨专业') || lowerInput.includes('转专业')) {
-        return `【跨专业策略】不要「裸转」。<strong>策略核心：</strong> 寻找原专业与新专业的<strong>「结合点」</strong>。利用原专业的工具（如数据分析、法律框架）来研究新领域，这是跨考成功的核心逻辑。`;
+        return `【跨专业策略】不要「裸转」。<strong>策略核心：</strong> 寻找原专业与新专业的**「结合点」**。利用原专业的工具（如数据分析、法律框架）来研究新领域，这是跨考成功的核心逻辑。`;
     }
     if (lowerInput.includes('微信') || lowerInput.includes('联系方式') || lowerInput.includes('沟通')) {
         return `【联系方式】秋武老师微信ID是：<strong>qiuwu999</strong>。<strong>咨询请直接说明：</strong> 出身校、专业、日语/英语成绩、意向学校。我们不闲聊，只解决具体的升学问题。`;
