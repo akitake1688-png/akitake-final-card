@@ -39,8 +39,8 @@
                 <a href="#" class="menu-item" onclick="showContent('model'); return false;">辅导模式与价值承诺</a>
                 <a href="#" class="menu-item menu-game-btn" onclick="startGameSimulation(); return false;">AI 升学破局模拟 (策略游戏)</a>
                 <a href="#" class="menu-item" onclick="showContent('cases'); return false;">成功案例 / 更多思考</a>
-                <a href="#" class="menu-item menu-back-btn" onclick="showChatSection()">返回咨询聊天</a> 
-                </div>
+                <a href="#" class="menu-item menu-back-btn" onclick="showChatSection(true)">返回咨询聊天</a> 
+            </div>
 
             <div id="contentDetail" class="content-detail hidden">
                 <button class="btn-back" onclick="backToMenu()">← 返回菜单列表</button>
@@ -77,7 +77,7 @@
 
         <div id="gameSimulationSection" class="right-panel game-simulation-section hidden">
             
-            <button class="btn-back-to-chat" onclick="showChatSection()">← 返回咨询聊天</button>
+            <button class="btn-back-to-chat" onclick="showChatSection(true)">← 返回咨询聊天</button>
             
             <div class="dashboard-and-challenges">
                 <div class="dashboard">
