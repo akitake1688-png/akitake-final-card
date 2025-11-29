@@ -1,12 +1,15 @@
 /* ==================================== */
-/* 1. 全局变量与配色系统 (强调专业与信任) */
+/* 秋武老师卡片 CSS - 专业化、中肯优化版 */
 /* ==================================== */
+
+/* 1. 全局变量与配色系统 (强调专业与信任) */
+/* ------------------------------------ */
 :root {
-    --color-primary-dark: #3700b3; /* 权威感深紫/靛蓝 - 核心品牌色 */
-    --color-primary-light: #6200ee; /* 较亮主色 - 按钮背景 */
-    --color-accent: #03dac6; /* 科技感青绿色 - 精准行动、高亮色 */
+    --color-primary-dark: #1f3a61; /* 专业深蓝/藏青色 - 核心品牌色 (替代深紫) */
+    --color-primary-light: #37598c; /* 较亮主色 - 按钮背景 (更沉稳) */
+    --color-accent: #00897b; /* 沉稳青绿色 - 精准行动、高亮色 (替代科技感青绿) */
     
-    --color-background-main: #f0f0f4; /* 主体背景 */
+    --color-background-main: #f5f5f9; /* 主体背景 (略微提亮) */
     --color-panel-bg: #ffffff; /* 面板、卡片背景 */
     --color-text-dark: #212529; /* 深色文本 */
     --color-text-light: #ffffff; /* 浅色文本 */
@@ -15,17 +18,17 @@
 }
 
 /* ==================================== */
-/* 动画：克制版头像光晕 (Subtle Halo) */
+/* 动画：克制版头像光晕 (Subtle Halo) - 保留核心动画，但调整颜色 */
 /* ==================================== */
 @keyframes halo-pulse-subtle {
     0% {
-        box-shadow: 0 0 0 0px rgba(98, 0, 238, 0.5);
+        box-shadow: 0 0 0 0px rgba(55, 89, 140, 0.5); /* 使用新的主色 */
     }
     70% {
-        box-shadow: 0 0 0 5px rgba(98, 0, 238, 0);
+        box-shadow: 0 0 0 5px rgba(55, 89, 140, 0);
     }
     100% {
-        box-shadow: 0 0 0 0px rgba(98, 0, 238, 0);
+        box-shadow: 0 0 0 0px rgba(55, 89, 140, 0);
     }
 }
 
@@ -61,7 +64,7 @@ body {
 .left-panel {
     width: 320px; 
     flex-shrink: 0; 
-    background: #f7f7f9; 
+    background: #fcfcfc; /* 略微提亮 */
     color: var(--color-text-dark);
     padding: 35px 25px; 
     box-sizing: border-box;
@@ -137,7 +140,7 @@ h1 {
 }
 
 .btn-expand:hover {
-    background-color: #4a00b0;
+    background-color: #2b4a78; /* 悬停颜色更深沉 */
     transform: translateY(-1px); 
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
 }
@@ -162,7 +165,7 @@ h1 {
 }
 
 .menu-item:hover {
-    background-color: #f0f0ff; 
+    background-color: #f0f3f9; /* 略微淡蓝，更专业 */
     color: var(--color-primary-dark);
     border-left: 4px solid var(--color-accent); 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -170,7 +173,7 @@ h1 {
 
 .menu-game-btn {
     font-weight: 600;
-    background-color: #e9e9ff; /* 略微突出，但保持专业 */
+    background-color: #e3f2fd; /* 淡蓝色，替代原略微突出的紫色 */
     color: var(--color-primary-dark);
 }
 
@@ -263,10 +266,22 @@ h1 {
     border-bottom-right-radius: 5px;
 }
 
+/* 【关键优化】聊天气泡粗体样式：确保专业中肯，替代可能激进的颜色 */
+.chat-body .bubble strong {
+    color: #004a99; /* 使用深蓝色，替换可能过于激进的红色 */
+    font-weight: 700;
+}
+
+/* 【新增样式】用于强调核心概念的类，比纯粗体更专业 */
+.akiwu-highlight {
+    color: #B03A2E; /* 专业深红色，用于突出核心竞争力 */
+    font-weight: 700;
+}
+
 /* 4.2 SNS 评论模式 (高亮输出) */
 .sns-comment-bubble {
     max-width: 90%;
-    background-color: #fff9e6; /* 浅黄色背景，强调是待复制内容 */
+    background-color: #fcf8e3; /* 浅黄色背景，更柔和 */
     color: var(--color-text-dark); 
     border: 2px solid var(--color-accent); 
     border-radius: 10px; 
@@ -282,7 +297,8 @@ h1 {
     padding: 15px 25px;
     display: flex;
     background-color: #f7f7f9;
-    border-top: 1px solid #ddd;
+    /* 移除顶部边框，让它看起来更像一个整体 */
+    border-top: none; 
 }
 
 .chat-input-area input {
@@ -298,7 +314,7 @@ h1 {
 .chat-input-area input:focus {
     outline: none;
     border-color: var(--color-primary-light);
-    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.1); 
+    box-shadow: 0 0 0 2px rgba(55, 89, 140, 0.1); /* 使用新的主色阴影 */
 }
 
 .chat-input-area button {
@@ -315,7 +331,7 @@ h1 {
 }
 
 .chat-input-area button:hover {
-    background-color: #00bfa5;
+    background-color: #00796b; /* 悬停颜色更深沉 */
 }
 
 /* 4.4 加载指示器 */
@@ -332,7 +348,7 @@ h1 {
 }
 
 /* ==================================== */
-/* 5. 游戏模拟区 (Game Simulation) */
+/* 5. 游戏模拟区 (Game Simulation) - 保持原样，仅颜色跟随全局变化 */
 /* ==================================== */
 .game-simulation-section {
     padding: 25px 30px;
