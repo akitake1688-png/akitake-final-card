@@ -13,7 +13,7 @@
 
             <div id="profileCover" class="profile-cover">
                 <div class="avatar-ring">
-                    <img src="avatar.jpg" alt="导师头像" class="avatar" onerror="this.opacity='0'">
+                    <img src="avatar.jpg" alt="导师头像" class="avatar" onerror="this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; this.classList.add('missing-avatar');">
                 </div>
                 <h1>东大修士・留学破局咨询</h1>
                 <h2 class="subtitle">不只提供信息，更提供“认知差”破局方案。用心理学博弈论，破解日本留学的隐形壁垒。</h2>
@@ -23,11 +23,11 @@
             </div>
 
             <div id="menuList" class="menu-list hidden">
-                <a href="#" class="menu-item" onclick="showContent('strength')">核心优势：以破绽为支点</a>
-                <a href="#" class="menu-item" onclick="showContent('model')">辅导模式与价值承诺</a>
-                <a href="#" class="menu-item" onclick="startGameSimulation()">AI 升学破局模拟 (策略游戏)</a>
-                <a href="#" class="menu-item" onclick="showContent('cases')">成功案例 / 更多思考</a>
-                <a href="#" class="menu-item" onclick="showChatSection()">返回咨询聊天</a>
+                <a href="#" class="menu-item" onclick="showContent('strength'); return false;">核心优势：以破绽为支点</a>
+                <a href="#" class="menu-item" onclick="showContent('model'); return false;">辅导模式与价值承诺</a>
+                <a href="#" class="menu-item menu-game-btn" onclick="startGameSimulation(); return false;">AI 升学破局模拟 (策略游戏)</a>
+                <a href="#" class="menu-item" onclick="showContent('cases'); return false;">成功案例 / 更多思考</a>
+                <a href="#" class="menu-item menu-back-btn" onclick="showChatSection(); return false;">返回咨询聊天</a>
             </div>
 
             <div id="contentDetail" class="content-detail hidden">
@@ -58,7 +58,7 @@
             </div>
             <div class="chat-input-area">
                 <input type="text" id="userInput" placeholder="输入关键词 (如: 费用、面试、双非)..." onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()">发送</button>
+                <button id="sendButton" onclick="sendMessage()">发送</button>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
             
             <div class="dashboard-and-challenges">
                 <div class="dashboard">
-                    <h3>学生状态: <span id="currentStudentName"></span></h3>
+                    <h3>学生状态: <span id="currentStudentName">N/A</span></h3>
                     <div class="stats-grid">
                         <div class="stat-item"><span class="stat-label">GPA</span><span id="dashGPA">N/A</span></div>
                         <div class="stat-item"><span class="stat-label">JLPT</span><span id="dashJLPT">N/A</span></div>
@@ -81,32 +81,34 @@
                     </div>
                     <div class="stat-traits"><strong>特质:</strong> <span id="dashTraits"></span></div>
                     <hr>
-                    <h4>目标: <span id="targetGoalName"></span></h4>
+                    <h4>目标: <span id="targetGoalName">N/A</span></h4>
                     <div id="targetGoalRequirements" class="goal-requirements">
                         </div>
                 </div>
 
                 <div class="game-info-challenges">
                     <div class="game-status-bar">
-                        <span id="gamePhase"></span>
+                        <span id="gamePhase">回合: 0/10</span>
                         <div class="resources">
-                            精力: <span id="playerEnergy" class="resource-value">10</span> | 
+                            精力: <span id="playerEnergy" class="resource-value">0</span> | 
                             洞察力: <span id="playerInsight" class="resource-value">0</span> | 
                             信用分: <span id="playerCredit" class="resource-value">0</span>
                         </div>
                     </div>
                     <h4>当前挑战</h4>
                     <div id="activeChallengesContainer" class="active-challenges-container">
-                        </div>
+                        <div class="placeholder-challenge">请开始模拟以查看挑战卡</div>
+                    </div>
                 </div>
             </div>
 
             <div class="player-hand-area">
                 <h4>策略手牌 (点击卡牌选中)</h4>
                 <div id="playerHandContainer" class="player-hand-container">
-                    </div>
+                    <div class="placeholder-hand">请开始模拟并抽牌</div>
+                </div>
                 <div class="game-actions">
-                    <button class="btn-game-action" onclick="drawCards(1)">抽牌 (1 费)</button>
+                    <button class="btn-game-action" onclick="drawCards(3)">抽牌</button>
                     <button class="btn-apply-strategy hidden" onclick="tryApplyStrategy()">应用选中策略</button>
                     <button class="btn-end-turn" onclick="endTurn()">结束回合</button>
                 </div>
