@@ -26,7 +26,7 @@ const contentMap = {
             </div>
             <div class="detail-card">
                 <h3>模式二：零成本模式（三方共赢）</h3>
-                <p><strong>商业逻辑透明：</strong> 通过我推荐进入合作私塾或语言学校，机构支付的介绍费即覆盖您的全部辅导费。您**无需额外支出**，即可享受高端定制咨询。这是一种**三方共赢**的价值模式。</p>
+                <p><strong>商业逻辑透明：</strong> 通过我推荐进入合作私塾或语言学校后，机构支付的介绍费即覆盖您的全部辅导费。您**无需额外支出**，即可享受高端定制咨询。这是一种**三方共赢**的价值模式。</p>
                 <p><strong>联系方式：</strong> 细节和定制方案请加微信 <strong>qiuwu999</strong> 沟通。</p>
             </div>
         `
@@ -442,64 +442,72 @@ function generateSnsComment(content) {
 
 
 // ===============================================
-// 5. 页面初始化 (Initialization) - 包含滚动修复和元素清除强化
+// 5. 页面初始化 (Initialization) - 包含滚动修复和元素清除强化 (加固版)
 // ===============================================
 window.onload = function() {
-    // 1. 初始化时渲染咨询提示标签及外部链接
-    renderPrompts(); 
+    try {
+        // 1. 初始化时渲染咨询提示标签及外部链接
+        renderPrompts(); 
 
-    // 2. **【关键修复：彻底清除箭头、游戏按钮和外部平台字眼】**
-    const allElements = document.querySelectorAll('button, div, a, span, p, h1, h2, h3'); // 扩大选择器范围
-    allElements.forEach(el => {
-        const style = window.getComputedStyle(el);
-        const position = style.getPropertyValue('position');
-        const content = el.textContent || el.innerHTML;
-        const lowerContent = content.toLowerCase();
+        // 2. **【关键修复：彻底清除箭头、游戏按钮和外部平台字眼】**
+        const allElements = document.querySelectorAll('button, div, a, span, p, h1, h2, h3');
+        allElements.forEach(el => {
+            try {
+                const style = window.getComputedStyle(el);
+                const position = style.getPropertyValue('position');
+                const content = el.textContent || el.innerHTML;
+                const lowerContent = content.toLowerCase();
 
-        // 策略A: 移除所有浮动/固定/绝对定位的箭头或滚动按钮
-        if (position === 'fixed' || position === 'absolute') {
-            if (lowerContent.includes('▲') || lowerContent.includes('▼') || lowerContent.includes('↑') || lowerContent.includes('↓') || lowerContent.includes('scroll') || lowerContent.includes('顶部') || el.classList.contains('scroll-arrow') || el.classList.contains('scroll-to-bottom')) {
-                if (el.parentNode) {
-                    el.parentNode.removeChild(el); // 暴力移除滚动箭头
+                // 策略A: 移除所有浮动/固定/绝对定位的箭头或滚动按钮
+                if (position === 'fixed' || position === 'absolute') {
+                    if (lowerContent.includes('▲') || lowerContent.includes('▼') || lowerContent.includes('↑') || lowerContent.includes('↓') || lowerContent.includes('scroll') || lowerContent.includes('顶部') || el.classList.contains('scroll-arrow') || el.classList.contains('scroll-to-bottom')) {
+                        if (el.parentNode) {
+                            el.parentNode.removeChild(el); 
+                        }
+                    }
                 }
+                
+                // 策略B: 移除包含特定“游戏/策略”关键词的元素
+                if (lowerContent.includes('升学破局') && lowerContent.includes('策略') && lowerContent.includes('游戏')) {
+                     if (el.parentNode) {
+                         el.parentNode.removeChild(el); 
+                     } else {
+                         el.style.display = 'none'; 
+                     }
+                }
+                
+                // 策略C: 移除或隐藏包含外部平台名称的元素
+                if (lowerContent.includes('微信') || lowerContent.includes('知乎') || lowerContent.includes('哔哩哔哩') || lowerContent.includes('b站') || lowerContent.includes('公众号')) {
+                     if (!lowerContent.includes('qiuwu999') && !el.classList.contains('external-link') && !el.classList.contains('message') && !el.classList.contains('bubble')) {
+                         el.style.display = 'none'; 
+                     }
+                }
+            } catch (e) {
+                // 捕获单个元素处理错误，防止页面崩溃
+                console.error("Error processing element in cleanup:", e);
             }
+        });
+
+
+        // 3. 【关键滚动修复】确保聊天主体和整个应用容器的滚动保障
+        const chatBody = document.getElementById('chatBody');
+        const appContainer = document.querySelector('.app-container') || document.body; 
+
+        if (chatBody) {
+            // 强制聊天框内容区域可滚动
+            chatBody.style.overflowY = 'auto'; 
+            chatBody.style.flexShrink = '1';
+            chatBody.style.minHeight = '0';
+            chatBody.style.maxHeight = 'calc(100vh - 120px)';
+            chatBody.style.webkitOverflowScrolling = 'touch';
         }
         
-        // 策略B: 移除包含特定“游戏/策略”关键词的元素
-        if (lowerContent.includes('升学破局') && lowerContent.includes('策略') && lowerContent.includes('游戏')) {
-             if (el.parentNode) {
-                 el.parentNode.removeChild(el); // 暴力移除游戏按钮
-             } else {
-                 el.style.display = 'none'; // 如果无法移除，则隐藏
-             }
-        }
+        // 确保整个应用容器可以滚动
+        appContainer.style.overflowY = 'auto'; 
+        appContainer.style.height = '100%';
         
-        // 策略C: 移除或隐藏包含外部平台名称的元素 (防止残留)
-        if (lowerContent.includes('微信') || lowerContent.includes('知乎') || lowerContent.includes('哔哩哔哩') || lowerContent.includes('b站') || lowerContent.includes('公众号')) {
-             // 排除合法的联系方式 (qiuwu999) 和新添加的右下角链接 (.external-link)
-             if (!lowerContent.includes('qiuwu999') && !el.classList.contains('external-link') && !el.classList.contains('message') && !el.classList.contains('bubble')) { 
-                 el.style.display = 'none'; // 隐藏所有非法的平台字眼
-             }
-        }
-    });
-
-
-    // 3. 【关键滚动修复】确保聊天主体和整个应用容器的滚动保障
-    const chatBody = document.getElementById('chatBody');
-    // 假设最外层容器是 body 或者您自己的主容器类名
-    const appContainer = document.querySelector('.app-container') || document.body; 
-
-    if (chatBody) {
-        // 强制聊天框内容区域可滚动
-        chatBody.style.overflowY = 'auto'; 
-        chatBody.style.flexShrink = '1';
-        chatBody.style.minHeight = '0'; // 确保在flex布局中可以收缩
-        // 设定一个合理的最大高度，防止撑满屏幕
-        chatBody.style.maxHeight = 'calc(100vh - 120px)'; 
-        chatBody.style.webkitOverflowScrolling = 'touch'; // 提升iOS滑动体验
+    } catch (error) {
+        // 捕获整个初始化流程的错误，并记录
+        console.error("Critical error during window initialization (onload):", error);
     }
-    
-    // 确保整个应用容器（如果需要）可以滚动
-    appContainer.style.overflowY = 'auto'; 
-    appContainer.style.height = '100%';
 };
