@@ -24,7 +24,7 @@ const dashJLPT = document.getElementById('dashJLPT');
 const dashTOEFL = document.getElementById('dashTOEFL');
 const dashCulturalAdaptability = document.getElementById('dashCulturalAdaptability');
 const dashPsychologicalResilience = document.getElementById('dashPsychologicalResilience');
-const dashLogicSkill = document = document.getElementById('dashLogicSkill');
+const dashLogicSkill = document.getElementById('dashLogicSkill'); // 修正了这里的重复赋值错误
 const dashConfidence = document.getElementById('dashConfidence');
 const dashAnxiety = document.getElementById('dashAnxiety');
 const dashTraits = document.getElementById('dashTraits');
@@ -496,4 +496,22 @@ const SNS_COMMENT_GENERATOR = {
     }
 };
 
-// ... (script.js 的后续部分将继续)
+
+// --- 5. 游戏流程控制 ---
+
+// 启动游戏模拟
+async function startGameSimulation() {
+    // 隐藏聊天界面，显示游戏界面
+    chatSection.classList.add('hidden');
+    gameSimulationSection.classList.remove('hidden');
+
+    // 隐藏左侧菜单，如果它可见的话
+    menuList.classList.add('hidden');
+    profileCover.classList.add('hidden'); // 隐藏封面
+    contentDetail.classList.add('hidden'); // 隐藏内容详情
+
+    gameState.gameStarted = true;
+    gameState.gameOver = false;
+    gameState.turn = 0;
+    gameState.playerEnergy = 10; // 修复：上次在这里截断了
+    gameState.playerInsight = 0
