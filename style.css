@@ -341,3 +341,42 @@ h1 {
     border-radius: 0 12px 12px 0;
     overflow-y: auto;
 }
+/* ==================================== */
+/* 4.1.5 咨询提示区 (New Addition) */
+/* ==================================== */
+.chat-prompts {
+    flex-shrink: 0;
+    padding: 15px 25px 15px 25px; /* 上下留出空间 */
+    background-color: #ffffff; 
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* 标签间距 */
+}
+
+.prompt-tag {
+    background-color: #f0f3f9; 
+    color: var(--color-primary-dark);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    border: 1px solid #e0e6f0;
+    font-weight: 500;
+}
+
+.prompt-tag:hover {
+    background-color: #e0e3f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 调整输入区，使其视觉上与提示区连接 */
+.chat-input-area {
+    flex-shrink: 0;
+    padding: 15px 25px;
+    display: flex;
+    background-color: #f7f7f9;
+    /* 移除顶部边框，让它看起来更像一个整体 */
+    border-top: none; 
+}
