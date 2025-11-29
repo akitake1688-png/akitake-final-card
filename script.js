@@ -127,11 +127,10 @@ function renderPrompts() {
 }
 
 /**
- * 【优化点 1】统一强制滚动到底部
+ * 【FIXED】统一强制滚动到底部
  */
 function scrollToBottom() {
     const chatBody = document.getElementById('chatBody');
-    // 强制滚动到最新消息，解决滚动条失效的问题
     if (chatBody) {
         chatBody.scrollTop = chatBody.scrollHeight;
     }
@@ -153,7 +152,7 @@ function sendMessage() {
     const loadingIndicator = document.getElementById('loadingIndicator');
     loadingIndicator.classList.remove('hidden');
     
-    scrollToBottom(); // 立即滚动用户消息
+    scrollToBottom(); 
 
     userInputField.value = '';
 
@@ -175,7 +174,7 @@ function sendMessage() {
         }
 
         loadingIndicator.classList.add('hidden');
-        scrollToBottom(); // 确保回复后再次滚动
+        scrollToBottom(); 
     }, 1200);
 }
 
@@ -195,7 +194,7 @@ function displayAIResponse(responseText, isSystemMessage = false) {
         bubbleContent = responseText.replace('SNS::', '');
         bubbleClass = 'bubble sns-comment-bubble';
         bubbleContent = `<strong>【破局文案：已自动复制】</strong><br>${bubbleContent}`;
-    } else if (responseText.includes('▶ 专业分析：')) {
+    } else if (responseText.includes('💬 秋武洞察：')) { // 再次统一柔化前缀
          bubbleContent = responseText;
     } else if (isSystemMessage || responseText.startsWith('[系统提示]')) {
          bubbleClass = 'bubble system-bubble';
@@ -203,12 +202,12 @@ function displayAIResponse(responseText, isSystemMessage = false) {
 
     aiMessageDiv.innerHTML = `<div class="${bubbleClass}">${bubbleContent}</div>`;
     chatBody.appendChild(aiMessageDiv);
-    scrollToBottom(); // 确保消息追加后滚动
+    scrollToBottom(); 
 }
 
 
 // ===============================================
-// 3. 【核心逻辑】专业咨询与灵活应答模块 (开场白优化重点)
+// 3. 【核心逻辑】专业咨询与灵活应答模块 (最终语气精修)
 // ===============================================
 
 function handleNonSeriousQuery(query) {
@@ -216,9 +215,9 @@ function handleNonSeriousQuery(query) {
     const funnyKeywords = ["好吃", "可爱", "帅", "美", "八卦", "谈恋爱", "是谁", "机器人", "程序", "闲聊", "搞笑"];
 
     if (funnyKeywords.some(k => q.includes(k))) {
-        // 优化开场白：更自然、更具幽默感
+        // 语气更像前辈的忠告
         return `感谢您的关注！您可能是来找留学攻略的对吧？秋武老师（WeChat ID: qiuwu999）是<strong>东大修士毕业，10年经验</strong>的现役老师。咱们只聊「破局策略」。<br><br>
-        <strong>中肯建议：</strong> 日本留学竞争激烈，时间非常宝贵。有专业问题，请直接提问，**别把宝贵精力浪费在不必要的纠结里哦。**`;
+        <strong>中肯建议：</strong> 日本留学竞争激烈，时间非常宝贵。把精力集中到研究计划书上，**别把宝贵时间浪费在不必要的纠结里哦。**`;
     }
     return null;
 }
@@ -233,15 +232,18 @@ function generatePsychologicalInsight(query) {
     const psychologicalKeywords = ["焦虑", "压力", "内耗", "迷茫", "没自信", "不安", "拖延", "情绪", "想放弃"];
     if (psychologicalKeywords.some(k => q.includes(k))) {
         
-        // 优化开场白：去除“过来人聊聊心事”，直接切入正题
         if (psychologicalCounter % 3 === 1) {
-             response = `【心态调整：装个行动导航】您觉得「焦虑」对不对？这是大脑在提醒您：**我们该给目标装个导航了！** 别急着想终点，不妨把大目标切成几个「今天就能完成的小任务」。您会发现，**小小的行动，比大大的担忧管用一百倍哦。**`;
+             // 语气更像直接的心理分析
+             response = `您觉得「焦虑」对不对？这是大脑在提醒您：**是时候给目标装个导航了！** 咱们别急着想终点，不妨把大目标切成几个「今天就能完成的小任务」。您会发现，**小小的行动，比大大的担忧管用一百倍。**`;
         } else if (psychologicalCounter % 3 === 2) {
-             response = `【心态平衡术】其实，咱们亚洲学生常会陷入一种「过度自我纠结」的状态，就是怕犯错。但请记住：**留学申请路上的小挑战，不是失败的“果实”，而是下一次成功的“肥料”**。先从小处着手积累信心，心态自然就稳了。`;
+             // 语气更像过来人的经验
+             response = `其实，咱们亚洲学生常会陷入一种「过度自我纠结」的状态，就是怕犯错。但请记住：**留学申请路上的小挑战，不是失败的“果实”，而是下一次成功的“肥料”**。先从小处着手积累信心，心态自然就稳了。`;
         } else {
-             response = `【秋武老师的小提醒：信息噪音】如果总觉得心烦意乱，可能是被**「信息噪音」**给拖着跑了。就像在一个嘈杂的菜市场想写论文一样！咱们**暂时关闭掉不必要的信息输入**，把精力拉回到最有价值的地方：**您那份独一无二的研究计划书**。心静了，效率自然就高了。`;
+             // 语气更像警示
+             response = `如果总觉得心烦意乱，可能是被**「信息噪音」**给拖着跑了。就像在一个嘈杂的菜市场想写论文！咱们**暂时关闭掉不必要的信息输入**，把精力拉回到最有价值的地方：**您那份独一无二的研究计划书**。心静了，效率自然就高了。`;
         }
-        return `▶ 专业分析：${response}`;
+        // 统一使用更柔和的“秋武洞察”前缀
+        return `💬 秋武洞察：${response}`;
     }
 
     // 2. 识别文化/博弈关键词 (深度分析)
@@ -249,12 +251,13 @@ function generatePsychologicalInsight(query) {
     if (culturalKeywords.some(k => q.includes(k))) {
         
         if (psychologicalCounter % 2 === 1) {
-            // 优化开场白：更直接的专业切入
+            // 专业切入，简洁有力
             response = `【教授答辩的秘诀】面试的底层逻辑是**「倒推法」**。教授最想听的不是你的研究内容，而是你**“毕业后的打算、目标或梦想”**。然后，你再倒推出你在大学的学习计划，展示清晰的**『学以致用』**逻辑链。`;
         } else {
+            // 强调文化适应的价值
             response = `【日本文化心理小课堂】日本面试存在**『本音（真实期待）』**和**『建前（客套话）』**的博弈。教授的真实期待是：你是否具备**文化适应性**和**独立完成研究的行动力**。我们的辅导核心，就是帮助您展现这种**「人味知性」**。`;
         }
-        return `▶ 专业分析：${response}`;
+        return `💬 秋武洞察：${response}`;
     }
     
     return null; 
@@ -272,7 +275,7 @@ function generateSnsComment(content) {
     } else if (content.includes("教授") || content.includes("面试") || content.includes("关系")) {
         insight = "「文化心理博弈」：教授看重你的『潜在研究能力』与『文化适应性』。文案要展现逻辑穿透力，强调你是能理解日本**『本音 vs 建前』**的潜在协作者。";
     } else if (content.includes("转专业") || content.includes("跨考")) {
-        insight = "「文理融合策略」：跨考不是『裸转』。评论要强调寻找原专业与新专业的**『结合点』**，例如：**法学转经济**要突出利用现有**法律框架**分析经济数据。这是高效的破局路径。";
+        insight = "「文理融合策略」：跨考不是『裸转』。评论要强调寻找原专业与新专业的**『结合点』**，例如：**法学转经济**要突出利用现有**法律框架**分析经济问题。这是高效的破局路径。";
     } else {
         insight = "「系统分析」：留学申请越来越像一场**『高阶博弈』**。建议保持一份**「游刃有余的节奏感」**（遊び感覚），别被大环境的喧嚣影响。抓住**『认知差』**这个核心，才能轻松破局。";
     }
@@ -392,7 +395,7 @@ function getAIResponse(userInput) {
         return `【联系方式】秋武老师微信ID是：<strong>qiuwu999</strong>。<strong>咨询请直接说明：</strong> 出身校、专业、日语/英语成绩、意向学校。我们不闲聊，只解决具体的升学问题。`;
     }
     
-    // **【优化点 2】优化最常用的问候语/开场白**
+    // 【最终优化】最常用的问候语/开场白：直接、务实、不鸡汤
     if (lowerInput.includes('你好') || lowerInput.includes('在吗')) {
         return `你好！我是秋武老师的助手。您好不容易找到我，**请别客气，直接把您的核心问题告诉我吧**（比如：**双非、跨专业、面试**）。咱们只聊破局策略，不闲聊！**需要定制化方案请加微信：qiuwu999 详聊。**`;
     }
