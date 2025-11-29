@@ -342,21 +342,4 @@ function selectCard(card, index) {
 }
 
 function drawCards(num = 1) {
-    if (gameState.playerHand.length >= 5) { sendAiMessage("您的手牌已满，无法再抽牌。", 500); return; }
-    let drawnCount = 0;
-    for (let i = 0; i < num; i++) {
-        if (gameState.playerHand.length >= 5) break;
-        const newCard = { ...getRandomElement(strategyCards), instanceId: Date.now() + Math.random() }; gameState.playerHand.push(newCard); drawnCount++;
-    }
-    if (drawnCount > 0) sendAiMessage(`您抽到了 ${drawnCount} 张策略卡！`, 500);
-    updateGameUI();
-}
-
-async function applyStrategyCard() {
-    if (!gameState.selectedCard) return;
-    const card = gameState.selectedCard;
-    gameState.playerEnergy -= (card.cost.energy || 0); gameState.playerInsight -= (card.cost.insight || 0); gameState.playerCredit -= (card.cost.credit || 0);
-    await sendAiMessage(`您使用了策略卡：<strong>${card.name}</strong>！`);
-    await parseAndApplyEffect(card.effect_code);
-    const solvedChallenges = gameState.activeChallenges.filter(challenge => challenge.solution_strategy_id === card.id);
-    for (const solved of solved
+    if (gameState.playerHand.length >= 5) { sendAiMessage("您的手牌已满，无法再抽牌。",
