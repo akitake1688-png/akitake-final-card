@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>秋武老师 | 东大升学破局顾问</title>
     <link rel="stylesheet" href="style.css">
-    </head>
+</head>
 <body>
 
 <div class="main-container">
@@ -36,13 +36,24 @@
             <a href="#" class="menu-item menu-game-btn" onclick="showChatSection(false)">
                 🎯 AI 升学破局模拟 (策略游戏)
             </a>
-            <a href="#" class="menu-item menu-back-btn" onclick="backToMenu()">
+            <a href="#" class="menu-item menu-back-btn hidden" onclick="backToMenu()">
                 🔙 返回聊天界面
             </a>
         </div>
         
         <div class="social-links">
-            <p style="font-size: 0.9em; color: #6c757d; margin-top: 20px;">微信ID：qiuwu999</p>
+            <p style="font-size: 0.9em; color: #6c757d; margin-bottom: 10px;">外部渠道与深度内容</p>
+            <div class="social-icons">
+                <a href="#" target="_blank" class="social-icon wechat-id">
+                    <span class="platform-name">微信ID: qiuwu999</span>
+                </a>
+                <a href="#" target="_blank" class="social-icon zhihu">
+                    <span class="platform-name">知乎 (深度长文)</span>
+                </a>
+                <a href="#" target="_blank" class="social-icon bilibili">
+                    <span class="platform-name">B站 (视频解析)</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -63,6 +74,9 @@
                 </div>
             </div>
 
+            <div id="chatPrompts" class="chat-prompts">
+                </div>
+
             <div class="chat-input-area">
                 <input type="text" id="userInput" placeholder="请输入您的提问或关键词..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">发送</button>
@@ -79,7 +93,7 @@
             <h2>🎯 AI 升学破局模拟 (策略训练)</h2>
             <p>点击开始，模拟一次完整的申请周期，测试您的「行动力」与「破局策略」。</p>
             <button class="btn-expand" onclick="startGameSimulation()">开始模拟</button>
-            <div id="gameDashboard" class="dashboard">
+            <div id="gameDashboard" class="dashboard hidden">
                 </div>
         </div>
     </div>
