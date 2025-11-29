@@ -234,7 +234,7 @@ function generatePsychologicalInsight(query) {
     let response = null;
     psychologicalCounter++; 
 
-    // 1. 识别焦虑/情绪关键词
+    // 1. 识别焦虑/情绪关键词 (保持不变，已使用高级逻辑)
     const psychologicalKeywords = ["焦虑", "压力", "内耗", "迷茫", "没自信", "不安", "拖延", "情绪", "想放弃"];
     if (psychologicalKeywords.some(k => q.includes(k))) {
         
@@ -248,14 +248,16 @@ function generatePsychologicalInsight(query) {
         return `▶ 系统分析：${response}`;
     }
 
-    // 2. 识别文化/博弈关键词
-    const culturalKeywords = ["面试", "读空气", "本音", "建前", "教授关系", "失败", "落榜", "浪人"];
+    // 2. 识别文化/博弈关键词 (整合知乎/内部资料中的教授心理)
+    const culturalKeywords = ["面试", "读空气", "本音", "建前", "教授关系", "失败", "落榜", "浪人", "答辩", "草稿"];
     if (culturalKeywords.some(k => q.includes(k))) {
         
         if (psychologicalCounter % 2 === 1) {
-            response = `【文化心理学解析 - 精英博弈】面试的本质是对你<strong>『读空气（Kuuki o Yomu）』</strong>能力的压力测试。教授的<strong>『本音（Hon-ne）』</strong>绝不会轻易通过『建前（Tatemae）』暴露。策略核心：展现「人味知性」，传递「我是可信赖的、高潜力的协作者」的信号。`;
+            // 整合内部资料：面试的底层逻辑
+            response = `【教授答辩底层逻辑】面试的底层逻辑是：**倒推阐述你的毕业后打算/目标/梦想**。教授需要看到你清晰的「学以致用」逻辑。我们辅导的核心是帮助你构建这种**『倒推式逻辑链』**。`;
         } else {
-            response = `【教授关系洞察 - 信用机制】教授看重的不是你的过去，而是你的「未来信用值」。策略升级：回答问题时，不仅要逻辑严谨，更要展示你对日本该领域<strong>最新学术趋势</strong>的掌握，用事实证明你的文化适应力和潜在价值。`;
+            // 整合知乎资料：文化心理博弈
+            response = `【文化心理学解析 - 精英博弈】面试的本质是对你<strong>『读空气（Kuuki o Yomu）』</strong>能力的压力测试。教授的<strong>『本音（Hon-ne）』</strong>绝不会轻易通过『建前（Tatemae）』暴露。策略核心：展现「人味知性」，传递「我是可信赖的、高潜力的协作者」的信号。`;
         }
         return `▶ 系统分析：${response}`;
     }
@@ -295,7 +297,9 @@ function generateSnsComment(content) {
 
 
 function getAIResponse(userInput) {
-    const lowerInput = userInput.toLowerCase();
+    // 预处理：去除首尾可能存在的引号、空格、全角空格等干扰字符
+    let cleanInput = userInput.trim().replace(/^['"”‘“\s]+|['"”‘“\s]+$/g, '');
+    const lowerInput = cleanInput.toLowerCase();
     let response = null;
 
     responseHistory.unshift(userInput);
@@ -304,13 +308,37 @@ function getAIResponse(userInput) {
     }
 
     // 1. 【优先级最高】幽默/非专业问题处理
-    response = handleNonSeriousQuery(userInput);
+    response = handleNonSeriousQuery(cleanInput);
     if (response) return response;
 
-    // 2. 【优先级次高】SNS 评论模式检测 (支持全角和半角冒号)
-    if (lowerInput.startsWith('生成评论或回复：') || lowerInput.startsWith('生成评论或回复:') || lowerInput.startsWith('生成评论或回复')) {
-        const index = userInput.indexOf('：') > 0 ? userInput.indexOf('：') + 1 : (userInput.indexOf(':') > 0 ? userInput.indexOf(':') + 1 : 8);
-        const content = userInput.substring(index).trim();
+    // 2. 【优先级次高】SNS 评论/回复模式检测 (增强兼容性)
+    const commentPrefix = '生成评论';
+    const replyPrefix = '生成回复';
+    const combinedPrefix = '生成评论或回复'; // 兼容旧指令
+
+    let snsTriggered = false;
+    let content = '';
+    let prefixLength = 0;
+
+    if (lowerInput.startsWith(commentPrefix)) {
+        prefixLength = commentPrefix.length;
+        snsTriggered = true;
+    } else if (lowerInput.startsWith(replyPrefix)) {
+        prefixLength = replyPrefix.length;
+        snsTriggered = true;
+    } else if (lowerInput.startsWith(combinedPrefix)) {
+        prefixLength = combinedPrefix.length;
+        snsTriggered = true;
+    }
+    
+    if (snsTriggered) {
+        // 从指令后开始截取内容
+        content = cleanInput.substring(prefixLength).trim();
+
+        // 检查并移除指令后紧跟的冒号 (全角或半角)
+        if (content.startsWith('：') || content.startsWith(':')) {
+            content = content.substring(1).trim();
+        }
         
         if (content) {
             return generateSnsComment(content);
@@ -323,13 +351,48 @@ function getAIResponse(userInput) {
     if (response) return response;
 
     // 4. 关键词匹配 (中肯基础信息)
+    
+    // 修正：答辩草稿/一问一答式辅导 (必须提供针对性的服务内容)
+    if (lowerInput.includes('答辩') || lowerInput.includes('草稿') || lowerInput.includes('一问一答')) {
+        // 引用内部资料：文书/模拟面试/全套项目
+        return `【定制服务】是的，<strong>「一问一答式教授答辩草稿辅导」</strong>是我们的<strong>核心服务项目</strong>之一。
+        <br>
+        我们的辅导绝非简单润色，而是：
+        <br>
+        1. <strong>逻辑重构：</strong> 确保答辩稿与研究计划书的底层逻辑一致，避免教授在细节处抓到矛盾点。
+        2. <strong>核心问题演练：</strong> 围绕“毕业后的打算/目标/梦想”等关键问题进行<strong>倒推式实战演练</strong>，让你在面试中展现出明确的<strong>『学以致用』</strong>计划。
+        <br>
+        <strong>服务项目：</strong> 文书、模拟面试、全套（详情加微信 <strong>qiuwu999</strong> 沟通项目价位）。`;
+    }
+
+    // 修正：私塾/多此一举 (重点突出秋武老师的优势)
+    if (lowerInput.includes('私塾') || lowerInput.includes('多此一举') || lowerInput.includes('为什么要')) {
+        // 强调“认知差”和“逻辑重构”
+        return `【认知差破局】<strong>私塾是『流程管理』，秋武老师是『逻辑重构』。</strong>
+        <br>
+        1. <strong>私塾/大机构：</strong> 主要解决标准化问题（如语言课、基础知识、走流程），是<strong>『广度』</strong>。
+        2. <strong>秋武老师：</strong> 提供<strong>「东大基准」</strong>的<strong>『认知差』</strong>和<strong>「升维打击」</strong>。解决你研究计划书中的<strong>底层逻辑缺陷</strong>和<strong>教授心理博弈</strong>，是<strong>『深度』</strong>。
+        <br>
+        二者功能不重叠。我们只解决最难、最核心的<strong>『破局增量』</strong>问题。`;
+    }
+    
+    // 增加知乎/B站外部渠道连接的引导
+    if (lowerInput.includes('知乎') || lowerInput.includes('哔哩哔哩') || lowerInput.includes('b站') || lowerInput.includes('渠道')) {
+        // 引用知乎/B站数据中的内容：语种纠缠、文化梗、遊び感覚
+        return `【外部深度内容】是的，秋武老师在知乎和B站上发布了大量<strong>专业深度分析</strong>，包括：
+        <br>
+        1. <strong>文化心理：</strong> 留学环境中的<strong>『熵增』</strong>与<strong>『遊び感覚/节奏感』</strong>。
+        2. <strong>语言/文化：</strong> 语种学习中的<strong>『纠缠』</strong>与<strong>『言外之意』</strong>，避免文化梗误解。
+        <br>
+        这些内容旨在提升你的<strong>『认知差』</strong>。请搜索：<strong>秋武老师</strong>，查看完整的 <strong>文理融合/教授心理学</strong> 深度分析。`;
+    }
+    
     if (lowerInput.includes('费用') || lowerInput.includes('收费') || lowerInput.includes('价格')) {
         return `【透明商业逻辑】我们强烈推荐<strong>“免费模式”</strong>：通过我推荐进入合作私塾或语校，机构支付的介绍费即覆盖您的全部辅导费。这是一种<strong>三方共赢的价值模式</strong>。
         <br>
         <strong>细节请加微信：qiuwu999</strong> 沟通。`;
     }
     if (lowerInput.includes('双非') || lowerInput.includes('gpa') || lowerInput.includes('出身校')) {
-        // 移除了 ** 符号
         return `【双非/GPA破局】出身校是既定事实，不要内耗。<strong>策略是：</strong> 必须用高品质的<strong>研究计划书</strong> + 高分语言成绩（N1/托福）来实现<strong>「升维打击」</strong>。这是双非逆袭的底层逻辑。`;
     }
     if (lowerInput.includes('优势') || lowerInput.includes('特点') || lowerInput.includes('你是谁') || lowerInput.includes('背景')) {
@@ -345,7 +408,7 @@ function getAIResponse(userInput) {
         return `您好！我是您的东大升学破局顾问助理。请直接输入您的关键信息或感兴趣的关键词（如：费用、双非、优势）。我们不闲聊，只提供专业解决方案。<strong>更多细节请加微信：qiuwu999 详聊。</strong>`;
     }
 
-    // 5. 默认回复 (秋武特色中肯引导) - 移除了列表符号
+    // 5. 默认回复 (秋武特色中肯引导)
     return `升学是一场信息战，也是一场心理战。您的问题可能缺乏核心关键词，请尝试输入以下 <strong>「破局要素」</strong>：
     <br><br>
     ▶ <strong>留学要素关键词：</strong> 费用、双非、GPA、面试、跨专业<br>
