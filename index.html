@@ -3,162 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 留学咨询室 - 深度定制版（策略模拟系统）</title>
+    <title>AI 留学咨询室 - 深度定制版 (策略模拟系统)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="main-container">
         <div class="left-panel">
+
             <div id="profileCover" class="profile-cover">
                 <div class="avatar-ring">
-                    <img src="avatar.jpg" alt="导师头像" class="avatar" onerror="this.style.opacity='0'">
+                    <img src="avatar.jpg" alt="导师头像" class="avatar" onerror="this.opacity='0'">
                 </div>
-                <h1>东大修士·留学破局咨询</h1>
-                <p class="subtitle">
-                    不只提供信息，更提供“认知差”破局方案。<br>
-                    用心理学博弈论，破解日本留学的隐形壁垒。
+                <h1>东大修士・留学破局咨询</h1>
+                <h2 class="subtitle">不只提供信息，更提供“认知差”破局方案。用心理学博弈论，破解日本留学的隐形壁垒。</h2>
+                <p>
+                    <button class="btn-expand" onclick="toggleMenu(true)">探索我的咨询模式</button>
                 </p>
-                <button class="btn-expand" onclick="toggleMenu(true)">探索我的咨询模式</button>
             </div>
 
             <div id="menuList" class="menu-list hidden">
-                <h2>咨询模块</h2>
-                
-                <div class="menu-item" onclick="showContent('strength')">
-                    <h3>核心优势：以破绽为支点</h3>
-                    <p>利用“认知偏差”，将你的弱点转化为教授眼中的独特动机。</p>
-                    <span class="arrow">></span>
-                </div>
-                
-                <div class="menu-item" onclick="showContent('model')">
-                    <h3>辅导模式与价值承诺</h3>
-                    <p>免佣直通车 / 结果导向。建立这一行的“信用契约”。</p>
-                    <span class="arrow">></span>
-                </div>
-                
-                <div class="menu-item new-feature" onclick="startGameSimulation()">
-                    <h3>AI 升学破局模拟</h3>
-                    <p>模拟你的升学路径，测试文化适应度与策略效果。</p>
-                    <span class="arrow">></span>
-                </div>
-                
-                <div class="menu-item" onclick="showContent('cases')">
-                    <h3>成功案例 / 更多思考</h3>
-                    <p>深度解析“读空气”的艺术与学术逻辑的重构。</p>
-                    <span class="arrow">></span>
-                </div>
-                
-                <button class="btn-back-home" onclick="toggleMenu(false)">← 返回主页</button>
+                <a href="#" class="menu-item" onclick="showContent('strength')">核心优势：以破绽为支点</a>
+                <a href="#" class="menu-item" onclick="showContent('model')">辅导模式与价值承诺</a>
+                <a href="#" class="menu-item" onclick="startGameSimulation()">AI 升学破局模拟 (策略游戏)</a>
+                <a href="#" class="menu-item" onclick="showContent('cases')">成功案例 / 更多思考</a>
+                <a href="#" class="menu-item" onclick="showChatSection()">返回咨询聊天</a>
             </div>
-            
+
             <div id="contentDetail" class="content-detail hidden">
-                <button class="btn-back-menu" onclick="backToMenu()">← 返回菜单列表</button>
-                <div id="dynamicContent">
+                <button class="btn-back" onclick="backToMenu()">← 返回菜单列表</button>
+                <div id="dynamicContent" class="dynamic-content">
                     </div>
             </div>
 
         </div>
 
-        <div class="right-panel">
-            <div id="chatSection" class="chat-section">
-                <div class="chat-header">
-                    <div class="header-avatar">
-                        <img src="avatar.jpg" alt="AI 导师" onerror="this.style.display='none'">
-                    </div>
-                    <div class="header-info">
-                        <span class="name">东大留学 AI 咨询师</span>
-                        <span class="status">在线・深度专业模式</span>
+        <div id="chatSection" class="right-panel chat-section">
+            <div class="chat-header">
+                <h2>东大留学 AI 咨询师</h2>
+                <p>在线 · 深度专业模式</p>
+            </div>
+            <div id="chatBody" class="chat-body">
+                <div class="message ai-message">
+                    <div class="bubble">
+                        您好！我是您的 AI 留学咨询助理。
+                        <br><br>
+                        在日本留学申请中，“读懂空气”与“逻辑闭环”同样重要。
+                        您目前对 <strong>费用、优势、双非背景</strong> 还是 <strong>套磁、研究计划书</strong> 感兴趣？或者点击左侧 <strong>AI 升学破局模拟</strong>，体验您的专属策略。
                     </div>
                 </div>
+                <div id="loadingIndicator" class="loading-indicator hidden">
+                    <div class="dot-flashing"></div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="输入关键词 (如: 费用、面试、双非)..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">发送</button>
+            </div>
+        </div>
 
-                <div id="chatBody" class="chat-body">
-                    <div class="message ai-message">
-                        <div class="bubble">
-                            您好！我是您的 AI 留学咨询助理。
-                            <br><br>
-                            在日本留学申请中，<strong>“读懂空气”</strong>与<strong>“逻辑闭环”</strong>同样重要。
-                            <br>
-                            您目前对 <strong>费用、优势、双非背景</strong> 还是 <strong>套磁、计划书</strong> 感兴趣？
-                            或者点击左侧 <strong>AI 升学破局模拟</strong>，体验您的专属策略。
+        <div id="gameSimulationSection" class="right-panel game-simulation-section hidden">
+            
+            <button class="btn-back-to-chat" onclick="showChatSection()">← 返回咨询聊天</button>
+            
+            <div class="dashboard-and-challenges">
+                <div class="dashboard">
+                    <h3>学生状态: <span id="currentStudentName"></span></h3>
+                    <div class="stats-grid">
+                        <div class="stat-item"><span class="stat-label">GPA</span><span id="dashGPA">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">JLPT</span><span id="dashJLPT">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">TOEFL</span><span id="dashTOEFL">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">文化适应力</span><span id="dashCulturalAdaptability">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">心理韧性</span><span id="dashPsychologicalResilience">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">逻辑思维</span><span id="dashLogicSkill">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">自信度</span><span id="dashConfidence">N/A</span></div>
+                        <div class="stat-item"><span class="stat-label">焦虑度</span><span id="dashAnxiety">N/A</span></div>
+                    </div>
+                    <div class="stat-traits"><strong>特质:</strong> <span id="dashTraits"></span></div>
+                    <hr>
+                    <h4>目标: <span id="targetGoalName"></span></h4>
+                    <div id="targetGoalRequirements" class="goal-requirements">
+                        </div>
+                </div>
+
+                <div class="game-info-challenges">
+                    <div class="game-status-bar">
+                        <span id="gamePhase"></span>
+                        <div class="resources">
+                            精力: <span id="playerEnergy" class="resource-value">10</span> | 
+                            洞察力: <span id="playerInsight" class="resource-value">0</span> | 
+                            信用分: <span id="playerCredit" class="resource-value">0</span>
                         </div>
                     </div>
-                </div>
-                
-                <div id="loadingIndicator" class="loading-indicator hidden">
-                    <div class="dot-typing"></div>
-                    <span class="status-text">AI 正在深度思考...</span>
-                </div>
-                
-                <div id="storyCardContainer" style="display: none;">
-                </div>
-
-                <div class="chat-input-area">
-                    <input type="text" id="userInput" placeholder="输入关键词（如：费用、面试、双非）..." onkeypress="handleKeyPress(event)">
-                    <button onclick="sendMessage()">发送</button>
-                </div>
-            </div>
-
-            <div id="gameSimulationSection" class="game-simulation-section hidden">
-                <div class="game-header">
-                    <h2>AI 升学破局模拟</h2>
-                    <button class="btn-back-to-chat" onclick="showChatSection()">← 返回咨询聊天</button>
-                </div>
-                <div class="game-info">
-                    <div class="game-phase">阶段: <span id="gamePhase"></span></div>
-                    <div class="game-resources">
-                        精力: <span id="playerEnergy">0</span> | 洞察力: <span id="playerInsight">0</span> | 信用分: <span id="playerCredit">0</span>
-                    </div>
-                </div>
-                
-                <div class="student-dashboard">
-                    <h3>您的学生档案：<span id="currentStudentName"></span></h3>
-                    <div class="dashboard-grid">
-                        <div class="dash-item">GPA: <span id="dashGPA"></span></div>
-                        <div class="dash-item">日语力: <span id="dashJLPT"></span></div>
-                        <div class="dash-item">英语力: <span id="dashTOEFL"></span></div>
-                        <div class="dash-item">文化适应度: <span id="dashCulturalAdaptability"></span></div>
-                        <div class="dash-item">心理韧性: <span id="dashPsychologicalResilience"></span></div>
-                        <div class="dash-item">逻辑思维: <span id="dashLogicSkill"></span></div>
-                        <div class="dash-item">自信心: <span id="dashConfidence"></span></div>
-                        <div class="dash-item">焦虑度: <span id="dashAnxiety"></span></div>
-                    </div>
-                    <div class="dash-traits">特质: <span id="dashTraits"></span></div>
-                </div>
-
-                <div class="target-goal-display">
-                    <h3>目标：<span id="targetGoalName"></span></h3>
-                    <div id="targetGoalRequirements" class="goal-requirements"></div>
-                </div>
-
-                <div class="in-play-area">
                     <h4>当前挑战</h4>
                     <div id="activeChallengesContainer" class="active-challenges-container">
-                        <div class="placeholder-challenge">暂无活动挑战</div>
-                    </div>
+                        </div>
                 </div>
-
-                <div class="hand-area">
-                    <h4>手牌 (策略卡)</h4>
-                    <div id="playerHandContainer" class="player-hand-container">
-                        <div class="placeholder-hand">点击 "抽牌" 获取策略</div>
-                    </div>
-                </div>
-                
-                <div class="game-actions">
-                    <button class="btn-game-action" onclick="drawCards()">抽牌</button>
-                    <button class="btn-game-action btn-end-turn" onclick="endTurn()">结束回合</button>
-                    <button class="btn-game-action btn-apply-strategy hidden" onclick="tryApplyStrategy()">尝试应用策略</button>
-                </div>
-
-                <div id="gameResultScreen" class="game-result-screen hidden">
-                    <h3>模拟结果</h3>
-                    <p id="gameResultText"></p>
-                    <button class="btn-game-action" onclick="resetGameSimulation()">重新开始模拟</button>
-                    <button class="btn-game-action btn-back-to-chat" onclick="showChatSection()">返回咨询聊天</button>
-                </div>
-
             </div>
+
+            <div class="player-hand-area">
+                <h4>策略手牌 (点击卡牌选中)</h4>
+                <div id="playerHandContainer" class="player-hand-container">
+                    </div>
+                <div class="game-actions">
+                    <button class="btn-game-action" onclick="drawCards(1)">抽牌 (1 费)</button>
+                    <button class="btn-apply-strategy hidden" onclick="tryApplyStrategy()">应用选中策略</button>
+                    <button class="btn-end-turn" onclick="endTurn()">结束回合</button>
+                </div>
+            </div>
+            
+            <div id="gameResultScreen" class="game-result-screen hidden">
+                <h3></h3>
+                <p id="gameResultText"></p>
+                <button class="btn-game-action" onclick="resetGameSimulation()">重新开始模拟</button>
+            </div>
+
         </div>
     </div>
 
