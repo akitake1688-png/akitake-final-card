@@ -1,787 +1,566 @@
-// script.js - 紧急修复最终版 (AI 留学咨询室 - 深度定制版 / 策略模拟系统)
-
-// --- 1. 全局UI元素引用 ---
-const mainContainer = document.querySelector('.main-container');
-const leftPanel = document.querySelector('.left-panel');
-const profileCover = document.getElementById('profileCover');
-const menuList = document.getElementById('menuList');
-const contentDetail = document.getElementById('contentDetail');
-const dynamicContent = document.getElementById('dynamicContent');
-
-const chatSection = document.getElementById('chatSection');
-const chatBody = document.getElementById('chatBody');
-const userInput = document.getElementById('userInput');
-const loadingIndicator = document.getElementById('loadingIndicator');
-// 修复：HTML中没有ID为sendButton的元素，但有类为.chat-input-area button的元素，这里用查询选择器
-const sendButton = document.querySelector('.chat-input-area button');
-
-const gameSimulationSection = document.getElementById('gameSimulationSection');
-const gamePhaseDisplay = document.getElementById('gamePhase');
-const playerEnergyDisplay = document.getElementById('playerEnergy');
-const playerInsightDisplay = document.getElementById('playerInsight');
-const playerCreditDisplay = document.getElementById('playerCredit');
-const currentStudentNameDisplay = document.getElementById('currentStudentName');
-const dashGPA = document.getElementById('dashGPA');
-const dashJLPT = document.getElementById('dashJLPT');
-const dashTOEFL = document.getElementById('dashTOEFL');
-const dashCulturalAdaptability = document.getElementById('dashCulturalAdaptability');
-const dashPsychologicalResilience = document.getElementById('dashPsychologicalResilience');
-const dashLogicSkill = document.getElementById('dashLogicSkill');
-const dashConfidence = document.getElementById('dashConfidence');
-const dashAnxiety = document.getElementById('dashAnxiety');
-const dashTraits = document.getElementById('dashTraits');
-const targetGoalNameDisplay = document.getElementById('targetGoalName');
-const targetGoalRequirementsDisplay = document.getElementById('targetGoalRequirements');
-const activeChallengesContainer = document.getElementById('activeChallengesContainer');
-const playerHandContainer = document.getElementById('playerHandContainer');
-const gameResultScreen = document.getElementById('gameResultScreen');
-const gameResultText = document.getElementById('gameResultText');
-const btnApplyStrategy = document.querySelector('.btn-apply-strategy');
-// 修复：对游戏内按钮的引用 (尽管在 HTML 中是通过 onclick 绑定的，这里可以再次引用以备用)
-const btnDrawCards = document.querySelector('.btn-game-action'); // 第一个 action button
-const btnEndTurn = document.querySelector('.btn-end-turn');
-const btnBackToChat = document.querySelector('.btn-back-to-chat');
-const btnRestartGame = document.querySelector('.game-result-screen .btn-game-action');
-
-
-// --- 2. 核心数据存储 ---
-
-// QA 数据库
-const qaDatabase = {
-    "费用": "日本留学费用因学校、地区和生活方式差异较大。国立大学学费约每年54万日元，私立大学文科约70-120万日元，理科约100-150万日元。生活费每月约8-12万日元。我们会提供详细的费用明细和节省策略，甚至有创新的“费用置换模式”来帮助您降低门槛。",
-    "双非背景": "双非背景并非绝境，关键在于“认知差”破局。日本教授更看重研究潜力、逻辑自洽与个人叙事。我们会指导您通过差异化研究计划、突出实践经验、以及展现独特的跨文化适应力来弥补背景劣势，甚至将其转化为独特优势。",
-    "套磁": "套磁是日本留学中的“心理学博弈”。不只是发邮件，更要“读空气”，理解教授的隐藏需求和研究方向的“破绽”。我们会提供定制化的套磁信模板，并指导您如何分析教授论文、把握沟通节奏，甚至利用心理暗示提升成功率。",
-    "研究计划书": "研究计划书是申请核心。我们的“向量逻辑降维法”能帮助您将宏大概念拆解为具体可行的研究课题，确保逻辑严谨、具备可操作性。同时融入“破绽利用法”，让您的研究计划书在众多申请者中脱颖而出，直击教授兴趣点。",
-    "面试": "面试是综合能力的体现，更是“读空气”的关键战场。我们提供模拟面试和情境训练，不仅包括语言表达，更侧重于肢体语言、眼神交流、以及如何回应教授的“言外之意”。通过“防御性悲观训练”，帮助您消除焦虑，以最佳心态应对。",
-    "优势": "我们的核心优势在于“认知差破局”与“心理学博弈论”的深度融合。我们不仅仅提供信息和文书指导，更帮助您重构思维，识别并利用申请过程中的“隐形壁垒”，将劣势转化为优势。我们承诺结果导向，甚至有“费用置换”模式，真正与您站在一起。",
-    "文化": "日本留学中，文化适应至关重要。这不仅是生活习惯，更是学术和人际交往的“读空气”。我们会提供深入的日本文化心理学解析，例如“建前与本音”、“内与外”的边界，帮助您理解教授和日本社会潜在的沟通模式，避免误解，顺利融入。",
-    "焦虑": "留学准备过程中的焦虑是常态。我们会引入“防御性悲观”理论，帮助您预设风险、提前准备，反而能有效降低临场焦虑。同时，通过“微实绩积累法”，将大目标分解为小任务，逐步提升自信心和掌控感，缓解心理压力。",
-    "跨专业": "跨专业申请并非劣势，而是独特的“破绽利用”机会。关键在于如何构建一个逻辑自洽、动机明确的转专业叙事。我们将指导您发现新旧专业间的隐性关联，运用“逻辑链条重构”，向教授展现您的学习能力和独特视角，将跨专业背景转化为教授眼中的创新潜质。",
-    "学费": "请参考“费用”的答案，包含详细学费信息。"
-};
-
-// 导师策略性回答
-const strategicFallbackResponses = [
-    "您的问题触及了留学的深层博弈点。在信息之外，我们更需洞察“认知差”。",
-    "这正是许多同学忽视的“隐形壁垒”。如何利用心理学策略破解它，是我们的专长。",
-    "让我们从根源上分析这个问题，并找到一个能够将劣势转化为优势的“破局点”。",
-    "您提出的疑问很有价值。除了直接答案，您是否还想了解背后的“文化逻辑”或“教授心理”？",
-    "每一个问题背后都隐藏着机会。重要的是，如何用“逆向思维”去发现并利用它。",
-    "关于这一点，我们的“AI升学破局模拟”或许能给您更直观的体验，模拟不同策略的效果。"
-];
-
-// 学生卡数据
-const studentCards = [
-    {
-        id: "student_basic_001",
-        name: "普通本科生",
-        initialAttributes: { gpa: 3.0, jlpt: 70, toefl: 75, logic_skill: 50, cultural_adaptability: 40, psychological_resilience: 60, confidence: 50, anxiety: 30, academic_score: 50, narrative_coherence: 50 },
-        traits: ["common_background", "motivated"],
-        description: "一名积极上进的普通本科生，寻求日本升学机会，但缺少突出亮点。"
-    },
-    {
-        id: "student_double_non_001",
-        name: "双非背景学生",
-        initialAttributes: { gpa: 3.5, jlpt: 80, toefl: 85, logic_skill: 60, cultural_adaptability: 30, psychological_resilience: 50, confidence: 40, anxiety: 40, academic_score: 60, narrative_coherence: 45 },
-        traits: ["double_non_background", "highly_motivated", "cross_major_potential"],
-        description: "虽然出身双非，但学习能力和动机强烈，渴望通过留学突破自我。需要特别的策略来弥补背景劣势。"
-    },
-    {
-        id: "student_elite_001",
-        name: "潜力优秀生",
-        initialAttributes: { gpa: 3.8, jlpt: 90, toefl: 95, logic_skill: 75, cultural_adaptability: 60, psychological_resilience: 70, confidence: 70, anxiety: 20, academic_score: 80, narrative_coherence: 70 },
-        traits: ["strong_academic", "proactive", "some_perfectionism_risk"],
-        description: "学术背景优秀，语言能力强，但可能存在完美主义倾向，需要引导以适应日本申请的独特要求。"
-    }
-];
-
-// 策略卡数据
-const strategyCards = [
-    {
-        id: "strategy_logic_001", name: "向量逻辑降维法", type: "strategy", subtype: "cognitive_reconstruction", cost: { energy: 3 },
-        effect_code: "IF student.logic_skill < 70 THEN student.logic_skill += 20; student.narrative_coherence += 15; GAIN insight=10;",
-        description: "将宏大模糊的课题细化，提升学生逻辑思维和研究计划书的连贯性。", flavor_text: "化繁为简，直击本质。"
-    },
-    {
-        id: "strategy_psych_001", name: "防御性悲观训练", type: "strategy", subtype: "psychological_intervention", cost: { energy: 4 },
-        effect_code: "IF student.anxiety > 40 THEN student.anxiety -= 20; student.psychological_resilience += 15; GAIN insight=10;",
-        description: "通过预设最坏结果并针对性准备，降低临场焦虑，提升心理韧性。", flavor_text: "未雨绸缪，方能从容不迫。"
-    },
-    {
-        id: "strategy_culture_001", name: "教授潜台词分析", type: "strategy", subtype: "cultural_decryption", cost: { energy: 5 },
-        effect_code: "IF student.cultural_adaptability < 70 THEN student.cultural_adaptability += 25; student.confidence += 10; GAIN insight=15;",
-        description: "深度解析日本教授的沟通习惯，理解言外之意，大幅提升面试和套磁中的文化适应度。", flavor_text: "读懂空气，洞察人心。"
-    },
-    {
-        id: "strategy_narrative_001", name: "破绽利用法", type: "strategy", subtype: "cognitive_reconstruction", cost: { energy: 4 },
-        effect_code: "IF student.has_trait('double_non_background') OR student.has_trait('cross_major_potential') THEN student.narrative_coherence += 20; student.academic_score += 10; GAIN insight=10; ELSE GAIN insight=5;",
-        description: "将看似的劣势或“破绽”重新解读，构建独特且有说服力的个人叙事。", flavor_text: "反败为胜，扭转乾坤。"
-    },
-    {
-        id: "strategy_confidence_001", name: "微实绩积累法", type: "strategy", subtype: "psychological_intervention", cost: { energy: 3 },
-        effect_code: "student.confidence += 15; student.anxiety -= 10; GAIN energy=1;",
-        description: "将大目标分解为小目标，通过持续获得小成功来积累自信，减轻压力。", flavor_text: "点滴积累，自信倍增。"
-    },
-    {
-        id: "strategy_social_001", name: "导师印象管理", type: "strategy", subtype: "relationship_building", cost: { energy: 4 },
-        effect_code: "IF student.has_trait('introvert') THEN student.cultural_adaptability += 15; student.confidence += 10; GAIN credit=5; ELSE student.cultural_adaptability += 10; GAIN credit=3;",
-        description: "指导学生如何通过邮件、交流等方式，给潜在导师留下积极专业的印象。", flavor_text: "细节决定成败，印象定未来。"
-    },
-    {
-        id: "strategy_finance_001", name: "费用置换契约", type: "strategy", subtype: "resource_integration", cost: { insight: 30, credit: 20 },
-        effect_code: "student.academic_score += 30; gameState.gamePhase = 'adaptation_phase'; GAIN credit=50; ALERT('费用置换契约成功！学生申请压力大幅降低，申请成功率飙升！');",
-        description: "通过与合作机构的费用置换模式，大幅降低学生的经济压力，加速申请进程。", flavor_text: "零成本留学，价值共赢。"
-    }
-];
-
-// 挑战卡数据
-const challengeCards = [
-    {
-        id: "challenge_rp_001", name: "研究计划书选题过大", type: "challenge", category: "cognitive_bias",
-        trigger: "student.academic_score < 60 && student.logic_skill < 60 && state.turn > 2",
-        penalty: { logic_skill: -15, narrative_coherence: -10, anxiety: 10 },
-        description: "学生的研究计划书主题过于宏大模糊，缺乏具体可行的研究切入点。", solution_strategy_id: "strategy_logic_001"
-    },
-    {
-        id: "challenge_culture_001", name: "面试读空气失败", type: "challenge", category: "cultural_conflict",
-        trigger: "student.cultural_adaptability < 50 && state.currentPhase === 'crisis_phase' && state.turn > 4",
-        penalty: { cultural_adaptability: -15, confidence: -10, anxiety: 15 },
-        description: "在教授面试中未能理解非语言暗示，导致沟通障碍，教授印象降低。", solution_strategy_id: "strategy_culture_001"
-    },
-    {
-        id: "challenge_psych_001", name: "申请期焦虑症", type: "challenge", category: "psychological_pressure",
-        trigger: "student.anxiety > 60 || (state.currentPhase === 'crisis_phase' && state.turn > 3)",
-        penalty: { psychological_resilience: -10, confidence: -10, logic_skill: -5 },
-        description: "长期申请压力导致学生焦虑情绪高涨，影响学习效率和决策判断。", solution_strategy_id: "strategy_psych_001"
-    },
-    {
-        id: "challenge_motivation_001", name: "双非背景自卑", type: "challenge", category: "psychological_pressure",
-        trigger: "student.has_trait('double_non_background') && student.confidence < 50 && state.turn > 1",
-        penalty: { confidence: -20, narrative_coherence: -15, anxiety: 10 },
-        description: "学生因国内双非背景产生自卑心理，影响文书撰写和面试表现。", solution_strategy_id: "strategy_narrative_001"
-    },
-    {
-        id: "challenge_communication_001", name: "教授回复冷淡", type: "challenge", category: "cultural_conflict",
-        trigger: "student.cultural_adaptability < 60 && state.turn > 5 && Math.random() < 0.3",
-        penalty: { confidence: -10, anxiety: 5, academic_score: -5 },
-        description: "教授对套磁邮件的回复过于官方或冷淡，学生感到挫败和迷茫。", solution_strategy_id: "strategy_social_001"
-    }
-];
-
-// 目标卡数据
-const goalCards = [
-    {
-        id: "goal_tokyo_sociology", name: "东京大学 社会学研究科",
-        requires: { gpa: 3.8, jlpt: 90, toefl: 90, logic_skill: 85, cultural_adaptability: 80, psychological_resilience: 75, confidence: 80, academic_score: 90, narrative_coherence: 85 },
-        description: "日本顶尖学府的社会学研究科，对申请者综合能力要求极高，尤其看重批判性思维和跨文化理解。",
-        pass_message: "恭喜！您成功协助学生斩获东京大学社会学研究科的录取！", fail_message: "很遗憾，学生未能达到东京大学社会学研究科的严苛要求。"
-    },
-    {
-        id: "goal_waseda_econ", name: "早稻田大学 经济学研究科",
-        requires: { gpa: 3.5, jlpt: 80, toefl: 85, logic_skill: 75, cultural_adaptability: 70, psychological_resilience: 65, confidence: 70, academic_score: 80, narrative_coherence: 70 },
-        description: "日本私立双雄之一的经济学研究科，对申请者的逻辑思维和研究计划有较高要求。",
-        pass_message: "恭喜！学生成功被早稻田大学经济学研究科录取！", fail_message: "学生未能成功申请早稻田大学经济学研究科。"
-    }
-];
-
-// --- 3. 游戏全局状态 ---
-let gameState = {
-    currentPhase: "honeymoon_phase",
-    turn: 0, maxTurns: 10,
-    playerEnergy: 10, playerInsight: 0, playerCredit: 0,
-    currentStudent: null, targetGoal: null,
-    playerHand: [], activeChallenges: [], selectedCard: null,
-    gameStarted: false, gameOver: false,
-    phaseDescriptions: {
-        "honeymoon_phase": { name: "蜜月期", description: "学生对留学充满憧憬，潜在压力未显现。", challenge_odds_modifier: 0.5 },
-        "crisis_phase": { name: "危机期 (文化冲击)", description: "学生面对文化差异和压力，易出现焦虑。", challenge_odds_modifier: 1.5, psychological_strategy_bonus: 1.2 },
-        "adjustment_phase": { name: "恢复期", description: "学生逐渐适应挑战，从困境中学习。", challenge_odds_modifier: 1.0 },
-        "adaptation_phase": { name: "适应期", description: "学生已基本适应，是冲刺目标的时机。", challenge_odds_modifier: 0.8 }
-    }
-};
-
-// --- 4. 辅助工具函数 ---
-function getRandomInt(max) { return Math.floor(Math.random() * max); }
-function getRandomElement(arr) { return arr[getRandomInt(arr.length)]; }
-function showLoading() { loadingIndicator.classList.remove('hidden'); chatBody.scrollTop = chatBody.scrollHeight; }
-function hideLoading() { loadingIndicator.classList.add('hidden'); }
-
-async function sendAiMessage(message, delay = 1000) {
-    showLoading();
-    await new Promise(resolve => setTimeout(resolve, delay));
-    hideLoading();
-    const aiMessageDiv = document.createElement('div');
-    aiMessageDiv.classList.add('message', 'ai-message');
-    aiMessageDiv.innerHTML = `<div class="bubble">${message}</div>`;
-    chatBody.appendChild(aiMessageDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
+:root {
+    --color-primary: #8a2be2; /* Blue Violet for main theme */
+    --color-secondary: #ff6347; /* Tomato for accents/warnings */
+    --color-background-light: #f5f5f5;
+    --color-background-dark: #eee;
+    --color-text-dark: #333;
+    --color-text-light: #fff;
+    --color-panel-bg: #fff;
+    --color-status-positive: #28a745; /* Green */
+    --color-status-negative: #dc3545; /* Red */
+    --color-status-neutral: #6c757d; /* Gray */
+    --color-card-strategy: #3f51b5; /* Indigo */
+    --color-card-challenge: #e91e63; /* Pink */
+    --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-function sendUserMessage(message) {
-    const userMessageDiv = document.createElement('div');
-    userMessageDiv.classList.add('message', 'user-message');
-    userMessageDiv.innerHTML = `<div class="bubble">${message}</div>`;
-    chatBody.appendChild(userMessageDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
+/* --- 全局布局 --- */
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-background-light);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-function updateStudentDashboard() {
-    if (!gameState.currentStudent) return;
-    const student = gameState.currentStudent;
-    dashGPA.textContent = student.gpa.toFixed(1); dashJLPT.textContent = student.jlpt; dashTOEFL.textContent = student.toefl;
-    dashCulturalAdaptability.textContent = student.cultural_adaptability.toFixed(0); dashPsychologicalResilience.textContent = student.psychological_resilience.toFixed(0);
-    dashLogicSkill.textContent = student.logic_skill.toFixed(0); dashConfidence.textContent = student.confidence.toFixed(0); dashAnxiety.textContent = student.anxiety.toFixed(0);
-    dashTraits.textContent = student.traits.map(t => t.replace(/_/g, ' ')).join(', ');
-    currentStudentNameDisplay.textContent = student.name;
-
-    const updateDashItemColor = (element, value, goodThreshold, badThreshold, inverted = false) => {
-        element.classList.remove('positive', 'negative', 'neutral');
-        let currentStatus = 'neutral';
-        if (inverted) { if (value <= goodThreshold) currentStatus = 'positive'; else if (value >= badThreshold) currentStatus = 'negative'; }
-        else { if (value >= goodThreshold) currentStatus = 'positive'; else if (value <= badThreshold) currentStatus = 'negative'; }
-        element.classList.add(currentStatus);
-    };
-    updateDashItemColor(dashGPA.parentNode, student.gpa, 3.7, 3.0); updateDashItemColor(dashJLPT.parentNode, student.jlpt, 90, 70); updateDashItemColor(dashTOEFL.parentNode, student.toefl, 90, 70);
-    updateDashItemColor(dashCulturalAdaptability.parentNode, student.cultural_adaptability, 70, 40); updateDashItemColor(dashPsychologicalResilience.parentNode, student.psychological_resilience, 70, 40);
-    updateDashItemColor(dashLogicSkill.parentNode, student.logic_skill, 70, 40); updateDashItemColor(dashConfidence.parentNode, student.confidence, 70, 40);
-    updateDashItemColor(dashAnxiety.parentNode, student.anxiety, 40, 70, true);
+.main-container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    height: 90vh;
+    min-height: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-function updateTargetGoalDisplay() {
-    if (!gameState.targetGoal) return;
-    targetGoalNameDisplay.textContent = gameState.targetGoal.name;
-    targetGoalRequirementsDisplay.innerHTML = '';
-    
-    const relevantKeys = ['gpa', 'jlpt', 'toefl', 'logic_skill', 'cultural_adaptability', 'psychological_resilience', 'confidence', 'academic_score', 'narrative_coherence'];
-
-    relevantKeys.forEach(reqKey => {
-        if (gameState.targetGoal.requires.hasOwnProperty(reqKey)) {
-            const requiredValue = gameState.targetGoal.requires[reqKey];
-            const studentValue = gameState.currentStudent[reqKey] || 0; 
-            const isMet = studentValue >= requiredValue;
-            
-            const reqItem = document.createElement('div');
-            reqItem.classList.add('goal-requirement-item', isMet ? 'met' : 'unmet');
-            
-            let displayKey = reqKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            if (reqKey === 'gpa') displayKey = 'GPA'; 
-            if (reqKey === 'jlpt') displayKey = 'JLPT'; 
-            if (reqKey === 'toefl') displayKey = 'TOEFL';
-            
-            reqItem.innerHTML = `${displayKey}: <span>${studentValue.toFixed(reqKey === 'gpa' ? 1 : 0)} / ${requiredValue.toFixed(reqKey === 'gpa' ? 1 : 0)}</span>`;
-            targetGoalRequirementsDisplay.appendChild(reqItem);
-        }
-    });
+/* --- 左侧面板 (Menu/Profile) --- */
+.left-panel {
+    width: 35%;
+    min-width: 300px;
+    background: linear-gradient(135deg, #f0f0f5, #e0e0e8);
+    color: var(--color-text-dark);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-// 模拟内容详情页的内容
-const contentMap = {
-    'strength': `<div class="detail-card">
-        <h3>核心优势：以破绽为支点</h3>
-        <p>我们的核心优势在于“认知差破局”与“心理学博弈论”的深度融合。我们不仅仅提供信息和文书指导，更帮助您重构思维，识别并利用申请过程中的“隐形壁垒”，将劣势转化为优势。我们承诺结果导向，甚至有“费用置换”模式，真正与您站在一起。</p>
-        <ul>
-            <li><strong>认知差破局:</strong> 识别教授的隐性偏好，将普通经历包装成独特研究潜力。</li>
-            <li><strong>心理学博弈:</strong> 指导套磁和面试中的“读空气”艺术，避免沟通误区。</li>
-            <li><strong>结果导向:</strong> 我们的目标是拿到录取，而不是仅仅完成流程。</li>
-        </ul>
-        <a href="#" class="link-btn">预约深度战略分析</a>
-    </div>`,
-    'model': `<div class="detail-card">
-        <h3>辅导模式与价值承诺</h3>
-        <p>我们提供定制化、高透明度的辅导模式，旨在建立真正的信用契约。</p>
-        <ul>
-            <li><strong>免佣直通车:</strong> 简化中间环节，将更多资源投入到核心文书和策略部署。</li>
-            <li><strong>费用置换模式:</strong> 与合作机构联合，大幅降低前期经济压力，实现价值共赢。</li>
-            <li><strong>全流程可追溯:</strong> 策略部署、文书修改、模拟面试均有详细记录。</li>
-        </ul>
-        <a href="#" class="link-btn">了解费用置换详情</a>
-    </div>`,
-    'cases': `<div class="detail-card">
-        <h3>成功案例 / 更多思考</h3>
-        <p>我们成功帮助多位背景普通的学生获得顶尖研究科的录取，关键在于：</p>
-        <ul>
-            <li><strong>双非逆袭:</strong> 如何用一篇优秀的、逻辑自洽的研究计划书，弥补学校背景的不足。</li>
-            <li><strong>跨专业转型:</strong> 发现新旧专业间的隐性关联，成功说服教授认可转专业动机。</li>
-            <li><strong>面试制胜:</strong> 掌握日本面试中的“建前与本音”，在交流中展现独特人格魅力。</li>
-        </ul>
-        <a href="#" class="link-btn">阅读更多破局故事</a>
-    </div>`
-};
+.profile-cover, .menu-list, .content-detail {
+    width: 100%;
+    padding-top: 20px;
+}
 
-function showContent(contentKey) {
-    if (!menuList || !contentDetail || !dynamicContent) return;
-    menuList.classList.add('hidden');
-    contentDetail.classList.remove('hidden');
-    dynamicContent.innerHTML = contentMap[contentKey] || `<div class="detail-card"><h3>内容缺失</h3><p>抱歉，请求的内容暂时无法显示。</p></div>`;
+.avatar-ring {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    padding: 3px;
+    display: inline-block;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--color-background-light); /* Placeholder background */
+}
+
+h1 {
+    font-size: 1.8em;
+    margin: 15px 0 5px 0;
+    color: var(--color-primary);
+}
+
+.subtitle {
+    font-size: 0.9em;
+    color: var(--color-status-neutral);
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.btn-expand {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.btn-expand:hover {
+    background-color: #ff472e;
+}
+
+/* Menu List */
+.menu-list, .content-detail {
+    text-align: left;
+    padding-top: 0;
+    margin-top: 20px;
+}
+
+.menu-item {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background-color: var(--color-background-dark);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text-dark);
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-item:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+/* Content Detail */
+.btn-back {
+    background: none;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.detail-card {
+    background-color: var(--color-panel-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.detail-card h3 {
+    color: var(--color-primary);
+    margin-top: 0;
+}
+
+.detail-card ul {
+    list-style-type: '👉 ';
+    padding-left: 20px;
+}
+.detail-card ul li {
+    margin-bottom: 10px;
 }
 
 
-// --- 5. 游戏流程控制 ---
-async function startGameSimulation() {
-    // 修复：确保 DOM 元素存在后再操作
-    if (!chatSection || !gameSimulationSection) { console.error("关键 DOM 元素未找到"); return; }
-    
-    // 切换 UI 视图
-    chatSection.classList.add('hidden');
-    gameSimulationSection.classList.remove('hidden');
-    if (menuList) menuList.classList.add('hidden');
-    if (profileCover) profileCover.classList.add('hidden');
-    if (contentDetail) contentDetail.classList.add('hidden');
-
-    // 初始化游戏状态
-    gameState.gameStarted = true; gameState.gameOver = false; gameState.turn = 0;
-    gameState.playerEnergy = 10; gameState.playerInsight = 0; gameState.playerCredit = 0;
-    gameState.currentPhase = "honeymoon_phase"; gameState.playerHand = []; gameState.activeChallenges = []; gameState.selectedCard = null;
-    gameResultScreen.classList.add('hidden'); btnApplyStrategy.classList.add('hidden');
-
-    // 随机选择学生和目标
-    gameState.currentStudent = JSON.parse(JSON.stringify(getRandomElement(studentCards.filter(c => c.id === 'student_double_non_001')) || getRandomElement(studentCards))); // 默认从双非学生开始
-    gameState.currentStudent.has_trait = function(traitName) { return this.traits.includes(traitName); };
-    gameState.targetGoal = getRandomElement(goalCards);
-
-    // 首次消息
-    await sendAiMessage(`欢迎来到【AI 升学破局模拟】！我们将模拟您与一位学生的留学申请全过程。<br><br>您当前辅导的学生是：<strong>${gameState.currentStudent.name}</strong> (${gameState.currentStudent.description})。<br>我们的目标是：<strong>${gameState.targetGoal.name}</strong> (${gameState.targetGoal.description})。<br><br>请点击“抽牌”开始您的第一次策略部署！`);
-    updateGameUI(); drawCards(3);
+/* --- 右侧面板 (Chat/Game) --- */
+.right-panel {
+    flex-grow: 1;
+    background-color: var(--color-panel-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
 }
 
-function updateGameUI() {
-    gamePhaseDisplay.textContent = `${gameState.phaseDescriptions[gameState.currentPhase].name} (回合: ${gameState.turn}/${gameState.maxTurns})`;
-    playerEnergyDisplay.textContent = gameState.playerEnergy; playerInsightDisplay.textContent = gameState.playerInsight; playerCreditDisplay.textContent = gameState.playerCredit;
-    updateStudentDashboard(); 
-    updateTargetGoalDisplay(); 
-    renderHand(); 
-    renderChallenges();
-    
-    // 应用策略按钮状态
-    if (gameState.selectedCard) {
-        const cost = gameState.selectedCard.cost;
-        const canAfford = gameState.playerEnergy >= (cost.energy || 0) && gameState.playerInsight >= (cost.insight || 0) && gameState.playerCredit >= (cost.credit || 0);
-        if (canAfford) {
-            btnApplyStrategy.classList.remove('hidden');
-        } else {
-            btnApplyStrategy.classList.add('hidden');
-        }
-    } else { 
-        btnApplyStrategy.classList.add('hidden'); 
-    }
+/* Chat Section */
+.chat-section {
+    position: relative;
 }
 
-function renderHand() {
-    playerHandContainer.innerHTML = '';
-    if (gameState.playerHand.length === 0) { playerHandContainer.innerHTML = '<div class="placeholder-hand">点击“抽牌”获取策略卡</div>'; }
-    
-    // 确保卡牌实例有唯一的ID，以便在选中时正确区分
-    gameState.playerHand.forEach((card, index) => {
-        // 如果卡牌没有 instanceId，给它一个
-        if (!card.instanceId) {
-            card.instanceId = Date.now() + Math.random();
-        }
-        
-        const cardElement = document.createElement('div');
-        cardElement.classList.add('card', 'strategy-card');
-        
-        // 选中状态判断：使用 instanceId 确保唯一性
-        if (gameState.selectedCard && gameState.selectedCard.instanceId === card.instanceId) { 
-            cardElement.classList.add('selected'); 
-        }
-        
-        cardElement.dataset.index = index; 
-        cardElement.dataset.cardId = card.id;
-
-        let costDisplay = ''; 
-        if (card.cost.energy) costDisplay += `精力: ${card.cost.energy} `; 
-        if (card.cost.insight) costDisplay += `洞察: ${card.cost.insight} `; 
-        if (card.cost.credit) costDisplay += `信用: ${card.cost.credit} `;
-
-        cardElement.innerHTML = `<div class="card-title">${card.name}</div><div class="card-type">${card.subtype.replace(/_/g, ' ')}</div><div class="card-cost">消耗: ${costDisplay.trim()}</div><div class="card-description">${card.description}</div>`;
-        playerHandContainer.appendChild(cardElement);
-        
-        // 绑定点击事件：这是修复卡牌冻结的关键！
-        cardElement.addEventListener('click', () => selectCard(card, index));
-    });
+.chat-header {
+    padding: 15px 20px;
+    background-color: var(--color-background-dark);
+    border-bottom: 1px solid #ddd;
+    text-align: center;
 }
 
-function renderChallenges() {
-    activeChallengesContainer.innerHTML = '';
-    if (gameState.activeChallenges.length === 0) { activeChallengesContainer.innerHTML = '<div class="placeholder-challenge">当前无挑战</div>'; }
-    gameState.activeChallenges.forEach((challenge) => {
-        const cardElement = document.createElement('div'); 
-        cardElement.classList.add('card', 'challenge-card'); 
-        cardElement.dataset.cardId = challenge.id;
-        
-        // 找出推荐策略名称
-        const solutionName = strategyCards.find(s => s.id === challenge.solution_strategy_id)?.name || '未知策略';
-        
-        // 格式化惩罚显示
-        const penaltyHtml = Object.entries(challenge.penalty).map(([key, value]) => {
-            let displayKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            return `${displayKey}: ${value}`;
-        }).join(', ');
-        
-        cardElement.innerHTML = `
-            <div class="card-title">${challenge.name}</div>
-            <div class="card-type">挑战卡</div>
-            <div class="card-description">
-                ${challenge.description}<br>
-                <span style="color: #ffdddd;">惩罚: ${penaltyHtml}</span>
-                <br><span style="color: #bbffbb;">推荐策略: ${solutionName}</span>
-            </div>`;
-        activeChallengesContainer.appendChild(cardElement);
-    });
+.chat-header h2 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.2em;
 }
 
-function selectCard(card, index) {
-    // 确保使用 instanceId 进行精确的卡牌识别和切换
-    if (gameState.selectedCard && gameState.selectedCard.instanceId === card.instanceId) { 
-        gameState.selectedCard = null; 
-    } else { 
-        gameState.selectedCard = { ...card, instanceId: card.instanceId, handIndex: index }; 
-    }
-    updateGameUI();
+.chat-header p {
+    margin: 3px 0 0 0;
+    font-size: 0.8em;
+    color: var(--color-status-neutral);
 }
 
-function drawCards(num = 1) {
-    if (gameState.playerHand.length >= 5) { sendAiMessage("您的手牌已满，无法再抽牌。", 500); return; }
-    let drawnCount = 0;
-    for (let i = 0; i < num; i++) {
-        if (gameState.playerHand.length >= 5) break;
-        // 确保新抽的卡牌有唯一的 instanceId
-        const newCard = { ...getRandomElement(strategyCards), instanceId: Date.now() + Math.random() }; 
-        gameState.playerHand.push(newCard); 
-        drawnCount++;
-    }
-    if (drawnCount > 0) sendAiMessage(`您抽到了 ${drawnCount} 张策略卡！`, 500);
-    updateGameUI();
+.chat-body {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fafafa;
 }
 
-async function parseAndApplyEffect(effectCode) {
-    const student = gameState.currentStudent;
-    const state = gameState; // 允许 effectCode 访问 gameState
-    const alertMessages = [];
-
-    // 定义 ALERT 函数用于 effect_code 中触发 AI 消息
-    function ALERT(msg) {
-        alertMessages.push(msg);
-    }
-    
-    // 定义 GAIN 函数用于 effect_code 中获取资源
-    function GAIN(resource, value) {
-        if (resource === 'energy') state.playerEnergy += value;
-        if (resource === 'insight') state.playerInsight += value;
-        if (resource === 'credit') state.playerCredit += value;
-    }
-
-    // 预处理 effectCode，将 GAIN(resource=value) 转换为 GAIN('resource', value)
-    let processedCode = effectCode.replace(/GAIN\s+(\w+)\s*=\s*(\d+)/g, (match, resource, value) => `GAIN('${resource}', ${value})`);
-
-    // 支持简单的 IF/THEN 逻辑
-    const ifRegex = /IF\s*(.+?)\s*THEN\s*(.+)/;
-    const ifMatch = ifRegex.exec(processedCode);
-    
-    if (ifMatch) {
-        const conditionCode = ifMatch[1].trim();
-        const effectBlock = ifMatch[2].trim();
-        
-        let conditionMet = false;
-        try {
-            // 动态评估条件：将 student.has_trait('trait_name') 转换为 student.traits.includes('trait_name')
-            const evaluatedCondition = conditionCode.replace(/student\.has_trait\('(.*?)'\)/g, `student.traits.includes('$1')`);
-            // 评估条件代码
-            conditionMet = eval(evaluatedCondition); 
-        } catch (e) {
-            console.error("条件评估失败:", e);
-        }
-
-        if (conditionMet) {
-            // 如果条件满足，评估 THEN 后的效果
-            try {
-                // 确保在作用域内能访问到 student, state, ALERT, GAIN
-                eval(effectBlock);
-            } catch (e) {
-                console.error("策略效果执行失败:", e);
-            }
-        } else if (effectBlock.includes('ELSE')) {
-            // 检查是否有 ELSE 分支
-            const elseMatch = effectBlock.match(/ELSE\s*(.+)/);
-            if (elseMatch) {
-                try {
-                    eval(elseMatch[1].trim());
-                } catch (e) {
-                    console.error("ELSE 效果执行失败:", e);
-                }
-            }
-        }
-    } else {
-        // 无 IF/THEN 逻辑，直接执行所有效果 (例如 "student.confidence += 15; GAIN energy=1;")
-        try {
-            eval(processedCode);
-        } catch (e) {
-            console.error("直接效果执行失败:", e);
-        }
-    }
-
-    return alertMessages;
+.message {
+    display: flex;
+    margin-bottom: 15px;
 }
 
-async function tryApplyStrategy() {
-    const card = gameState.selectedCard;
-    if (!card) {
-        await sendAiMessage("请先选择一张策略卡。", 500);
-        return;
-    }
-
-    const energyCost = card.cost.energy || 0;
-    const insightCost = card.cost.insight || 0;
-    const creditCost = card.cost.credit || 0;
-
-    if (gameState.playerEnergy < energyCost || gameState.playerInsight < insightCost || gameState.playerCredit < creditCost) {
-        await sendAiMessage("精力/洞察力/信用分不足，无法应用此策略。", 500);
-        // 不取消选择，等待用户获取足够资源或换卡
-        updateGameUI();
-        return;
-    }
-
-    // 扣除费用
-    gameState.playerEnergy -= energyCost;
-    gameState.playerInsight -= insightCost;
-    gameState.playerCredit -= creditCost;
-
-    // 应用效果
-    const alertMsgs = await parseAndApplyEffect(card.effect_code);
-    
-    // 移除卡牌和选择状态
-    gameState.playerHand.splice(card.handIndex, 1);
-    gameState.selectedCard = null;
-
-    // 处理消息反馈
-    let feedback = `成功应用策略：【${card.name}】。`;
-    if (alertMsgs.length > 0) {
-        feedback += `<br><strong>系统反馈:</strong> ${alertMsgs.join(' ')}`;
-    }
-    
-    // 检查是否有挑战被此策略解决 (简化逻辑: 移除第一个解决方案匹配的挑战)
-    const solvedChallengeIndex = gameState.activeChallenges.findIndex(c => c.solution_strategy_id === card.id);
-    if (solvedChallengeIndex !== -1) {
-        const solvedChallenge = gameState.activeChallenges.splice(solvedChallengeIndex, 1)[0];
-        feedback += `<br><strong>[挑战解除]</strong>：成功解决了挑战“${solvedChallenge.name}”。`;
-    }
-    
-    await sendAiMessage(feedback + `<br>当前学生状态已更新，请查看仪表板。`, 800);
-
-    updateGameUI();
+.ai-message {
+    justify-content: flex-start;
 }
 
-
-async function endTurn() {
-    if (gameState.gameOver) return;
-
-    gameState.turn++;
-    await sendAiMessage(`--- 第 ${gameState.turn} 回合结束 ---`, 500);
-    
-    // 1. 回合结束资源补充和状态变化
-    gameState.playerEnergy = Math.min(10, gameState.playerEnergy + 3);
-    gameState.currentStudent.anxiety = Math.max(0, gameState.currentStudent.anxiety + 5); // 每回合焦虑度小幅增加
-
-    // 2. 检查游戏结束条件
-    if (checkGoalCompletion()) {
-        endGame(true);
-        return;
-    }
-    
-    if (gameState.turn >= gameState.maxTurns) {
-        endGame(false);
-        return;
-    }
-
-    // 3. 阶段切换（简化逻辑）
-    if (gameState.turn === 3) {
-        gameState.currentPhase = "crisis_phase";
-        await sendAiMessage("--- 阶段切换：进入 **危机期 (文化冲击)** ---，学生压力增大，挑战概率和难度上升！", 1000);
-    } else if (gameState.turn === 6) {
-        gameState.currentPhase = "adjustment_phase";
-        await sendAiMessage("--- 阶段切换：进入 **恢复期** ---，策略效果开始显现，但仍需谨慎。", 1000);
-    } else if (gameState.turn === 8) {
-        gameState.currentPhase = "adaptation_phase";
-        await sendAiMessage("--- 阶段切换：进入 **适应期** ---，这是冲刺目标的最后机会。", 1000);
-    }
-
-    // 4. 检查并触发新挑战
-    await checkAndTriggerChallenges();
-    
-    // 5. 新回合开始
-    await sendAiMessage(`--- 第 ${gameState.turn + 1} 回合开始 ---。请抽牌并部署新策略。`, 500);
-    drawCards(3); // 新回合抽卡
-    updateGameUI();
+.user-message {
+    justify-content: flex-end;
 }
 
-function checkGoalCompletion() {
-    const student = gameState.currentStudent;
-    const required = gameState.targetGoal.requires;
-    
-    // 检查所有核心要求是否满足
-    const allMet = Object.keys(required).every(key => student[key] >= required[key]);
-    
-    // 额外的失败条件：焦虑度过高
-    if (student.anxiety > 95) {
-         sendAiMessage("模拟因学生心理压力过大而提前中止。心理韧性是申请的关键！", 500);
-         endGame(false);
-         return true;
-    }
-
-    return allMet;
+.bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.5;
+    word-wrap: break-word;
 }
 
-function endGame(success) {
-    gameState.gameOver = true;
-    gameSimulationSection.classList.add('hidden');
-    gameResultScreen.classList.remove('hidden');
-
-    if (success) {
-        gameResultText.innerHTML = gameState.targetGoal.pass_message + `<br><br>您的策略部署非常成功，成功利用“认知差”破局！`;
-        gameResultScreen.querySelector('h3').textContent = '模拟成功！🎉';
-        gameResultScreen.querySelector('h3').style.color = 'var(--status-positive)';
-    } else {
-         gameResultText.innerHTML = gameState.targetGoal.fail_message + `<br><br>时间耗尽或学生状态崩溃。建议重新评估策略，特别是心理疏导和逻辑重构。`;
-         gameResultScreen.querySelector('h3').textContent = '模拟失败...😔';
-         gameResultScreen.querySelector('h3').style.color = 'var(--status-negative)';
-    }
+.ai-message .bubble {
+    background-color: var(--color-background-dark);
+    color: var(--color-text-dark);
+    border-bottom-left-radius: 4px;
 }
 
-function resetGameSimulation() {
-    gameResultScreen.classList.add('hidden');
-    startGameSimulation(); // 重新开始游戏
+.user-message .bubble {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border-bottom-right-radius: 4px;
 }
 
-async function checkAndTriggerChallenges() {
-    const phaseModifier = gameState.phaseDescriptions[gameState.currentPhase].challenge_odds_modifier;
-    const baseChance = 0.2 * phaseModifier;
-    
-    const triggeredChallenges = [];
-
-    challengeCards.forEach(challenge => {
-        // 防止挑战重复触发
-        if (gameState.activeChallenges.some(c => c.id === challenge.id)) return;
-        
-        let conditionMet = false;
-        try {
-            const student = gameState.currentStudent;
-            const state = gameState;
-            // 评估挑战触发条件 (确保 eval 使用了正确的变量名: student, state)
-            conditionMet = eval(challenge.trigger); 
-        } catch (e) {
-            console.error("挑战触发条件评估失败:", e);
-        }
-
-        // 仅在条件满足且随机概率通过时触发
-        if (conditionMet && Math.random() < baseChance) {
-            triggeredChallenges.push(challenge);
-        }
-    });
-
-    for (const challenge of triggeredChallenges) {
-        // 应用惩罚
-        const student = gameState.currentStudent;
-        for (const key in challenge.penalty) {
-            if (student.hasOwnProperty(key)) {
-                // 确保属性值不会低于 0 或超过 100 (除了 GPA, JLPT, TOEFL)
-                if (key !== 'gpa' && key !== 'jlpt' && key !== 'toefl') {
-                    student[key] = Math.max(0, Math.min(100, student[key] + challenge.penalty[key]));
-                } else {
-                    student[key] = student[key] + challenge.penalty[key];
-                }
-            }
-        }
-        gameState.activeChallenges.push(challenge);
-        await sendAiMessage(`<strong>[新挑战]</strong>：学生遭遇“${challenge.name}”！学生属性受到影响，请尽快应用策略解决！`, 1000);
-    }
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px 20px;
+    background-color: var(--color-panel-bg);
 }
 
-// --- 6. UI 菜单和聊天模式切换逻辑 (修复和补充) ---
-
-function toggleMenu(isExpanded) {
-    if (isExpanded) {
-        profileCover.classList.add('hidden');
-        menuList.classList.remove('hidden');
-    } else {
-        menuList.classList.add('hidden');
-        contentDetail.classList.add('hidden'); 
-        profileCover.classList.remove('hidden');
-        // 确保游戏区和聊天区在主页时是正确的初始状态
-        if (gameSimulationSection && gameSimulationSection.classList.contains('hidden')) { 
-            chatSection.classList.remove('hidden');
-        }
-    }
+.chat-input-area input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 1em;
 }
 
-function backToMenu() {
-    contentDetail.classList.add('hidden');
-    menuList.classList.remove('hidden');
+.chat-input-area button {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-function showChatSection() {
-    // 从游戏模式切换回聊天咨询模式
-    gameSimulationSection.classList.add('hidden');
-    chatSection.classList.remove('hidden');
-    
-    // 恢复左侧菜单显示（默认返回到菜单列表）
-    profileCover.classList.add('hidden');
-    menuList.classList.remove('hidden');
-    
-    if (gameState.gameStarted && !gameState.gameOver) {
-        sendAiMessage("模拟暂停。有什么关于申请的实际问题需要咨询吗？随时可以点击左侧菜单的“AI 升学破局模拟”继续部署策略。", 100);
-    }
+.chat-input-area button:hover {
+    background-color: #6a1ba9;
 }
 
-// --- 7. 聊天功能 (核心逻辑) ---
+/* Loading Indicator */
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+.dot-flashing { /* 动画效果略... */ }
 
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
+/* --- Game Simulation Section --- */
+.game-simulation-section {
+    padding: 10px 20px;
+    background-color: #f7f9fc;
 }
 
-function sendMessage() {
-    const message = userInput.value.trim();
-    if (message === "") return;
-
-    // 1. 发送用户消息
-    sendUserMessage(message);
-    userInput.value = '';
-
-    // 2. AI 响应逻辑
-    let response = "抱歉，我暂时无法理解这个复杂的指令。请尝试输入关键词如：费用、面试、双非、优势等，或点击左侧菜单开始策略模拟游戏。";
-
-    // 尝试匹配 QA 数据库
-    const keyword = Object.keys(qaDatabase).find(key => message.toLowerCase().includes(key));
-
-    if (keyword) {
-        response = qaDatabase[keyword];
-    } else if (message.length > 10) {
-        // 如果问题较长，使用策略性回答
-        response = getRandomElement(strategicFallbackResponses);
-    }
-
-    sendAiMessage(response);
+.btn-back-to-chat {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-bottom: 10px;
 }
 
+.dashboard-and-challenges {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
 
-// --- 8. 初始化事件监听 ---
-document.addEventListener('DOMContentLoaded', () => {
-    // 绑定发送按钮事件
-    if (sendButton) {
-        sendButton.addEventListener('click', sendMessage);
+.dashboard {
+    background-color: var(--color-panel-bg);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    width: 45%;
+    min-width: 300px;
+}
+
+.dashboard h3 {
+    margin-top: 0;
+    color: var(--color-primary);
+    font-size: 1.1em;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.9em;
+    border-bottom: 1px dotted #ccc;
+}
+
+.stat-item span:last-child {
+    font-weight: bold;
+}
+
+.stat-item.positive span:last-child { color: var(--color-status-positive); }
+.stat-item.negative span:last-child { color: var(--color-status-negative); }
+.stat-item.neutral span:last-child { color: var(--color-status-neutral); }
+
+.stat-traits {
+    font-size: 0.8em;
+    color: var(--color-status-neutral);
+    margin-bottom: 10px;
+}
+
+.goal-requirements {
+    margin-top: 10px;
+}
+
+.goal-requirement-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    padding: 2px 0;
+}
+
+.goal-requirement-item span {
+    font-weight: bold;
+}
+
+.goal-requirement-item.met span { color: var(--color-status-positive); }
+.goal-requirement-item.unmet span { color: var(--color-status-negative); }
+
+.game-info-challenges {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-status-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--color-background-dark);
+    padding: 8px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: var(--color-primary);
+}
+
+.resources .resource-value {
+    color: var(--color-secondary);
+}
+
+.active-challenges-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    min-height: 100px;
+    background-color: var(--color-panel-bg);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.placeholder-challenge {
+    color: var(--color-status-neutral);
+    font-style: italic;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+/* --- 卡牌样式 --- */
+.card {
+    border-radius: 8px;
+    padding: 10px;
+    width: 150px;
+    height: 120px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    color: var(--color-text-light);
+    font-size: 0.85em;
+    margin-bottom: 10px;
+}
+
+.strategy-card {
+    background-color: var(--color-card-strategy);
+    cursor: pointer;
+    border: 3px solid transparent;
+}
+
+.challenge-card {
+    background-color: var(--color-card-challenge);
+    border: 3px solid transparent;
+}
+
+.strategy-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.strategy-card.selected {
+    border-color: #ffeb3b; /* Yellow border for selection */
+    box-shadow: 0 0 15px #ffeb3b;
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 2px;
+}
+
+.card-type {
+    font-size: 0.7em;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.card-cost, .card-description {
+    font-size: 0.75em;
+    line-height: 1.3;
+}
+
+/* --- 玩家手牌区 --- */
+.player-hand-area h4 {
+    margin-bottom: 10px;
+    color: var(--color-text-dark);
+}
+
+.player-hand-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+    min-height: 150px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.placeholder-hand {
+    color: var(--color-status-neutral);
+    font-style: italic;
+    padding: 10px;
+    align-self: center;
+}
+
+.game-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-game-action {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.btn-apply-strategy {
+    background-color: var(--color-status-positive);
+    color: var(--color-text-light);
+}
+
+.btn-end-turn {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+}
+
+/* --- 游戏结果屏幕 --- */
+.game-result-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.game-result-screen h3 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.game-result-screen p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    max-width: 600px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 900px) {
+    .main-container {
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        max-width: none;
+        border-radius: 0;
     }
-    
-    // 确保 userInput 上的 keypress 事件被绑定 (HTML中已绑定: onkeypress="handleKeyPress(event)")
-    
-    // 确保游戏操作按钮被正确绑定
-    // HTML 中已经用 onclick 绑定了 drawCards(), endTurn(), tryApplyStrategy(), resetGameSimulation()
-    
-    // 确保初始状态正确，聊天区显示
-    if (chatSection) {
-        chatSection.classList.remove('hidden');
+    .left-panel {
+        width: 100%;
+        min-width: unset;
+        padding: 10px;
+        height: auto;
     }
-    if (gameSimulationSection) {
-        gameSimulationSection.classList.add('hidden');
+    .right-panel {
+        flex-grow: 1;
+        height: auto;
     }
-});
+    .dashboard-and-challenges {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .dashboard, .game-info-challenges {
+        width: 100%;
+        min-width: unset;
+    }
+    .player-hand-container {
+        justify-content: flex-start;
+    }
+}
