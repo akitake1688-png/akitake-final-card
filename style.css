@@ -4,8 +4,7 @@
 :root {
     --color-primary-dark: #3700b3; /* 权威感深紫/靛蓝 - 核心品牌色 */
     --color-primary-light: #6200ee; /* 较亮主色 - 按钮背景 */
-    --color-accent: #03dac6; /* 科技感青绿色 - 精准行动、高亮色 (替换了醒目的橙色，增加冷静感) */
-    --color-secondary-red: #ff6347; /* 红色系辅色 - 警告/SNS边框 */
+    --color-accent: #03dac6; /* 科技感青绿色 - 精准行动、高亮色 */
     
     --color-background-main: #f0f0f4; /* 主体背景 */
     --color-panel-bg: #ffffff; /* 面板、卡片背景 */
@@ -13,6 +12,21 @@
     --color-text-light: #ffffff; /* 浅色文本 */
 
     --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ==================================== */
+/* 动画：克制版头像光晕 (Subtle Halo) */
+/* ==================================== */
+@keyframes halo-pulse-subtle {
+    0% {
+        box-shadow: 0 0 0 0px rgba(98, 0, 238, 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(98, 0, 238, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0px rgba(98, 0, 238, 0);
+    }
 }
 
 /* ==================================== */
@@ -36,8 +50,8 @@ body {
     max-width: 1280px; 
     height: 90vh;
     min-height: 650px; 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 阴影减弱，更沉稳 */
-    border-radius: 12px; /* 边角略微收敛 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+    border-radius: 12px; 
     overflow: hidden;
 }
 
@@ -47,7 +61,7 @@ body {
 .left-panel {
     width: 320px; 
     flex-shrink: 0; 
-    background: #f7f7f9; /* 替换为更柔和的纯色/极浅色背景 */
+    background: #f7f7f9; 
     color: var(--color-text-dark);
     padding: 35px 25px; 
     box-sizing: border-box;
@@ -56,19 +70,39 @@ body {
     align-items: center;
     text-align: center;
     overflow-y: auto;
-    border-right: 2px solid #ddd; /* 减少分割线的强调度 */
+    border-right: 2px solid #ddd; 
 }
 
 /* 3.1 导师身份卡 (Profile Cover) */
 .profile-cover {
     padding-bottom: 30px;
-    border-bottom: 1px solid #ccc; /* 虚线改为实线，更正式 */
+    border-bottom: 1px solid #ccc; 
     margin-bottom: 30px; 
     width: 100%;
 }
 
+/* 3.2 克制版头像焦点 (Subtle Avatar Focus) */
+.avatar-ring {
+    width: 90px;
+    height: 90px;
+    padding: 3px;
+    border: 3px solid var(--color-primary-light); 
+    border-radius: 50%;
+    margin-bottom: 15px;
+    background-color: var(--color-text-light);
+    /* 恢复克制光晕动画 */
+    animation: halo-pulse-subtle 3s infinite;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 h1 {
-    font-size: 1.8em; /* 略微降低字号，更中肯 */
+    font-size: 1.8em; 
     margin: 15px 0 8px 0;
     color: var(--color-primary-dark);
     font-weight: 700; 
@@ -82,69 +116,55 @@ h1 {
     margin-bottom: 25px;
 }
 
-/* 3.2 沉稳头像焦点 (Static Avatar Focus) */
-/* 移除动态光晕动画，只保留结构 */
-.avatar-ring {
-    width: 90px;
-    height: 90px;
-    padding: 3px;
-    border: 3px solid var(--color-primary-light); /* 使用主色调边框，强调专业度 */
-    border-radius: 50%;
-    margin-bottom: 15px;
-    background-color: var(--color-text-light);
-    /* 移除 halo-pulse 动画 */
-}
-
-.avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* 3.3 主行动按钮 (Primary CTA) - 强调可操作性而非炫酷 */
+/* 3.3 主行动按钮 (Primary CTA) */
 .btn-expand {
     padding: 12px 30px; 
     font-size: 1em;
     font-weight: bold;
-    background-color: var(--color-primary-light); /* CTA使用主色调，更正式 */
+    background-color: var(--color-primary-light); 
     color: var(--color-text-light);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影更浅 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .btn-expand:hover {
     background-color: #4a00b0;
-    transform: translateY(-1px); /* 动作更克制 */
+    transform: translateY(-1px); 
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* 3.4 菜单列表 (Menu List) */
+.menu-list {
+    width: 100%;
+}
+
 .menu-item {
+    display: block; /* 确保菜单项独占一行 */
+    text-decoration: none;
+    color: var(--color-text-dark);
     padding: 14px 18px; 
     margin-bottom: 8px; 
-    background-color: #fcfcfc; /* 更干净的背景 */
+    background-color: #fcfcfc; 
     border-radius: 8px; 
     font-size: 1em; 
     border-left: 4px solid transparent; 
-    box-shadow: none; /* 移除阴影，强调内容而非卡片效果 */
-    border: 1px solid #eee; /* 增加细微的边框，增强秩序感 */
+    border: 1px solid #eee; 
+    transition: all 0.2s;
 }
 
 .menu-item:hover {
     background-color: #f0f0ff; 
     color: var(--color-primary-dark);
-    border-left: 4px solid var(--color-accent); /* 强调色作为点击反馈 */
-    transform: none; /* 移除位移，保持稳定 */
+    border-left: 4px solid var(--color-accent); 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .menu-game-btn {
     font-weight: 600;
-    background-color: #f7f7fc; /* 游戏按钮使用淡色背景，区分度降低，更自然 */
+    background-color: #e9e9ff; /* 略微突出，但保持专业 */
     color: var(--color-primary-dark);
 }
 
@@ -155,25 +175,18 @@ h1 {
     font-size: 0.9em;
 }
 
-/* 3.5 社交链接 (Social Links) */
-.social-links {
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-}
-
-/* ... 其他社交链接样式保持不变 ... */
-
-/* 3.6 内容详情 (Content Detail) */
+/* 3.5 内容详情 (Content Detail) */
 .detail-card {
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 阴影更浅 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); 
     margin-top: 15px;
+    background-color: var(--color-panel-bg);
 }
 
 .detail-card h3 {
     color: var(--color-primary-dark);
-    border-bottom: 2px solid var(--color-accent); /* 强调色作为下划线 */
+    border-bottom: 2px solid var(--color-accent); 
     padding-bottom: 5px;
 }
 
@@ -182,79 +195,133 @@ h1 {
 /* ==================================== */
 .right-panel {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     background-color: var(--color-panel-bg);
     border-radius: 0 12px 12px 0;
 }
 
-/* 4.1 聊天头部 (Chat Header) */
+/* 4.1 咨询交互区 */
+.chat-section, .content-section, .game-simulation-section {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
 .chat-header {
+    flex-shrink: 0;
     padding: 20px 25px; 
     background-color: var(--color-primary-dark); 
+    color: var(--color-text-light);
     border-radius: 0 12px 0 0;
 }
 
-/* 4.2 聊天主体 (Chat Body) */
 .chat-body {
-    background-color: #ffffff; /* 确保聊天背景干净、纯粹 */
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #ffffff; 
     padding: 20px 25px;
 }
 
-/* 消息和气泡样式 - 强调信息清晰度 */
+.message {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.ai-message {
+    justify-content: flex-start;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
 .bubble {
+    max-width: 70%;
     padding: 12px 18px;
     border-radius: 15px;
     line-height: 1.6;
     font-size: 1.0em;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* 轻微阴影，增加质感 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); 
 }
 
 .ai-message .bubble {
-    background-color: #eef3ff; /* 浅蓝色系，更知性、中立 */
+    background-color: #eef3ff; 
+    color: var(--color-text-dark);
     border-top-left-radius: 5px;
 }
 
 .user-message .bubble {
     background-color: var(--color-primary-light);
+    color: var(--color-text-light);
     border-bottom-right-radius: 5px;
 }
 
-/* 4.3 SNS 评论模式 (Highlight Focus) */
+/* 4.2 SNS 评论模式 */
 .sns-comment-bubble {
-    width: 90%;
     max-width: 90%;
-    background-color: #fff9e6; /* 使用淡色背景，而不是亮色 */
+    background-color: #fff9e6; 
     color: var(--color-text-dark); 
-    border: 2px solid var(--color-accent); /* 边框强调专业性 */
+    border: 2px solid var(--color-accent); 
     border-radius: 10px; 
     padding: 15px 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
-    font-size: 1.0em;
     font-weight: 500; 
-    animation: none; /* 移除动画，强调稳定和中肯 */
-    cursor: copy; 
 }
 
-/* 4.4 聊天输入区 (Input Area) */
+/* 4.3 聊天输入区 */
 .chat-input-area {
+    flex-shrink: 0;
     padding: 15px 25px;
+    display: flex;
+    background-color: #f7f7f9;
+    border-top: 1px solid #ddd;
 }
 
 .chat-input-area input {
+    flex-grow: 1;
     padding: 12px 20px; 
     border-radius: 25px;
     border: 1px solid #ccc;
+    font-size: 1em;
+    margin-right: 10px;
+    transition: border-color 0.2s;
 }
 
 .chat-input-area input:focus {
+    outline: none;
     border-color: var(--color-primary-light);
-    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.1); /* 焦点光晕更柔和 */
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.1); 
 }
 
 .chat-input-area button {
+    flex-shrink: 0;
     padding: 12px 25px; 
     border-radius: 25px;
     font-size: 1em;
     font-weight: 500;
+    background-color: var(--color-accent);
+    color: var(--color-text-dark);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-input-area button:hover {
+    background-color: #00bfa5;
+}
+
+/* 4.4 加载指示器 */
+.loading-indicator {
+    padding: 10px 25px;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    background-color: #f7f7f9;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* ==================================== */
@@ -262,36 +329,9 @@ h1 {
 /* ==================================== */
 .game-simulation-section {
     padding: 25px 30px;
-    background-color: #eff3f7; /* 浅灰色背景，模拟专业分析报告的背景 */
+    background-color: #eff3f7; 
     color: var(--color-text-dark);
     border-radius: 0 12px 12px 0;
+    overflow-y: auto;
 }
-
-.dashboard {
-    background-color: var(--color-panel-bg); /* 使用白色背景，更像分析表格 */
-    border: 1px solid #ddd;
-}
-
-.dashboard h3, .dashboard h4 {
-    color: var(--color-primary-dark);
-    border-bottom: 1px solid var(--color-accent);
-}
-
-.stat-item {
-    background-color: #f7f7f7; /* 浅色背景 */
-    color: var(--color-text-dark);
-}
-
-/* 策略卡片也改为浅色背景 */
-.strategy-card {
-    background-color: #fcfcfc;
-    border: 1px solid #ccc;
-}
-
-.strategy-card.selected {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 8px rgba(3, 218, 198, 0.5); /* 使用 Accent 色的柔和阴影 */
-    transform: translateY(-2px);
-}
-
-/* ... 媒体查询保持不变 ... */
+/* ... 其他游戏相关的样式保持不变 ... */
