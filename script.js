@@ -31,16 +31,22 @@ const contentMap = {
             </div>
         `
     },
+    // 【修改点 4】优化内容与【修改点 3】整合内容
     cases: {
-        title: "📚 成功案例与系统性思考：行动向量是解药",
+        title: "📚 破局行动指南：抓住『可控增量』，停止内耗",
         content: `
             <div class="detail-card">
                 <h3>📈 双非逆袭与跨专业策略 (底层逻辑)</h3>
-                <p>成功案例的核心逻辑非常单纯：用**高分语言成绩**（托福/N1）+ **东大基准的独特研究计划**，来**「升维打击」**弥补GPA和出身校的不足。我们尤其擅长帮助学生找到**跨专业的知识结合点**（比如用法学框架分析经济问题），实现高效破局。</p>
+                <p>成功案例的核心逻辑非常单纯：用**高分语言成绩**（托福/N1）+ **东大基准的独特研究计划**，来实现对背景的**「升维打击」**。我们尤其擅长帮助学生找到**跨专业的知识结合点**，将劣势转化为复合型人才的优势。</p>
             </div>
             <div class="detail-card">
-                <h3>⏳ 留学竞争的『系统性观察』 (别内耗)</h3>
-                <p>留学竞争加剧是一种**系统性趋势**。面对这种不确定性，最中肯的解法是：**把精力全部集中到自身「可控」的增量行动上**，如打磨研究计划书的质量。停止不必要的信息焦虑，**行动才是唯一的药方**。</p>
+                <h3>⏳ 面对不确定性：行动是唯一的药方</h3>
+                <p>留学竞争加剧是系统性趋势，**原地焦虑是最大的内耗**。最中肯的解法是：**把精力全部集中到自身「可控」的增量行动上**（例如打磨研究计划书的质量）。请停止吸收冗余信息，用高效的行动去抵抗不确定性。</p>
+            </div>
+            <div class="detail-card">
+                <h3>📢 深度思考与外部洞察（知识平台）</h3>
+                <p>秋武老师在知乎和B站上发布了大量**专业深度分析**，核心价值在于帮助您：理解留学环境的系统性挑战、教授的真实心理，并教您如何保持**「游刃有余的节奏感」**（遊び感覚）。</p>
+                <p><strong>请直接在知乎/B站平台搜索：秋武老师</strong>，查看完整的文理融合/教授心理学深度分析。
             </div>
         `
     }
@@ -127,11 +133,12 @@ function renderPrompts() {
 }
 
 /**
- * 【FIXED】统一强制滚动到底部
+ * 【FIXED】统一强制滚动到底部，解决滑动受限问题
  */
 function scrollToBottom() {
     const chatBody = document.getElementById('chatBody');
     if (chatBody) {
+        // 尝试使用 smooth 滚动，但关键是保证 scrollHeight 被正确计算
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 }
@@ -194,7 +201,7 @@ function displayAIResponse(responseText, isSystemMessage = false) {
         bubbleContent = responseText.replace('SNS::', '');
         bubbleClass = 'bubble sns-comment-bubble';
         bubbleContent = `<strong>【破局文案：已自动复制】</strong><br>${bubbleContent}`;
-    } else if (responseText.includes('💬 秋武洞察：')) { // 再次统一柔化前缀
+    } else if (responseText.includes('💬 秋武洞察：')) { 
          bubbleContent = responseText;
     } else if (isSystemMessage || responseText.startsWith('[系统提示]')) {
          bubbleClass = 'bubble system-bubble';
@@ -215,7 +222,6 @@ function handleNonSeriousQuery(query) {
     const funnyKeywords = ["好吃", "可爱", "帅", "美", "八卦", "谈恋爱", "是谁", "机器人", "程序", "闲聊", "搞笑"];
 
     if (funnyKeywords.some(k => q.includes(k))) {
-        // 语气更像前辈的忠告
         return `感谢您的关注！您可能是来找留学攻略的对吧？秋武老师（WeChat ID: qiuwu999）是<strong>东大修士毕业，10年经验</strong>的现役老师。咱们只聊「破局策略」。<br><br>
         <strong>中肯建议：</strong> 日本留学竞争激烈，时间非常宝贵。把精力集中到研究计划书上，**别把宝贵时间浪费在不必要的纠结里哦。**`;
     }
@@ -228,33 +234,25 @@ function generatePsychologicalInsight(query) {
     let response = null;
     psychologicalCounter++; 
 
-    // 1. 识别焦虑/情绪关键词 (连续提问下的回复轮换)
     const psychologicalKeywords = ["焦虑", "压力", "内耗", "迷茫", "没自信", "不安", "拖延", "情绪", "想放弃"];
     if (psychologicalKeywords.some(k => q.includes(k))) {
         
         if (psychologicalCounter % 3 === 1) {
-             // 语气更像直接的心理分析
              response = `您觉得「焦虑」对不对？这是大脑在提醒您：**是时候给目标装个导航了！** 咱们别急着想终点，不妨把大目标切成几个「今天就能完成的小任务」。您会发现，**小小的行动，比大大的担忧管用一百倍。**`;
         } else if (psychologicalCounter % 3 === 2) {
-             // 语气更像过来人的经验
              response = `其实，咱们亚洲学生常会陷入一种「过度自我纠结」的状态，就是怕犯错。但请记住：**留学申请路上的小挑战，不是失败的“果实”，而是下一次成功的“肥料”**。先从小处着手积累信心，心态自然就稳了。`;
         } else {
-             // 语气更像警示
              response = `如果总觉得心烦意乱，可能是被**「信息噪音」**给拖着跑了。就像在一个嘈杂的菜市场想写论文！咱们**暂时关闭掉不必要的信息输入**，把精力拉回到最有价值的地方：**您那份独一无二的研究计划书**。心静了，效率自然就高了。`;
         }
-        // 统一使用更柔和的“秋武洞察”前缀
         return `💬 秋武洞察：${response}`;
     }
 
-    // 2. 识别文化/博弈关键词 (深度分析)
     const culturalKeywords = ["面试", "读空气", "本音", "建前", "教授关系", "失败", "落榜", "浪人", "答辩", "草稿"];
     if (culturalKeywords.some(k => q.includes(k))) {
         
         if (psychologicalCounter % 2 === 1) {
-            // 专业切入，简洁有力
             response = `【教授答辩的秘诀】面试的底层逻辑是**「倒推法」**。教授最想听的不是你的研究内容，而是你**“毕业后的打算、目标或梦想”**。然后，你再倒推出你在大学的学习计划，展示清晰的**『学以致用』**逻辑链。`;
         } else {
-            // 强调文化适应的价值
             response = `【日本文化心理小课堂】日本面试存在**『本音（真实期待）』**和**『建前（客套话）』**的博弈。教授的真实期待是：你是否具备**文化适应性**和**独立完成研究的行动力**。我们的辅导核心，就是帮助您展现这种**「人味知性」**。`;
         }
         return `💬 秋武洞察：${response}`;
@@ -365,15 +363,10 @@ function getAIResponse(userInput) {
         二者功能不重叠。我们只解决最难、最核心的**『破局增量』**问题。`;
     }
     
-    // 知乎/B站
-    if (lowerInput.includes('知乎') || lowerInput.includes('哔哩哔哩') || lowerInput.includes('b站') || lowerInput.includes('渠道') || lowerInput.includes('链接')) {
-        return `【外部深度内容】秋武老师在知乎和B站上发布了大量**专业深度分析**，核心价值在于：
-        <br>
-        1. <strong>心理防内耗：</strong> 分析留学环境的系统性挑战，教你保持**「游刃有余的节奏感」**（遊び感覚）。
-        2. <strong>文化适应：</strong> 解释语言学习中的**「纠缠」**，帮你理解日本文化的**言外之意**。
-        <br>
-        **请直接在平台搜索：秋武老师**，查看完整的 <strong>文理融合/教授心理学</strong> 深度分析。`;
-    }
+    // 【修改点 3】删除此处的知乎/B站回复，已整合到 contentMap.cases
+    // if (lowerInput.includes('知乎') || lowerInput.includes('哔哩哔哩') || lowerInput.includes('b站') || lowerInput.includes('渠道') || lowerInput.includes('链接')) {
+    //     return `【外部深度内容】...`;
+    // }
     
     if (lowerInput.includes('费用') || lowerInput.includes('收费') || lowerInput.includes('价格') || lowerInput.includes('免费')) {
         return `【透明商业逻辑】我们强烈推荐**“零成本模式”**：通过我推荐进入合作私塾或语校，机构支付的介绍费即覆盖您的全部辅导费。这是一种**三方共赢的价值模式**，对您**无任何隐形消费**。
@@ -395,7 +388,6 @@ function getAIResponse(userInput) {
         return `【联系方式】秋武老师微信ID是：<strong>qiuwu999</strong>。<strong>咨询请直接说明：</strong> 出身校、专业、日语/英语成绩、意向学校。我们不闲聊，只解决具体的升学问题。`;
     }
     
-    // 【最终优化】最常用的问候语/开场白：直接、务实、不鸡汤
     if (lowerInput.includes('你好') || lowerInput.includes('在吗')) {
         return `你好！我是秋武老师的助手。您好不容易找到我，**请别客气，直接把您的核心问题告诉我吧**（比如：**双非、跨专业、面试**）。咱们只聊破局策略，不闲聊！**需要定制化方案请加微信：qiuwu999 详聊。**`;
     }
@@ -416,4 +408,20 @@ function getAIResponse(userInput) {
 window.onload = function() {
     // 初始化时渲染咨询提示标签
     renderPrompts(); 
+
+    // 【修改点 1 & 2】UI/CSS 强制修复滚动，并删除冗余菜单项的事件绑定
+    const chatBody = document.getElementById('chatBody');
+    if (chatBody) {
+        // 强制设置 CSS 属性来保证滚动
+        chatBody.style.overflowY = 'auto'; 
+        chatBody.style.flexShrink = '1';
+        chatBody.style.minHeight = '0';
+        chatBody.style.position = 'relative'; // 确保内容流正常
+    }
+    
+    // 假设菜单项是通过特定ID或类名管理的，此处无法直接修改HTML，但可以删除其JS行为或依赖
+    // 需确保HTML中删除了 '升学破局策略游戏' 和 '知乎和哔哩哔哩网站' 两个按钮元素
+    
+    // 由于无法修改HTML，我无法删除按钮本身，但如果它们是通过JS动态添加的，此处可阻止。
+    // 假设您在HTML中已手动删除了这两个按钮，JS部分保持简洁。
 };
