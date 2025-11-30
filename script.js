@@ -14,14 +14,14 @@ const contentMap = {
         <p>通过我推荐进入合作的<strong>私塾或语言学校</strong>，机构支付的介绍费将直接覆盖您的全部辅导费用。</p>
         <ul>
             <li><strong>您的优势：</strong> 无额外支出，享受高端一对一咨询与规划服务。</li>
-            <li><strong>我的优势：** 商业逻辑透明，从机构获取介绍费，等同于您用渠道价值支付了咨询费。</li>
+            <li><strong>我的优势：</strong> 商业逻辑透明，从机构获取介绍费，等同于您用渠道价值支付了咨询费。</li>
         </ul>
 
         <h4>💼 单项或全套辅导（自费）</h4>
         <p>如果您不需要通过渠道推荐：</p>
         <ul>
             <li><strong>服务项目：</strong> 文书撰写指导、研究计划书逻辑重构、教授套磁策略、校内面试模拟（口头试问）。</li>
-            <li><strong>收费标准：** 根据项目（单项/全套）有不同价位。<strong>细节请加微信（qiuwu999）沟通，获取报价。</strong></li>
+            <li><strong>收费标准：</strong> 根据项目（单项/全套）有不同价位。<strong>细节请加微信（qiuwu999）沟通，获取报价。</strong></li>
         </ul>
         <p class="akiwu-highlight">我们的核心价值不在于文书翻译，而在于<strong>「逻辑重构」</strong>，确保您的学术背景和目标符合日本顶尖院校的「终局思维」要求。</p>
     `,
@@ -35,15 +35,15 @@ const contentMap = {
         <p>教授在面试中关注的不是您学了什么，而是您毕业后「想做什么」。只有明确了<strong>毕业后的目标、梦想</strong>，才能倒推出您希望在教授的研究室中学习的重点和计划。</p>
         <ul>
             <li><strong>核心：</strong> 教授期待您能带来研究的<strong>「可持续性」</strong>和<strong>「延续性」</strong>。</li>
-            <li>**行动：** 请在研究计划书中阐明您如何「学以致用」，这才是真正的高分项。</li>
+            <li><strong>行动：</strong> 请在研究计划书中阐明您如何「学以致用」，这才是真正的高分项。</li>
         </ul>
 
         <h4>2. 日本文化心理小课堂：本音与建前</h4>
-        <p>在日本文化中，**「本音」**是真实想法，**「建前」**是表面说辞。在与教授的交流中：</p>
+        <p>在日本文化中，<strong>「本音」</strong>是真实想法，<strong>「建前」</strong>是表面说辞。在与教授的交流中：</p>
         <ul>
             <li><strong>避免：</strong> 过分推销自己，或使用激进、夸大的词汇（建前）。</li>
-            <li><strong>做到：</strong> 使用中肯、专业的语言表达您的**真实研究热情与谦逊（本音）**。</li>
-            <li>**目的：** 赢得教授对您「人品」和「可靠性」的信任。</li>
+            <li><strong>做到：</strong> 使用中肯、专业的语言表达您的<strong>真实研究热情与谦逊（本音）</strong>。</li>
+            <li><strong>目的：</strong> 赢得教授对您「人品」和「可靠性」的信任。</li>
         </ul>
         <p class="akiwu-highlight">记住，留学是长期投资，聚焦「可量化提升」和「底层逻辑」远比一时的焦虑情绪更重要。</p>
     `,
@@ -78,7 +78,7 @@ const keywordResponses = {
     // 行动引导/下一步
     '下一步|怎么做|如何开始': '请先明确您的<strong>目标大学和专业</strong>。然后我们可以开始讨论：1. 您的背景如何用“终局思维”重构；2. 如何制定一份具有“可持续性”的研究计划书。',
     
-    // 【已优化】默认回复 - 语气更谦逊、更具引导性
+    // 默认回复
     'DEFAULT': '<strong>非常抱歉，我可能没有准确把握您的核心需求。</strong>为了提供最精准、有价值的分析，请问您是想了解：<br>1. <strong>服务模式与收费？</strong><br>2. <strong>跨文化心理学洞察？</strong><br>3. <strong>我的背景和优势？</strong><br>（请尝试使用更清晰的关键词，如“费用”、“东大”、“焦虑”等）',
 };
 
@@ -91,6 +91,12 @@ const suggestedPrompts = [
     "秋武老师的背景和优势。",
 ];
 
+// 外部链接配置 (包含您的真实网址)
+const externalLinks = [
+    { name: "知乎 (Zhihu)", url: "https://www.zhihu.com/people/qiu-wu-66" }, 
+    { name: "B站 (Bilibili)", url: "https://space.bilibili.com/323700487/lists" } 
+];
+
 
 // ====================================
 // UI/UX 逻辑层 (User Interface Logic)
@@ -98,8 +104,6 @@ const suggestedPrompts = [
 
 /**
  * 在聊天区添加消息
- * @param {string} text 消息文本 (支持 HTML)
- * @param {string} sender 发送者类型 ('user' 或 'ai')
  */
 function addMessage(text, sender) {
     const chatBody = document.getElementById('chat-body');
@@ -108,7 +112,7 @@ function addMessage(text, sender) {
     
     const bubbleDiv = document.createElement('div');
     bubbleDiv.className = 'bubble';
-    bubbleDiv.innerHTML = text; // 使用 innerHTML 渲染 HTML 标签
+    bubbleDiv.innerHTML = text; 
     
     messageDiv.appendChild(bubbleDiv);
     chatBody.appendChild(messageDiv);
@@ -119,7 +123,6 @@ function addMessage(text, sender) {
 
 /**
  * 激活聊天区并隐藏内容区
- * @param {Event} event (可选)
  */
 function showChatSection(event) {
     if (event) event.preventDefault();
@@ -127,7 +130,6 @@ function showChatSection(event) {
     document.getElementById('content-section').classList.add('hidden');
     document.getElementById('game-simulation-section').classList.add('hidden');
     
-    // 确保主容器滚动到聊天区底部
     const chatBody = document.getElementById('chat-body');
     if (chatBody) {
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -135,15 +137,13 @@ function showChatSection(event) {
     
     // 初始化问候语
     if (document.getElementById('chat-body').children.length === 0) {
-        addMessage(keywordResponses['你好'], 'ai');
+        addMessage(keywordResponses['你好|您好'], 'ai');
         generatePrompts();
     }
 }
 
 /**
  * 切换到内容显示区
- * @param {Event} event 
- * @param {string} contentKey 对应 contentMap 的键
  */
 function showContent(event, contentKey) {
     if (event) event.preventDefault();
@@ -157,7 +157,6 @@ function showContent(event, contentKey) {
 
 /**
  * 切换到游戏模拟区
- * @param {Event} event 
  */
 function showGameSimulation(event) {
     if (event) event.preventDefault();
@@ -165,16 +164,22 @@ function showGameSimulation(event) {
     document.getElementById('content-section').classList.add('hidden');
     
     const gameSection = document.getElementById('game-simulation-section');
-    gameSection.innerHTML = contentMap['game-simulation']; // 使用预设的内容
+    gameSection.innerHTML = contentMap['game-simulation'];
     gameSection.classList.remove('hidden');
 }
 
 /**
- * 生成咨询提示标签
+ * 生成咨询提示标签和外部链接
  */
-function generatePrompts() {
-    const promptsDiv = document.getElementById('chat-prompts');
-    promptsDiv.innerHTML = '';
+function renderPrompts() {
+    const promptsContainer = document.getElementById('chat-prompts');
+    // 找到包含 promptsContainer 的父级，用于插入链接容器
+    const parentContainer = promptsContainer ? promptsContainer.parentNode : null;
+    
+    if (!promptsContainer || !parentContainer) return;
+
+    // 1. 渲染咨询提示标签
+    promptsContainer.innerHTML = '';
     suggestedPrompts.forEach(prompt => {
         const tag = document.createElement('span');
         tag.className = 'prompt-tag';
@@ -183,8 +188,33 @@ function generatePrompts() {
             document.getElementById('user-input').value = prompt;
             sendMessage();
         };
-        promptsDiv.appendChild(tag);
+        promptsContainer.appendChild(tag);
     });
+    
+    // 2. 添加外部链接 (在输入框附近/右下方)
+    // 先检查链接容器是否已存在，防止重复添加
+    let linkContainer = parentContainer.querySelector('.external-links-container');
+    
+    if (!linkContainer) {
+        const linksHTML = externalLinks.map(link => 
+            `<a href="${link.url}" target="_blank" class="external-link">🌐 ${link.name}</a>`
+        ).join('');
+        
+        linkContainer = document.createElement('div');
+        linkContainer.className = 'external-links-container';
+        linkContainer.style.cssText = 'text-align: right; padding: 5px 0; margin-top: 5px;'; 
+        linkContainer.innerHTML = `<p style="font-size: 0.8em; color: #777; display: inline-block; margin-right: 10px;">外部洞察：</p>${linksHTML}`;
+        
+        // 将链接容器插入到 promptsContainer 后面
+        parentContainer.insertBefore(linkContainer, promptsContainer.nextSibling);
+    }
+}
+
+/**
+ * 生成咨询提示标签 (旧函数占位，逻辑已整合到 renderPrompts)
+ */
+function generatePrompts() {
+   renderPrompts();
 }
 
 
@@ -192,105 +222,147 @@ function generatePrompts() {
 // 核心逻辑层 (Core Processing Logic)
 // ====================================
 
-/**
- * 处理用户输入并发送消息
- */
 function sendMessage() {
     const inputElement = document.getElementById('user-input');
     const userText = inputElement.value.trim();
 
     if (userText === '') return;
 
-    // 1. 显示用户消息
     addMessage(userText, 'user');
     inputElement.value = '';
 
-    // 2. 显示加载指示器
     const loadingIndicator = document.getElementById('loading-indicator');
     loadingIndicator.classList.remove('hidden');
 
-    // 3. 异步获取 AI 回复
     setTimeout(() => {
         const aiResponse = getAIResponse(userText);
-        
-        // 4. 隐藏加载指示器
         loadingIndicator.classList.add('hidden');
-
-        // 5. 显示 AI 消息
         addMessage(aiResponse, 'ai');
-    }, 800); // 模拟网络延迟
+    }, 800); 
 }
 
 
-/**
- * 根据用户输入生成 AI 回复 (核心匹配逻辑)
- * @param {string} input 用户的输入文本
- * @returns {string} AI 的回复文本 (支持 HTML)
- */
 function getAIResponse(input) {
-    // 移除所有空格并将输入转为小写，以便进行更宽松的匹配
     const normalizedInput = input.toLowerCase().replace(/\s/g, ''); 
 
-    // 优先级 1: 精确/模糊匹配 (从 keywordResponses 查找)
+    // 优先级 1: 精确/模糊匹配
     for (const key in keywordResponses) {
-        // 分割关键词 (如 '你好|您好')
         const keywords = key.split('|').map(k => k.toLowerCase().replace(/\s/g, ''));
-        
-        // 检查标准化输入是否包含任一关键词
         if (keywords.some(k => k.length > 0 && normalizedInput.includes(k))) {
             return keywordResponses[key];
         }
     }
 
-    // 优先级 2: 深入问答模拟 (匹配更复杂的意图)
-    if (normalizedInput.includes('研究课题') || normalizedInput.includes('研究方向') || normalizedInput.includes('研究主题')) {
+    // 优先级 2: 深入问答模拟
+    if (normalizedInput.includes('研究课题') || normalizedInput.includes('研究方向')) {
         return handleResearchTopicQuery(normalizedInput);
     }
-
-    if (normalizedInput.includes('sns') || normalizedInput.includes('社媒') || normalizedInput.includes('小红书') || normalizedInput.includes('知乎') || normalizedInput.includes('文案') || normalizedInput.includes('评论')) {
+    if (normalizedInput.includes('sns') || normalizedInput.includes('评论')) {
         return generateSNSComment(normalizedInput);
     }
-    
-    if (normalizedInput.includes('教授') || normalizedInput.includes('面试') || normalizedInput.includes('口头试问')) {
+    if (normalizedInput.includes('教授') || normalizedInput.includes('面试')) {
         return generatePsychologicalInsight(normalizedInput);
     }
+    // 新增: 费用置换模式
+    const feeResponse = handleFeeExchangeQuery(normalizedInput);
+    if (feeResponse) return feeResponse;
 
     // 优先级 3: 默认回复
     return keywordResponses['DEFAULT'];
 }
 
-// 复杂逻辑函数 1：处理研究课题
 function handleResearchTopicQuery(input) {
-    if (input.includes('可持续性') || input.includes('延续性')) {
-        return '这是一个<strong>东大基准</strong>的问题，非常专业！研究课题的“可持续性”是指您的研究是否能为教授的项目带来**长期价值和延续的潜力**。请问您目前最感兴趣的**【跨学科领域】**是什么？';
+    if (input.includes('可持续性')) {
+        return '这是一个<strong>东大基准</strong>的问题！研究课题的“可持续性”是指您的研究是否能为教授的项目带来**长期价值**。';
     }
-    return '研究课题的选择是<strong>终局思维</strong>的第一步。请告诉我您的**【本科专业】**和**【感兴趣的方向】**，我将为您分析如何进行“文理融合”式的逻辑重构。';
+    return '研究课题的选择是<strong>终局思维</strong>的第一步。请告诉我您的**【本科专业】**和**【感兴趣的方向】**，我将为您分析。';
 }
 
-// 复杂逻辑函数 2：生成 SNS 评论
 function generateSNSComment(input) {
     const keyword = input.includes('压力') ? '压力' : '留学规划';
     return `<div class="sns-comment-bubble">
         <strong>【AI生成的专业SNS评论】</strong><br><br>
-        “秋武老师的分析直击内核，完全是<span class="akiwu-highlight"><strong>东大基准的「逻辑重构」</strong></span>！他强调的不是盲目内卷，而是如何用<span class="akiwu-highlight"><strong>「终局思维」倒推规划</strong></span>，最大化投入产出比。特别是关于日本教授<span class="akiwu-highlight"><strong>“本音”与“建前”</strong></span>的洞察，避免了多少弯路！强推想走高阶路线的同学来深度咨询！#日本留学 #修士申请 #东大基准”
+        “秋武老师的分析直击内核，完全是<span class="akiwu-highlight"><strong>东大基准的「逻辑重构」</strong></span>！强推想走高阶路线的同学来深度咨询！”
     </div>
     <br>
-    <p>💡 您可以直接复制这段评论用于您的社交媒体。如果您需要关于**【${keyword}】**主题的评论，请重新提问。</p>`;
+    <p>💡 您可以直接复制这段评论用于您的社交媒体。</p>`;
 }
 
-// 复杂逻辑函数 3：生成心理学洞察
 function generatePsychologicalInsight(input) {
-    if (input.includes('教授答辩') || input.includes('问答技巧')) {
-        return '教授答辩的核心秘诀在于<strong>「人品与可靠性」</strong>的展示。技术问题可以现场学习，但**研究的真诚度**和**对失败的态度**才是关键。请问您是否想了解如何应对教授的**“尖锐但隐含善意”**的问题？';
+    if (input.includes('教授答辩')) {
+        return '教授答辩的核心秘诀在于<strong>「人品与可靠性」</strong>的展示。技术问题可以现场学习，但**研究的真诚度**才是关键。';
     }
-    return '在与教授交流时，请务必区分<strong>“本音”（真实想法）</strong>和<strong>“建前”（表面说辞）</strong>。教授在考察您是否具有**研究的长期潜力和忠诚度**。想知道如何用中肯、专业的方式表达您的“本音”吗？';
+    return '在与教授交流时，请务必区分<strong>“本音”</strong>和<strong>“建前”</strong>。教授在考察您是否具有**研究的长期潜力和忠诚度**。';
+}
+
+function handleFeeExchangeQuery(lowerInput) {
+    if (lowerInput.includes('零成本') || lowerInput.includes('免费')) {
+        return contentMap['content-service']; // 复用服务内容
+    }
+    return null;
 }
 
 
 // ====================================
-// 页面初始化 (Initialization)
+// 页面初始化 (Initialization) - 强力清除逻辑
 // ====================================
-document.addEventListener('DOMContentLoaded', () => {
-    // 页面加载完成后默认显示聊天区
-    showChatSection(); 
-});
+window.onload = function() {
+    try {
+        // 1. 初始化
+        showChatSection();
+        
+        // 2. 【关键修复】彻底清除箭头、游戏按钮、外部平台干扰字眼
+        // 使用更广泛的选择器来捕捉可能的残留元素
+        const allElements = document.querySelectorAll('button, div, a, span, p, h1, h2, h3, i');
+        
+        allElements.forEach(el => {
+            try {
+                // 获取文本内容并转小写
+                const content = (el.textContent || el.innerHTML || "").toLowerCase();
+                const style = window.getComputedStyle(el);
+                const position = style.getPropertyValue('position');
+
+                // 策略A: 移除所有浮动/固定/绝对定位的箭头或滚动按钮
+                if (position === 'fixed' || position === 'absolute') {
+                    if (content.includes('▲') || content.includes('▼') || content.includes('↑') || content.includes('↓') || content.includes('scroll') || content.includes('top') || el.classList.contains('scroll-arrow')) {
+                        if (el.parentNode) el.parentNode.removeChild(el);
+                    }
+                }
+                
+                // 策略B: 移除“升学破局策略游戏”相关按钮
+                // 注意：不移除 menu-game-btn 类，因为我们在 HTML 中保留了“终局思维模拟器”菜单，只移除旧的“策略游戏”字眼
+                if (content.includes('策略游戏') && !content.includes('终局思维')) {
+                     if (el.parentNode) el.parentNode.removeChild(el);
+                }
+                
+                // 策略C: 隐藏除我们新添加链接之外的外部平台字眼 (微信/知乎/B站)
+                // 排除：我们的 .social-links 容器及其子元素，以及包含 qiuwu999 的文本
+                if ((content.includes('微信') || content.includes('知乎') || content.includes('b站') || content.includes('bilibili'))) {
+                    // 检查是否是我们新添加的合法链接或联系方式
+                    const isLegalLink = el.closest('.social-links') || el.closest('.external-links-container') || content.includes('qiuwu999');
+                    
+                    if (!isLegalLink && !el.classList.contains('bubble')) { // 也不要隐藏聊天气泡里的内容
+                         el.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                // 忽略单个元素处理错误
+            }
+        });
+
+        // 3. 【关键滚动修复】
+        const chatBody = document.getElementById('chat-body'); // 注意 ID 是 chat-body
+        const appContainer = document.querySelector('.main-container') || document.body; 
+
+        if (chatBody) {
+            chatBody.style.overflowY = 'auto'; 
+            chatBody.style.height = '100%'; // 确保占满父容器
+            chatBody.style.webkitOverflowScrolling = 'touch';
+        }
+        
+        document.body.style.overflowY = 'auto';
+        
+    } catch (error) {
+        console.error("Init error:", error);
+    }
+};
