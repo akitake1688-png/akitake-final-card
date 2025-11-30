@@ -59,6 +59,10 @@ body {
     overflow: hidden;
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* ==================================== */
 /* 3. 左侧面板 (Left Panel) - 品牌与导航中心 */
 /* ==================================== */
@@ -391,10 +395,6 @@ h1 {
     color: #6c757d;
     font-style: italic;
     background-color: #f7f7f9;
-}
-
-.hidden {
-    display: none !important;
 }
 
 /* ==================================== */
