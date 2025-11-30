@@ -14,7 +14,7 @@ const contentMap = {
         <p>通过我推荐进入合作的<strong>私塾或语言学校</strong>，机构支付的介绍费将直接覆盖您的全部辅导费用。</p>
         <ul>
             <li><strong>您的优势：</strong> 无额外支出，享受高端一对一咨询与规划服务。</li>
-            <li><strong>我的优势：</strong> 商业逻辑透明，从机构获取介绍费，等同于您用渠道价值支付了咨询费。</li>
+            <li><strong>我的优势：** 商业逻辑透明，从机构获取介绍费，等同于您用渠道价值支付了咨询费。</li>
         </ul>
 
         <h4>💼 单项或全套辅导（自费）</h4>
@@ -35,15 +35,15 @@ const contentMap = {
         <p>教授在面试中关注的不是您学了什么，而是您毕业后「想做什么」。只有明确了<strong>毕业后的目标、梦想</strong>，才能倒推出您希望在教授的研究室中学习的重点和计划。</p>
         <ul>
             <li><strong>核心：</strong> 教授期待您能带来研究的<strong>「可持续性」</strong>和<strong>「延续性」</strong>。</li>
-            <li><strong>行动：</strong> 请在研究计划书中阐明您如何「学以致用」，这才是真正的高分项。</li>
+            <li>**行动：** 请在研究计划书中阐明您如何「学以致用」，这才是真正的高分项。</li>
         </ul>
 
         <h4>2. 日本文化心理小课堂：本音与建前</h4>
-        <p>在日本文化中，<strong>「本音」</strong>是真实想法，<strong>「建前」</strong>是表面说辞。在与教授的交流中：</p>
+        <p>在日本文化中，**「本音」**是真实想法，**「建前」**是表面说辞。在与教授的交流中：</p>
         <ul>
             <li><strong>避免：</strong> 过分推销自己，或使用激进、夸大的词汇（建前）。</li>
-            <li><strong>做到：</strong> 使用中肯、专业的语言表达您的<strong>真实研究热情与谦逊（本音）</strong>。</li>
-            <li><strong>目的：</strong> 赢得教授对您「人品」和「可靠性」的信任。</li>
+            <li><strong>做到：</strong> 使用中肯、专业的语言表达您的**真实研究热情与谦逊（本音）**。</li>
+            <li>**目的：** 赢得教授对您「人品」和「可靠性」的信任。</li>
         </ul>
         <p class="akiwu-highlight">记住，留学是长期投资，聚焦「可量化提升」和「底层逻辑」远比一时的焦虑情绪更重要。</p>
     `,
@@ -78,8 +78,8 @@ const keywordResponses = {
     // 行动引导/下一步
     '下一步|怎么做|如何开始': '请先明确您的<strong>目标大学和专业</strong>。然后我们可以开始讨论：1. 您的背景如何用“终局思维”重构；2. 如何制定一份具有“可持续性”的研究计划书。',
     
-    // 默认回复
-    'DEFAULT': '我没有完全理解您的问题。请问您是想了解：<br>1. <strong>服务模式与收费？</strong><br>2. <strong>跨文化心理学洞察？</strong><br>3. <strong>我的背景和优势？</strong><br>（请尝试使用更清晰的关键词，如“费用”、“东大”、“焦虑”等）',
+    // 【已优化】默认回复 - 语气更谦逊、更具引导性
+    'DEFAULT': '<strong>非常抱歉，我可能没有准确把握您的核心需求。</strong>为了提供最精准、有价值的分析，请问您是想了解：<br>1. <strong>服务模式与收费？</strong><br>2. <strong>跨文化心理学洞察？</strong><br>3. <strong>我的背景和优势？</strong><br>（请尝试使用更清晰的关键词，如“费用”、“东大”、“焦虑”等）',
 };
 
 // 预设提示标签
@@ -128,7 +128,6 @@ function showChatSection(event) {
     document.getElementById('game-simulation-section').classList.add('hidden');
     
     // 确保主容器滚动到聊天区底部
-    // 注意: chatBody的滚动应确保在 right-panel 内部，但我们主要关注 chat-body 自身滚动
     const chatBody = document.getElementById('chat-body');
     if (chatBody) {
         chatBody.scrollTop = chatBody.scrollHeight;
