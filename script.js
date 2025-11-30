@@ -128,8 +128,11 @@ function showChatSection(event) {
     document.getElementById('game-simulation-section').classList.add('hidden');
     
     // 确保主容器滚动到聊天区底部
-    const mainContainer = document.querySelector('.right-panel');
-    mainContainer.scrollTop = mainContainer.scrollHeight;
+    // 注意: chatBody的滚动应确保在 right-panel 内部，但我们主要关注 chat-body 自身滚动
+    const chatBody = document.getElementById('chat-body');
+    if (chatBody) {
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
     
     // 初始化问候语
     if (document.getElementById('chat-body').children.length === 0) {
@@ -226,25 +229,30 @@ function sendMessage() {
  * @returns {string} AI 的回复文本 (支持 HTML)
  */
 function getAIResponse(input) {
-    const normalizedInput = input.toLowerCase().replace(/\s/g, ''); // 标准化处理
+    // 移除所有空格并将输入转为小写，以便进行更宽松的匹配
+    const normalizedInput = input.toLowerCase().replace(/\s/g, ''); 
 
-    // 优先级 1: 模糊匹配 (使用更专业的措辞)
+    // 优先级 1: 精确/模糊匹配 (从 keywordResponses 查找)
     for (const key in keywordResponses) {
-        if (key !== 'DEFAULT' && normalizedInput.includes(key.toLowerCase().replace(/\|/g, '').replace(/\s/g, ''))) {
+        // 分割关键词 (如 '你好|您好')
+        const keywords = key.split('|').map(k => k.toLowerCase().replace(/\s/g, ''));
+        
+        // 检查标准化输入是否包含任一关键词
+        if (keywords.some(k => k.length > 0 && normalizedInput.includes(k))) {
             return keywordResponses[key];
         }
     }
 
     // 优先级 2: 深入问答模拟 (匹配更复杂的意图)
-    if (normalizedInput.includes('研究课题|研究方向|研究主题')) {
+    if (normalizedInput.includes('研究课题') || normalizedInput.includes('研究方向') || normalizedInput.includes('研究主题')) {
         return handleResearchTopicQuery(normalizedInput);
     }
 
-    if (normalizedInput.includes('sns|社媒|小红书|知乎|文案|评论')) {
+    if (normalizedInput.includes('sns') || normalizedInput.includes('社媒') || normalizedInput.includes('小红书') || normalizedInput.includes('知乎') || normalizedInput.includes('文案') || normalizedInput.includes('评论')) {
         return generateSNSComment(normalizedInput);
     }
     
-    if (normalizedInput.includes('教授|面试|口头试问')) {
+    if (normalizedInput.includes('教授') || normalizedInput.includes('面试') || normalizedInput.includes('口头试问')) {
         return generatePsychologicalInsight(normalizedInput);
     }
 
@@ -254,7 +262,7 @@ function getAIResponse(input) {
 
 // 复杂逻辑函数 1：处理研究课题
 function handleResearchTopicQuery(input) {
-    if (input.includes('可持续性|延续性')) {
+    if (input.includes('可持续性') || input.includes('延续性')) {
         return '这是一个<strong>东大基准</strong>的问题，非常专业！研究课题的“可持续性”是指您的研究是否能为教授的项目带来**长期价值和延续的潜力**。请问您目前最感兴趣的**【跨学科领域】**是什么？';
     }
     return '研究课题的选择是<strong>终局思维</strong>的第一步。请告诉我您的**【本科专业】**和**【感兴趣的方向】**，我将为您分析如何进行“文理融合”式的逻辑重构。';
@@ -273,7 +281,7 @@ function generateSNSComment(input) {
 
 // 复杂逻辑函数 3：生成心理学洞察
 function generatePsychologicalInsight(input) {
-    if (input.includes('教授答辩|问答技巧')) {
+    if (input.includes('教授答辩') || input.includes('问答技巧')) {
         return '教授答辩的核心秘诀在于<strong>「人品与可靠性」</strong>的展示。技术问题可以现场学习，但**研究的真诚度**和**对失败的态度**才是关键。请问您是否想了解如何应对教授的**“尖锐但隐含善意”**的问题？';
     }
     return '在与教授交流时，请务必区分<strong>“本音”（真实想法）</strong>和<strong>“建前”（表面说辞）</strong>。教授在考察您是否具有**研究的长期潜力和忠诚度**。想知道如何用中肯、专业的方式表达您的“本音”吗？';
