@@ -91,12 +91,6 @@ const suggestedPrompts = [
     "秋武老师的背景和优势。",
 ];
 
-// 外部链接配置 (包含您的真实网址)
-const externalLinks = [
-    { name: "知乎 (Zhihu)", url: "https://www.zhihu.com/people/qiu-wu-66" }, 
-    { name: "B站 (Bilibili)", url: "https://space.bilibili.com/323700487/lists" } 
-];
-
 
 // ====================================
 // UI/UX 逻辑层 (User Interface Logic)
@@ -122,6 +116,51 @@ function addMessage(text, sender) {
 }
 
 /**
+ * 获取 AI 回复逻辑
+ */
+function getAiResponse(userInput) {
+    const normalizedInput = userInput.toLowerCase().trim();
+
+    for (const key in keywordResponses) {
+        if (key === 'DEFAULT') continue;
+        const keywords = key.split('|').map(k => k.trim());
+        
+        for (const keyword of keywords) {
+            // 简单模糊匹配
+            if (normalizedInput.includes(keyword)) {
+                return keywordResponses[key];
+            }
+        }
+    }
+    return keywordResponses['DEFAULT'];
+}
+
+/**
+ * 发送消息并获取 AI 回复
+ */
+function sendMessage() {
+    const inputElement = document.getElementById('user-input');
+    const userInput = inputElement.value.trim();
+
+    if (userInput === '') return;
+
+    // 1. 发送用户消息
+    addMessage(userInput, 'user');
+    inputElement.value = ''; // 清空输入框
+
+    // 2. 显示加载指示器
+    const loadingIndicator = document.getElementById('loading-indicator');
+    loadingIndicator.classList.remove('hidden');
+
+    // 3. 模拟 AI 思考延迟后发送回复
+    setTimeout(() => {
+        const aiResponse = getAiResponse(userInput);
+        addMessage(aiResponse, 'ai');
+        loadingIndicator.classList.add('hidden');
+    }, 1000); // 1秒延迟
+}
+
+/**
  * 激活聊天区并隐藏内容区
  */
 function showChatSection(event) {
@@ -130,15 +169,16 @@ function showChatSection(event) {
     document.getElementById('content-section').classList.add('hidden');
     document.getElementById('game-simulation-section').classList.add('hidden');
     
+    // 确保滚动到底部
     const chatBody = document.getElementById('chat-body');
     if (chatBody) {
         chatBody.scrollTop = chatBody.scrollHeight;
     }
     
-    // 初始化问候语
+    // 初始化问候语和提示标签
     if (document.getElementById('chat-body').children.length === 0) {
-        addMessage(keywordResponses['你好|您好'], 'ai');
-        generatePrompts();
+        addMessage(keywordResponses['你好|您好|哈喽|hello|您在吗'], 'ai');
+        renderPrompts();
     }
 }
 
@@ -169,14 +209,11 @@ function showGameSimulation(event) {
 }
 
 /**
- * 生成咨询提示标签和外部链接
+ * 渲染咨询提示标签
  */
 function renderPrompts() {
     const promptsContainer = document.getElementById('chat-prompts');
-    // 找到包含 promptsContainer 的父级，用于插入链接容器
-    const parentContainer = promptsContainer ? promptsContainer.parentNode : null;
-    
-    if (!promptsContainer || !parentContainer) return;
+    if (!promptsContainer) return;
 
     // 1. 渲染咨询提示标签
     promptsContainer.innerHTML = '';
@@ -190,141 +227,13 @@ function renderPrompts() {
         };
         promptsContainer.appendChild(tag);
     });
-    
-    // 2. 添加外部链接 (在输入框附近/右下方)
-    // 先检查链接容器是否已存在，防止重复添加
-    let linkContainer = parentContainer.querySelector('.external-links-container');
-    
-    if (!linkContainer) {
-        const linksHTML = externalLinks.map(link => 
-            `<a href="${link.url}" target="_blank" class="external-link">🌐 ${link.name}</a>`
-        ).join('');
-        
-        linkContainer = document.createElement('div');
-        linkContainer.className = 'external-links-container';
-        linkContainer.style.cssText = 'text-align: right; padding: 5px 0; margin-top: 5px;'; 
-        linkContainer.innerHTML = `<p style="font-size: 0.8em; color: #777; display: inline-block; margin-right: 10px;">外部洞察：</p>${linksHTML}`;
-        
-        // 将链接容器插入到 promptsContainer 后面
-        parentContainer.insertBefore(linkContainer, promptsContainer.nextSibling);
-    }
-}
-
-/**
- * 生成咨询提示标签 (旧函数占位，逻辑已整合到 renderPrompts)
- */
-function generatePrompts() {
-    renderPrompts();
 }
 
 
 // ====================================
-// 核心逻辑层 (Core Processing Logic)
+// 页面初始化：确保打开页面时 UI 处于正确状态 (修复关键点)
 // ====================================
-
-function sendMessage() {
-    const inputElement = document.getElementById('user-input');
-    const userText = inputElement.value.trim();
-
-    if (userText === '') return;
-
-    addMessage(userText, 'user');
-    inputElement.value = '';
-
-    const loadingIndicator = document.getElementById('loading-indicator');
-    loadingIndicator.classList.remove('hidden');
-
-    setTimeout(() => {
-        const aiResponse = getAIResponse(userText);
-        loadingIndicator.classList.add('hidden');
-        addMessage(aiResponse, 'ai');
-    }, 800); 
-}
-
-
-function getAIResponse(input) {
-    const normalizedInput = input.toLowerCase().replace(/\s/g, ''); 
-
-    // 优先级 1: 精确/模糊匹配
-    for (const key in keywordResponses) {
-        const keywords = key.split('|').map(k => k.toLowerCase().replace(/\s/g, ''));
-        if (keywords.some(k => k.length > 0 && normalizedInput.includes(k))) {
-            return keywordResponses[key];
-        }
-    }
-
-    // 优先级 2: 深入问答模拟
-    if (normalizedInput.includes('研究课题') || normalizedInput.includes('研究方向')) {
-        return handleResearchTopicQuery(normalizedInput);
-    }
-    if (normalizedInput.includes('sns') || normalizedInput.includes('评论')) {
-        return generateSNSComment(normalizedInput);
-    }
-    if (normalizedInput.includes('教授') || normalizedInput.includes('面试')) {
-        return generatePsychologicalInsight(normalizedInput);
-    }
-    // 新增: 费用置换模式
-    const feeResponse = handleFeeExchangeQuery(normalizedInput);
-    if (feeResponse) return feeResponse;
-
-    // 优先级 3: 默认回复
-    return keywordResponses['DEFAULT'];
-}
-
-function handleResearchTopicQuery(input) {
-    if (input.includes('可持续性')) {
-        return '这是一个<strong>东大基准</strong>的问题！研究课题的“可持续性”是指您的研究是否能为教授的项目带来**长期价值**。';
-    }
-    return '研究课题的选择是<strong>终局思维</strong>的第一步。请告诉我您的**【本科专业】**和**【感兴趣的方向】**，我将为您分析。';
-}
-
-function generateSNSComment(input) {
-    const keyword = input.includes('压力') ? '压力' : '留学规划';
-    return `<div class="sns-comment-bubble">
-        <strong>【AI生成的专业SNS评论】</strong>
-
-
-        “秋武老师的分析直击内核，完全是<span class="akiwu-highlight"><strong>东大基准的「逻辑重构」</strong></span>！强推想走高阶路线的同学来深度咨询！”
-    </div>
-    
-    <p>💡 您可以直接复制这段评论用于您的社交媒体。</p>`;
-}
-
-function generatePsychologicalInsight(input) {
-    if (input.includes('教授答辩')) {
-        return '教授答辩的核心秘诀在于<strong>「人品与可靠性」</strong>的展示。技术问题可以现场学习，但**研究的真诚度**才是关键。';
-    }
-    return '在与教授交流时，请务必区分<strong>“本音”</strong>和<strong>“建前”</strong>。教授在考察您是否具有**研究的长期潜力和忠诚度**。';
-}
-
-function handleFeeExchangeQuery(lowerInput) {
-    if (lowerInput.includes('零成本') || lowerInput.includes('免费')) {
-        return contentMap['content-service']; // 复用服务内容
-    }
-    return null;
-}
-
-
-// ====================================
-// 页面初始化 (Initialization) - 安全版本
-// 彻底移除了导致死循环的 DOM 遍历和清理逻辑
-// ====================================
-window.onload = function() {
-    try {
-        // 1. 初始化：调用 showChatSection 来显示聊天界面和欢迎语
-        showChatSection();
-        
-        // 2. 关键滚动修复 - 保留简单的样式设置
-        const chatBody = document.getElementById('chat-body'); 
-        if (chatBody) {
-            chatBody.style.overflowY = 'auto'; 
-            chatBody.style.height = '100%'; 
-            chatBody.style.webkitOverflowScrolling = 'touch';
-        }
-        
-        document.body.style.overflowY = 'auto';
-        
-    } catch (error) {
-        console.error("Init error:", error);
-    }
-};
+document.addEventListener('DOMContentLoaded', () => {
+    // 确保页面加载完成后，显示聊天区并进行初始化
+    showChatSection(); 
+});
