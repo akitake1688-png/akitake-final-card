@@ -1,35 +1,35 @@
 /* ==================================== */
-/* 秋武老师卡片 CSS - 日式禅意专业模式 */
+/* 秋武老师卡片 CSS - 日式古典专业模式 */
 /* ==================================== */
 
-/* 1. 全局变量与配色系统 (日式极简与专注) */
+/* 1. 全局变量与配色系统 (日式古典与专业) */
 /* ------------------------------------ */
 :root {
-    --color-primary-dark: #2c3e50; /* 石墨蓝/墨色 - 核心品牌色 (权威沉静) */
-    --color-primary-light: #34495e; /* 深灰蓝 - 按钮背景 (沉稳不跳脱) */
-    --color-accent: #5bc0de; /* 浅天蓝/青瓷色 - 指引与高亮色 (清晰专注) */
+    --color-primary-dark: #191970; /* 深群青/Deep Indigo - 核心品牌色 (权威与传统) */
+    --color-primary-light: #2f4f4f; /* 墨绿/Dark Slate Grey - 按钮背景 (沉稳不跳脱) */
+    --color-accent: #008080; /* 青碧/Teal - 指引与高亮色 (智慧与平衡) */
     
     --color-background-main: #f9f9f9; /* 主体背景 (极简留白) */
     --color-panel-bg: #ffffff; /* 面板、卡片背景 */
     --color-text-dark: #212529; /* 深色文本 */
     --color-text-light: #ffffff; /* 浅色文本 */
-    --color-ai-bubble-bg: #f0f8ff; /* AI 气泡背景 (柔和雾霾蓝) */
+    --color-ai-bubble-bg: #f5fffa; /* AI 气泡背景 (温和淡艾草色) */
 
     --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /* ==================================== */
 /* 动画：克制版头像光晕 (Subtle Halo) */
-/* ==================================== */
+/* ------------------------------------ */
 @keyframes halo-pulse-subtle {
     0% {
-        box-shadow: 0 0 0 0px rgba(44, 62, 80, 0.5); /* 使用新的主色 */
+        box-shadow: 0 0 0 0px rgba(25, 25, 112, 0.5); /* 使用新的深群青色 */
     }
     70% {
-        box-shadow: 0 0 0 5px rgba(44, 62, 80, 0);
+        box-shadow: 0 0 0 5px rgba(25, 25, 112, 0);
     }
     100% {
-        box-shadow: 0 0 0 0px rgba(44, 62, 80, 0);
+        box-shadow: 0 0 0 0px rgba(25, 25, 112, 0);
     }
 }
 
@@ -65,7 +65,7 @@ body {
 .left-panel {
     width: 320px; 
     flex-shrink: 0; 
-    background: #ffffff; /* 保持白色，日式极简 */
+    background: #ffffff; 
     color: var(--color-text-dark);
     padding: 35px 25px; 
     box-sizing: border-box;
@@ -74,7 +74,7 @@ body {
     align-items: center;
     text-align: center;
     overflow-y: auto;
-    border-right: 1px solid #ddd; /* 边框更细致 */
+    border-right: 1px solid #ddd; 
 }
 
 /* 3.1 导师身份卡 (Profile Cover) */
@@ -138,7 +138,7 @@ h1 {
 }
 
 .btn-expand:hover {
-    background-color: #2b4055; 
+    background-color: #263e3e; /* 墨绿 Hover */
     transform: translateY(-1px); 
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
 }
@@ -217,7 +217,7 @@ h1 {
 
 .menu-game-btn {
     font-weight: 600;
-    background-color: #e8f5fb; /* 更清淡的背景色 */
+    background-color: #e6f7f7; /* 更清淡的青碧色背景 */
     color: var(--color-primary-dark);
 }
 
@@ -264,10 +264,17 @@ h1 {
 .chat-header {
     flex-shrink: 0;
     padding: 20px 25px; 
-    background-color: var(--color-primary-dark); 
+    background-color: var(--color-primary-dark); /* 深群青背景 */
     color: var(--color-text-light);
     border-radius: 0 12px 0 0;
 }
+
+.chat-header h2 {
+    font-size: 1.2em;
+    font-weight: 500;
+    margin: 0;
+}
+
 
 .chat-body {
     flex-grow: 1;
@@ -299,26 +306,26 @@ h1 {
 }
 
 .ai-message .bubble {
-    background-color: var(--color-ai-bubble-bg); /* 新增柔和背景色 */
+    background-color: var(--color-ai-bubble-bg); /* 新增柔和艾草背景色 */
     color: var(--color-text-dark);
     border-top-left-radius: 5px;
 }
 
 .user-message .bubble {
-    background-color: var(--color-primary-light);
+    background-color: var(--color-primary-light); /* 墨绿背景 */
     color: var(--color-text-light);
     border-bottom-right-radius: 5px;
 }
 
 /* 【关键优化】聊天气泡粗体样式：确保专业中肯 */
 .chat-body .bubble strong {
-    color: #004a99; 
+    color: #191970; /* 使用深群青，增加重点 */
     font-weight: 700;
 }
 
 /* 【新增样式】用于强调核心概念的类，使用新的 Accent Color */
 .akiwu-highlight {
-    color: var(--color-accent); 
+    color: var(--color-accent); /* 青碧色高亮 */
     font-weight: 700;
 }
 
@@ -327,7 +334,7 @@ h1 {
     max-width: 90%;
     background-color: #fcfcfc; 
     color: var(--color-text-dark); 
-    border: 2px solid var(--color-accent); /* 边框颜色使用新强调色 */
+    border: 2px solid var(--color-accent); /* 边框颜色使用青碧强调色 */
     border-radius: 10px; 
     padding: 15px 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); 
@@ -356,8 +363,8 @@ h1 {
 
 .chat-input-area input:focus {
     outline: none;
-    border-color: var(--color-accent); /* 焦点使用新强调色 */
-    box-shadow: 0 0 0 2px rgba(91, 192, 222, 0.3); 
+    border-color: var(--color-accent); /* 焦点使用青碧强调色 */
+    box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.3); /* 青碧色光晕 */
 }
 
 .chat-input-area button {
@@ -367,14 +374,14 @@ h1 {
     font-size: 1em;
     font-weight: 500;
     background-color: var(--color-accent);
-    color: var(--color-primary-dark); /* 按钮文字使用深色，更易读 */
+    color: var(--color-primary-dark); /* 按钮文字使用深群青，更易读 */
     border: none;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .chat-input-area button:hover {
-    background-color: #4db4d6; 
+    background-color: #009999; 
 }
 
 /* 4.4 加载指示器 */
@@ -414,7 +421,7 @@ h1 {
 }
 
 .prompt-tag {
-    background-color: #f0f5f7; /* 更清淡的提示背景 */
+    background-color: #e6f7f7; /* 清淡的青碧色背景 */
     color: var(--color-primary-dark);
     padding: 8px 15px;
     border-radius: 20px;
@@ -426,6 +433,6 @@ h1 {
 }
 
 .prompt-tag:hover {
-    background-color: #e0eaf0;
+    background-color: #d0e8e8;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
