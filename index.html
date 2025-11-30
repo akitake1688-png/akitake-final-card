@@ -3,90 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武老师 | 东大升学破局顾问</title>
+    <title>秋武老师数字卡/咨询助手</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="main-container">
-    <div class="left-panel">
-        
-        <div class="profile-cover">
-            <div class="avatar-ring">
-                <img src="avatar.jpg" alt="秋武老师头像" class="avatar">
-            </div>
+    <div class="main-container">
 
-            <h1>秋武老师 <span>/ 东大修士</span></h1>
-            <p class="subtitle">10年升学破局顾问 | 教授心理学专家 | 文理融合逻辑重构</p>
-
-            <button class="btn-expand" onclick="showChatSection(true)">开始咨询，寻求破局方案</button>
-        </div>
-
-        <div class="menu-list">
-            <a href="#" class="menu-item" onclick="showContent('strength')">
-                🔥 核心优势：认知差破局策略
-            </a>
-            <a href="#" class="menu-item" onclick="showContent('model')">
-                💎 辅导模式与价值承诺
-            </a>
-            <a href="#" class="menu-item" onclick="showContent('cases')">
-                📚 成功案例 / 系统升学规划 </a>
-            <a href="#" class="menu-item menu-back-btn hidden" onclick="backToMenu()">
-                🔙 返回聊天界面
-            </a>
-        </div>
-        
-        <div class="social-links">
-            <p style="font-size: 0.9em; color: #6c757d; margin-bottom: 10px;">外部渠道与深度内容</p>
-            <div class="social-icons">
-                <a href="#" target="_blank" class="social-icon wechat-id">
-                    <span class="platform-name">微信ID: qiuwu999</span>
-                </a>
-                <a href="https://www.zhihu.com/placeholder" target="_blank" class="social-icon zhihu">
-                    <span class="platform-name">知乎 (深度长文)</span>
-                </a>
-                <a href="https://space.bilibili.com/placeholder" target="_blank" class="social-icon bilibili">
-                    <span class="platform-name">B站 (视频解析)</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="right-panel">
-        
-        <div id="chatSection" class="chat-section">
-            <div class="chat-header">
-                <h2>AI 破局咨询助手</h2>
+        <div class="left-panel">
+            
+            <div class="profile-cover">
+                <div class="avatar-ring">
+                    <img src="avatar.jpg" alt="导师头像" class="avatar">
+                </div>
+                <h1>秋武老师</h1>
+                <p class="subtitle">日本留学规划 | 东大基准逻辑重构 | 跨文化心理洞察</p>
+                
+                <button class="btn-expand" onclick="showChatSection()">开始专业咨询</button>
             </div>
             
-            <div id="chatBody" class="chat-body">
-                <div class="message ai-message">
-                    <div class="bubble">
-                        您好！我是您的东大升学破局顾问助理。请直接提问您的**背景劣势**或**情绪困惑**（如：GPA低、焦虑），我将提供**中肯、专业**的破局策略。
-                        <br><br>
-                        <strong>👉 更多细节和定制化服务，请加微信：qiuwu999 详聊。</strong>
+            <div class="social-links">
+                <a href="https://www.zhihu.com/people/qiu-wu-66" target="_blank" class="social-icon zhihu-icon" title="前往知乎获取深度干货">
+                    <i class="fab fa-zhihu"></i> 知乎
+                </a>
+                <a href="https://space.bilibili.com/323700487/lists" target="_blank" class="social-icon bilibili-icon" title="前往B站观看视频讲解">
+                    <i class="fab fa-bilibili"></i> B站
+                </a>
+            </div>
+            
+            <div class="menu-list">
+                <a href="#" class="menu-item menu-game-btn" onclick="showGameSimulation(event)">
+                    <i class="fas fa-brain"></i> 终局思维模拟器
+                </a>
+                <a href="#" class="menu-item" onclick="showContent(event, 'content-service')">
+                    <i class="fas fa-handshake"></i> 服务与收费模式
+                </a>
+                <a href="#" class="menu-item" onclick="showContent(event, 'content-cross-culture')">
+                    <i class="fas fa-book"></i> 跨文化与心理学洞察
+                </a>
+                <a href="#" class="menu-item menu-back-btn" onclick="showChatSection(event)">
+                    <i class="fas fa-comments"></i> 返回咨询界面
+                </a>
+            </div>
+
+            <div id="detail-display" class="detail-card hidden">
+                </div>
+
+        </div>
+
+        <div class="right-panel">
+            <div id="chat-section" class="chat-section">
+                <div class="chat-header">
+                    <h2>专业升学咨询</h2>
+                </div>
+                
+                <div class="chat-body" id="chat-body">
                     </div>
+                
+                <div class="chat-prompts" id="chat-prompts">
+                    </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="user-input" placeholder="输入您的问题..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button onclick="sendMessage()">发送</button>
+                </div>
+                
+                <div class="loading-indicator hidden" id="loading-indicator">
+                    正在分析问题，请稍候...
                 </div>
             </div>
 
-            <div id="chatPrompts" class="chat-prompts">
-            </div>
+            <div id="content-section" class="content-section hidden">
+                </div>
 
-            <div class="chat-input-area">
-                <input type="text" id="userInput" placeholder="请输入您的提问或关键词..." onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()">发送</button>
-            </div>
-            <div id="loadingIndicator" class="loading-indicator hidden">
-                <p>💡 系统正在进行人因工程学/文化心理学分析...</p>
-            </div>
-        </div>
-
-        <div id="contentSection" class="content-section hidden">
-        </div>
+            <div id="game-simulation-section" class="game-simulation-section hidden">
+                </div>
 
         </div>
-</div>
+    </div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
