@@ -21,7 +21,7 @@ const contentMap = {
         <p>如果您不需要通过渠道推荐：</p>
         <ul>
             <li><strong>服务项目：</strong> 文书撰写指导、研究计划书逻辑重构、教授套磁策略、校内面试模拟（口头试问）。</li>
-            <li><strong>收费标准：</strong> 根据项目（单项/全套）有不同价位。<strong>细节请加微信（qiuwu999）沟通，获取报价。</strong></li>
+            <li><strong>收费标准：** 根据项目（单项/全套）有不同价位。<strong>细节请加微信（qiuwu999）沟通，获取报价。</strong></li>
         </ul>
         <p class="akiwu-highlight">我们的核心价值不在于文书翻译，而在于<strong>「逻辑重构」</strong>，确保您的学术背景和目标符合日本顶尖院校的「终局思维」要求。</p>
     `,
